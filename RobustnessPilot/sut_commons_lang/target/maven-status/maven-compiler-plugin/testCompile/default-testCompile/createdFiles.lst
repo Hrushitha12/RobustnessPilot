@@ -1,0 +1,3 @@
+pilot\commons\BaselineTests.class
+pilot\commons\RobustnessTests.class
+pilot\commons\CanaryTest.class
