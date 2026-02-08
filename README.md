@@ -120,15 +120,3 @@ Interpretation:
 
 ---
 
-## Notes on Reproducibility
-- Always run from the `robustness_pilot/` root when using `tools/` paths.
-- If results counts look off, delete `target/surefire-reports` and regenerate XML.
-- On Windows, `mvn` is a `.cmd` wrapper; runner scripts call Maven via `cmd /c` for reliability.
-
----
-
-## Next Direction (TestForge connection)
-This pilot establishes a **survivability-based oracle** and per-test logging pipeline, which can be reused to:
-- evaluate **LLM-generated robustness tests**,
-- compare failure-mode diversity (exception types, timeouts),
-- benchmark robustness dimensions without requiring functional correctness assertions.
