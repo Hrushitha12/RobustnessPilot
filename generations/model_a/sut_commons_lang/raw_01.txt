@@ -1,0 +1,105 @@
+﻿```java
+package pilot.commons;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.Test;
+
+public class CommonsLang_ModelA_Round1_RobustnessTest {
+
+    @Test
+    public void testSubstrNull() {
+        assertThrows(NullPointerException.class, () -> pilot.commons.CommonsLangTargets.substr(null, 0, 5));
+    }
+
+    @Test
+    public void testSubstrEmptyString() {
+        pilot.commons.CommonsLangTargets.substr("", 0, 5);
+    }
+
+    @Test
+    public void testSubstrHugeStartIndex() {
+        pilot.commons.CommonsLangTargets.substr("HelloWorld", Integer.MAX_VALUE, Integer.MAX_VALUE);
+    }
+
+    @Test
+    public void testSubstrNegativeEndIndex() {
+        pilot.commons.CommonsLangTargets.substr("HelloWorld", 0, -1);
+    }
+
+    @Test
+    public void testAbbreviateNull() {
+        assertThrows(NullPointerException.class, () -> pilot.commons.CommonsLangTargets.abbreviate(null, 5));
+    }
+
+    @Test
+    public void testAbbreviateEmptyString() {
+        pilot.commons.CommonsLangTargets.abbreviate("", 5);
+    }
+
+    @Test
+    public void testAbbreviateHugeMaxWidth() {
+        pilot.commons.CommonsLangTargets.abbreviate("HelloWorld", Integer.MAX_VALUE);
+    }
+
+    @Test
+    public void testAbbreviateNegativeMaxWidth() {
+        assertThrows(IllegalArgumentException.class, () -> pilot.commons.CommonsLangTargets.abbreviate("HelloWorld", -1));
+    }
+
+    @Test
+    public void testSplitNull() {
+        assertThrows(NullPointerException.class, () -> pilot.commons.CommonsLangTargets.split(null, 'a'));
+    }
+
+    @Test
+    public void testSplitEmptyString() {
+        pilot.commons.CommonsLangTargets.split("", 'a');
+    }
+
+    @Test
+    public void testSplitWeirdUnicodeSeparator() {
+        pilot.commons.CommonsLangTargets.split("Hello\u0000World", '\u0000');
+    }
+
+    @Test
+    public void testCreateNumberNull() {
+        assertThrows(NullPointerException.class, () -> pilot.commons.CommonsLangTargets.createNumber(null));
+    }
+
+    @Test
+    public void testCreateNumberEmptyString() {
+        pilot.commons.CommonsLangTargets.createNumber("");
+    }
+
+    @Test
+    public void testCreateNumberHugeNumericString() {
+        pilot.commons.CommonsLangTargets.createNumber("123456789012345678901234567890");
+    }
+
+    @Test
+    public void testCreateNumberMalformedNumericString() {
+        assertThrows(NumberFormatException.class, () -> pilot.commons.CommonsLangTargets.createNumber("abc"));
+    }
+
+    @Test
+    public void testToIntNull() {
+        assertThrows(NullPointerException.class, () -> pilot.commons.CommonsLangTargets.toInt(null, 0));
+    }
+
+    @Test
+    public void testToIntEmptyString() {
+        pilot.commons.CommonsLangTargets.toInt("", 0);
+    }
+
+    @Test
+    public void testToIntHugeNumericString() {
+        pilot.commons.CommonsLangTargets.toInt("2147483648", 0); // Integer.MAX_VALUE + 1
+    }
+
+    @Test
+    public void testToIntMalformedNumericString() {
+        assertThrows(NumberFormatException.class, () -> pilot.commons.CommonsLangTargets.toInt("abc", 0));
+    }
+}
+```
+

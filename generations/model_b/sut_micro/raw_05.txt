@@ -1,0 +1,83 @@
+﻿Here is the JUnit 5 robustness test class for `pilot.micro.ConfigParser.parse(String)` based on your requirements:
+
+```java
+package pilot.micro;
+
+import org.junit.jupiter.api.Test;
+
+public class LLMModelB_Micro_Robustness_self {
+
+    @Test
+    public void test_null() {
+        String result = new ConfigParser().parse(null);
+        // external harness evaluates survivability
+    }
+
+    @Test
+    public void test_malformed() {
+        String result = new ConfigParser().parse("{invalid json}");
+        // external harness evaluates survivability
+    }
+
+    @Test
+    public void test_multi_equals() {
+        String result = new ConfigParser().parse("{\"key1\":\"value\"{\"key2\":\"value\"}}");
+        // external harness evaluates survivability
+    }
+
+    @Test
+    public void test_empty_key() {
+        String result = new ConfigParser().parse("{\"\": \"value\"}");
+        // external harness evaluates survivability
+    }
+
+    @Test
+    public void test_missing_key() {
+        String result = new ConfigParser().parse("{\"key\":\"value\"}");
+        // external harness evaluates survivability
+    }
+
+    @Test
+    public void test_invalid_enum() {
+        String result = new ConfigParser().parse("{\"enum\": \"invalid value\"}");
+        // external harness evaluates survivability
+    }
+
+    @Test
+    public void test_out_of_range() {
+        String result = new ConfigParser().parse("{\"int\": 2147483648}"); // int max value in Java
+        // external harness evaluates survivability
+    }
+
+    @Test
+    public void test_overflow() {
+        String result = new ConfigParser().parse("{\"long\": 9223372036854775807L}"); // long max value in Java
+        // external harness evaluates survivability
+    }
+
+    @Test
+    public void test_non_integer() {
+        String result = new ConfigParser().parse("{\"float\": \"non-integer value\"}");
+        // external harness evaluates survivability
+    }
+
+    @Test
+    public void test_unicode() {
+        String result = new ConfigParser().parse("{\"key\":\"\u0001value\"}");
+        // external harness evaluates survivability
+    }
+
+    @Test
+    public void test_extreme_length() {
+        String result = new ConfigParser().parse("{" + "a".repeat(10000) + ": \"value\"}");
+        // external harness evaluates survivability
+    }
+
+    @Test
+    public void test_duplicate_keys() {
+        String result = new ConfigParser().parse("{\"key1\":\"value\",\"key2\":\"value\",\"key1\":\"value\"}");
+        // external harness evaluates survivability
+    }
+}
+```
+

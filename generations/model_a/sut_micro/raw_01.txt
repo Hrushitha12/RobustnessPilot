@@ -1,0 +1,4 @@
+﻿The prompt seems to be missing some details, but it appears to be related to performing robustness testing on a system under test (SUT) using a tool called "sut_micro." Robustness testing is a type of software testing that evaluates the system's ability to handle unexpected or abnormal conditions without crashing or exhibiting unintended behavior.
+
+If you could provide more context or details about what specific model (model_a), prompt, or functionality you're interested in, I'd be happy to help further!
+

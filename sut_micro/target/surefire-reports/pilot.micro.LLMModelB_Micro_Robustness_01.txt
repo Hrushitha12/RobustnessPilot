@@ -1,0 +1,21 @@
+-------------------------------------------------------------------------------
+Test set: pilot.micro.LLMModelB_Micro_Robustness_01
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.104 s <<< FAILURE! -- in pilot.micro.LLMModelB_Micro_Robustness_01
+pilot.micro.LLMModelB_Micro_Robustness_01.multiEquals1 -- Time elapsed: 0.056 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Unexpected exception thrown: java.lang.IllegalArgumentException: multiple '=' in line at 1: key=value=123
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:152)
+	at org.junit.jupiter.api.AssertDoesNotThrow.createAssertionFailedError(AssertDoesNotThrow.java:84)
+	at org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:75)
+	at org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:58)
+	at org.junit.jupiter.api.Assertions.assertDoesNotThrow(Assertions.java:3228)
+	at pilot.micro.LLMModelB_Micro_Robustness_01.multiEquals1(LLMModelB_Micro_Robustness_01.java:42)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+Caused by: java.lang.IllegalArgumentException: multiple '=' in line at 1: key=value=123
+	at pilot.micro.ConfigParser.parse(ConfigParser.java:49)
+	at pilot.micro.LLMModelB_Micro_Robustness_01.lambda$multiEquals1$5(LLMModelB_Micro_Robustness_01.java:42)
+	at org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:71)
+	... 6 more
+

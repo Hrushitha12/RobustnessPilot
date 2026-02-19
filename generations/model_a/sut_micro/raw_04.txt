@@ -1,0 +1,85 @@
+﻿```java
+package pilot.micro;
+
+import org.junit.jupiter.api.Test;
+
+public class LLMModelA_Micro_Robustness_str {
+
+    @Test
+    public void test_null_01() {
+        ConfigParser parser = new ConfigParser();
+        parser.parse(null);
+    }
+
+    @Test
+    public void test_malformed_01() {
+        ConfigParser parser = new ConfigParser();
+        parser.parse("mode=SAFE\ninvalid_line");
+    }
+
+    @Test
+    public void test_multi_equals_01() {
+        ConfigParser parser = new ConfigParser();
+        parser.parse("mode=SAFE\nkey==value");
+    }
+
+    @Test
+    public void test_empty_key_01() {
+        ConfigParser parser = new ConfigParser();
+        parser.parse("mode=SAFE\n=timeoutMs=1000");
+    }
+
+    @Test
+    public void test_missing_key_01() {
+        ConfigParser parser = new ConfigParser();
+        parser.parse("mode=SAFE\ninvalid_key=value");
+    }
+
+    @Test
+    public void test_invalid_enum_01() {
+        ConfigParser parser = new ConfigParser();
+        parser.parse("mode=SLOW\ntimeoutMs=1000\nretries=3");
+    }
+
+    @Test
+    public void test_out_of_range_01() {
+        ConfigParser parser = new ConfigParser();
+        parser.parse("mode=SAFE\ntimeoutMs=70000\nretries=5");
+    }
+
+    @Test
+    public void test_overflow_01() {
+        ConfigParser parser = new ConfigParser();
+        parser.parse("mode=SAFE\ntimeoutMs=12345678901234567890\nretries=3");
+    }
+
+    @Test
+    public void test_non_integer_01() {
+        ConfigParser parser = new ConfigParser();
+        parser.parse("mode=SAFE\ntimeoutMs=1.2e3\nretries=3");
+    }
+
+    @Test
+    public void test_unicode_01() {
+        ConfigParser parser = new ConfigParser();
+        parser.parse("mode=SAFE\ntimeoutMs=1000\nvalue=\u0000");
+    }
+
+    @Test
+    public void test_extreme_length_01() {
+        ConfigParser parser = new ConfigParser();
+        StringBuilder input = new StringBuilder();
+        for (int i = 0; i < 256000; i++) {
+            input.append("a=b\n");
+        }
+        parser.parse(input.toString());
+    }
+
+    @Test
+    public void test_duplicate_keys_01() {
+        ConfigParser parser = new ConfigParser();
+        parser.parse("mode=SAFE\ntimeoutMs=1000\nretries=3\nmode=SLOW");
+    }
+}
+```
+

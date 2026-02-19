@@ -1,0 +1,12 @@
+-------------------------------------------------------------------------------
+Test set: pilot.micro.LLMModelA_Micro_Robustness_self
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.084 s <<< FAILURE! -- in pilot.micro.LLMModelA_Micro_Robustness_self
+pilot.micro.LLMModelA_Micro_Robustness_self.test_null -- Time elapsed: 0.033 s <<< ERROR!
+java.lang.IllegalArgumentException: config text must not be null
+	at pilot.micro.ConfigParser.parse(ConfigParser.java:28)
+	at pilot.micro.LLMModelA_Micro_Robustness_self.test_null(LLMModelA_Micro_Robustness_self.java:9)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+

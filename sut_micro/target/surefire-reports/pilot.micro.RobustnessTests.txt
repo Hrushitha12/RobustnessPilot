@@ -1,4 +1,96 @@
 -------------------------------------------------------------------------------
 Test set: pilot.micro.RobustnessTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.107 s -- in pilot.micro.RobustnessTests
+Tests run: 13, Failures: 0, Errors: 11, Skipped: 0, Time elapsed: 0.124 s <<< FAILURE! -- in pilot.micro.RobustnessTests
+pilot.micro.RobustnessTests.test_R2_invalidModeEnum -- Time elapsed: 0.016 s <<< ERROR!
+java.lang.IllegalArgumentException: invalid mode: SUPERFAST
+	at pilot.micro.ConfigParser.parseMode(ConfigParser.java:103)
+	at pilot.micro.ConfigParser.parse(ConfigParser.java:67)
+	at pilot.micro.RobustnessTests.test_R2_invalidModeEnum(RobustnessTests.java:69)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+pilot.micro.RobustnessTests.test_R1_nullInput -- Time elapsed: 0.001 s <<< ERROR!
+java.lang.IllegalArgumentException: config text must not be null
+	at pilot.micro.ConfigParser.parse(ConfigParser.java:28)
+	at pilot.micro.RobustnessTests.test_R1_nullInput(RobustnessTests.java:15)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+pilot.micro.RobustnessTests.test_R2_numericOverflowLike -- Time elapsed: 0.022 s <<< ERROR!
+java.lang.IllegalArgumentException: timeoutMs out of int range: 999999999999999999999
+	at pilot.micro.ConfigParser.parseIntStrict(ConfigParser.java:126)
+	at pilot.micro.ConfigParser.parse(ConfigParser.java:68)
+	at pilot.micro.RobustnessTests.test_R2_numericOverflowLike(RobustnessTests.java:97)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+pilot.micro.RobustnessTests.test_R2_retries_tooLarge -- Time elapsed: 0.010 s <<< ERROR!
+java.lang.IllegalArgumentException: retries out of range: 999
+	at pilot.micro.ConfigParser.parse(ConfigParser.java:75)
+	at pilot.micro.RobustnessTests.test_R2_retries_tooLarge(RobustnessTests.java:90)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+pilot.micro.RobustnessTests.test_R2_timeoutMs_tooLarge -- Time elapsed: 0.006 s <<< ERROR!
+java.lang.IllegalArgumentException: timeoutMs out of range: 999999
+	at pilot.micro.ConfigParser.parse(ConfigParser.java:72)
+	at pilot.micro.RobustnessTests.test_R2_timeoutMs_tooLarge(RobustnessTests.java:83)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+pilot.micro.RobustnessTests.test_R1_emptyKey -- Time elapsed: 0 s <<< ERROR!
+java.lang.IllegalArgumentException: malformed line at 1: =SAFE
+	at pilot.micro.ConfigParser.parse(ConfigParser.java:44)
+	at pilot.micro.RobustnessTests.test_R1_emptyKey(RobustnessTests.java:29)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+pilot.micro.RobustnessTests.test_R2_scientificNotationRejected -- Time elapsed: 0.018 s <<< ERROR!
+java.lang.IllegalArgumentException: timeoutMs not a plain integer: 1e3
+	at pilot.micro.ConfigParser.parseIntStrict(ConfigParser.java:120)
+	at pilot.micro.ConfigParser.parse(ConfigParser.java:68)
+	at pilot.micro.RobustnessTests.test_R2_scientificNotationRejected(RobustnessTests.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+pilot.micro.RobustnessTests.test_R2_timeoutMs_negative -- Time elapsed: 0.004 s <<< ERROR!
+java.lang.IllegalArgumentException: timeoutMs out of range: -1
+	at pilot.micro.ConfigParser.parse(ConfigParser.java:72)
+	at pilot.micro.RobustnessTests.test_R2_timeoutMs_negative(RobustnessTests.java:76)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+pilot.micro.RobustnessTests.test_R1_multipleEqualsInLine -- Time elapsed: 0 s <<< ERROR!
+java.lang.IllegalArgumentException: multiple '=' in line at 1: mode=SAFE=EXTRA
+	at pilot.micro.ConfigParser.parse(ConfigParser.java:49)
+	at pilot.micro.RobustnessTests.test_R1_multipleEqualsInLine(RobustnessTests.java:36)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+pilot.micro.RobustnessTests.test_R1_missingRequiredKey_timeoutMs -- Time elapsed: 0 s <<< ERROR!
+java.lang.IllegalArgumentException: missing required key: timeoutMs
+	at pilot.micro.ConfigParser.requireKey(ConfigParser.java:90)
+	at pilot.micro.ConfigParser.parse(ConfigParser.java:64)
+	at pilot.micro.RobustnessTests.test_R1_missingRequiredKey_timeoutMs(RobustnessTests.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+pilot.micro.RobustnessTests.test_R1_missingEqualsDelimiter -- Time elapsed: 0 s <<< ERROR!
+java.lang.IllegalArgumentException: malformed line at 1: modeSAFE
+	at pilot.micro.ConfigParser.parse(ConfigParser.java:44)
+	at pilot.micro.RobustnessTests.test_R1_missingEqualsDelimiter(RobustnessTests.java:22)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+

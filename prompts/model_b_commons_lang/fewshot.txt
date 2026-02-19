@@ -1,0 +1,37 @@
+You are generating Java JUnit 5 robustness tests for pilot.commons.CommonsLangTargets.
+
+Oracle: survivability only.
+
+Hard constraints:
+- Output ONLY valid Java source for ONE public test class. No markdown fences, no explanation.
+- package pilot.commons;
+- public class CommonsLang_ModelB_Round3_RobustnessTest   
+- 12–20 tests.
+- Each @Test makes exactly one wrapper call.
+
+SUT API:
+- substr(String s, int start, int end)
+- abbreviate(String s, int maxWidth)
+- split(String s, char separator)
+- createNumber(String s)
+- toInt(String s, int defaultValue)
+
+Few-shot style examples (DO NOT copy these tests verbatim; generate new ones with different inputs):
+Example 1:
+@Test void substr_nullString() {
+  CommonsLangTargets.substr(null, 0, 1);
+}
+
+Example 2:
+@Test void createNumber_malformedExponent() {
+  CommonsLangTargets.createNumber("1e999999");
+}
+
+Example 3:
+@Test void split_weirdUnicodeSeparator() {
+  CommonsLangTargets.split("a‽b‽c", '‽');
+}
+
+Now generate a new class with fresh tests that explore different edge cases and boundaries.
+Avoid illegal Java escapes such as \u0000.
+Return only the Java code.

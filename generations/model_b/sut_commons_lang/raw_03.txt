@@ -1,0 +1,75 @@
+﻿```java
+package pilot.commons;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+public class CommonsLang_ModelB_Round3_RobustnessTest {
+
+    @Test
+    void substr_emptyString() {
+        CommonsLangTargets.substr("", 0, 1);
+    }
+
+    @Test
+    void abbreviate_nullString() {
+        assertThrows(NullPointerException.class, () -> CommonsLangTargets.abbreviate(null, 10));
+    }
+
+    @Test
+    void split_emptyString() {
+        CommonsLangTargets.split("", ' ');
+    }
+
+    @Test
+    void createNumber_zeroExponent() {
+        CommonsLangTargets.createNumber("1e0");
+    }
+
+    @Test
+    void toInt_nullString() {
+        assertThrows(NullPointerException.class, () -> CommonsLangTargets.toInt(null, 10));
+    }
+
+    @Test
+    void substr_negativeStartIndex() {
+        assertThrows(StringIndexOutOfBoundsException.class, () -> CommonsLangTargets.substr("hello", -1, 5));
+    }
+
+    @Test
+    void abbreviate_negativeMaxWidth() {
+        assertThrows(IllegalArgumentException.class, () -> CommonsLangTargets.abbreviate("hello", -10));
+    }
+
+    @Test
+    void split_nullSeparator() {
+        assertThrows(NullPointerException.class, () -> CommonsLangTargets.split("a b c", null));
+    }
+
+    @Test
+    void createNumber_invalidFractionalPart() {
+        CommonsLangTargets.createNumber("1.2.3");
+    }
+
+    @Test
+    void toInt_emptyString() {
+        assertThrows(StringIndexOutOfBoundsException.class, () -> CommonsLangTargets.toInt("", 10));
+    }
+
+    @Test
+    void substr_nullStartIndex() {
+        assertThrows(NullPointerException.class, () -> CommonsLangTargets.substr(null, null, 5));
+    }
+
+    @Test
+    void abbreviate_largeMaxWidth() {
+        CommonsLangTargets.abbreviate("hello", 1000000);
+    }
+
+    @Test
+    void split_emptyStringSeparator() {
+        CommonsLangTargets.split("", ' ');
+    }
+}
+```
+

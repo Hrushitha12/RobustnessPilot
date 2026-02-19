@@ -1,0 +1,74 @@
+
+package pilot.micro;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
+public class LLMModelB_Micro_Robustness_01 {
+
+    @Test
+    public void nullConfig() {
+        ConfigParser parser = new ConfigParser();
+        assertDoesNotThrow(() -> parser.parse(null));
+    }
+
+    @Test
+    public void malformedConfig1() {
+        ConfigParser parser = new ConfigParser();
+        assertDoesNotThrow(() -> parser.parse("key"));
+    }
+
+    @Test
+    public void malformedConfig2() {
+        ConfigParser parser = new ConfigParser();
+        assertDoesNotThrow(() -> parser.parse("key=value=123"));
+    }
+
+    @Test
+    public void missingKey1() {
+        ConfigParser parser = new ConfigParser();
+        assertDoesNotThrow(() -> parser.parse("# mode\nkey=value"));
+    }
+
+    @Test
+    public void missingKey2() {
+        ConfigParser parser = new ConfigParser();
+        assertDoesNotThrow(() -> parser.parse("mode=\nkey=value"));
+    }
+
+    @Test
+    public void multiEquals1() {
+        ConfigParser parser = new ConfigParser();
+        assertDoesNotThrow(() -> parser.parse("key=value=123"));
+    }
+
+    @Test
+    public void emptyKey1() {
+        ConfigParser parser = new ConfigParser();
+        assertDoesNotThrow(() -> parser.parse("key=\nvalue=123"));
+    }
+
+    @Test
+    public void invalidEnum1() {
+        ConfigParser parser = new ConfigParser();
+        assertDoesNotThrow(() -> parser.parse("mode=INVALID\nkey=value"));
+    }
+
+    @Test
+    public void outOfRange1() {
+        ConfigParser parser = new ConfigParser();
+        assertDoesNotThrow(() -> parser.parse("timeoutMs=-1\nkey=value"));
+    }
+
+    @Test
+    public void overflow1() {
+        ConfigParser parser = new ConfigParser();
+        assertDoesNotThrow(() -> parser.parse("retries=2147483648\nkey=value"));
+    }
+
+    @Test
+    public void nonInteger1() {
+        ConfigParser parser = new ConfigParser();
+        assertDoesNotThrow(() -> parser.parse("timeoutMs=123.45\nkey=value"));
+    }
+}

@@ -1,3 +1,7 @@
 pilot\commons\BaselineTests.class
+pilot\commons\CommonsLang_ModelA_Round1_RobustnessTest.class
+pilot\commons\CommonsLang_ModelB_Round4_RobustnessTest.class
 pilot\commons\RobustnessTests.class
 pilot\commons\CanaryTest.class
+pilot\commons\CommonsLang_ModelB_Round2_RobustnessTest.class
+pilot\commons\CommonsLang_ModelA_Round3_RobustnessTest.class

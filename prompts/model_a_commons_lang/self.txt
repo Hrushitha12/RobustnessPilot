@@ -1,0 +1,23 @@
+Generate Java JUnit 5 robustness tests for pilot.commons.CommonsLangTargets.
+
+Oracle: survivability, not correctness.
+
+You must perform an internal self-check BEFORE you output:
+Self-check checklist (do not print the checklist):
+1) Output contains ONLY Java code (no markdown, no comments explaining).
+2) package pilot.commons; is present.
+3) Exactly one public class named CommonsLang_ModelA_Round4_RobustnessTest   
+4) All braces compile; imports correct; uses JUnit 5.
+5) Each @Test calls exactly ONE wrapper method once.
+6) Only calls methods from CommonsLangTargets.
+7) No illegal escape sequences in strings.
+
+SUT API (use ONLY these):
+- CommonsLangTargets.substr(String s, int start, int end)
+- CommonsLangTargets.abbreviate(String s, int maxWidth)
+- CommonsLangTargets.split(String s, char separator)
+- CommonsLangTargets.createNumber(String s)
+- CommonsLangTargets.toInt(String s, int defaultValue)
+
+Produce 15–20 tests with good method coverage and varied nasty inputs.
+Return ONLY the Java code.

@@ -1,0 +1,82 @@
+﻿```java
+package pilot.commons;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+public class CommonsLang_ModelA_Round4_RobustnessTest {
+    private CommonsLangTargets target;
+
+    @BeforeEach
+    public void setUp() {
+        target = new CommonsLangTargets();
+    }
+
+    @Test
+    public void testSubstrValidRange() {
+        assertEquals("hello", target.substr("hello world", 0, 5));
+    }
+
+    @Test
+    public void testSubstrNegativeStart() {
+        assertEquals("world", target.substr("hello world", -6, 11));
+    }
+
+    @Test
+    public void testSubstrEndExceedsLength() {
+        assertEquals("hello", target.substr("hello", 0, 50));
+    }
+
+    @Test
+    public void testAbbreviateUnderMaxWidth() {
+        assertEquals("hello", target.abbreviate("hello", 10));
+    }
+
+    @Test
+    public void testAbbreviateExactMaxWidth() {
+        assertEquals("hel...", target.abbreviate("hello", 6));
+    }
+
+    @Test
+    public void testAbbreviateOverMaxWidth() {
+        assertEquals("h...", target.abbreviate("hello world", 3));
+    }
+
+    @Test
+    public void testSplitEmptyString() {
+        assertArrayEquals(new String[]{}, target.split("", ','));
+    }
+
+    @Test
+    public void testSplitSingleCharacter() {
+        assertArrayEquals(new String[]{"a"}, target.split("a", ','));
+    }
+
+    @Test
+    public void testSplitMultipleCharacters() {
+        assertArrayEquals(new String[]{"1", "2", "3"}, target.split("1,2,3", ','));
+    }
+
+    @Test
+    public void testCreateNumberValidString() {
+        assertEquals(42, target.createNumber("42"));
+    }
+
+    @Test
+    public void testCreateNumberInvalidString() {
+        assertNull(target.createNumber("abc"));
+    }
+
+    @Test
+    public void testToIntValidString() {
+        assertEquals(10, target.toInt("10", 5));
+    }
+
+    @Test
+    public void testToIntInvalidString() {
+        assertEquals(5, target.toInt("abc", 5));
+    }
+}
+```
+

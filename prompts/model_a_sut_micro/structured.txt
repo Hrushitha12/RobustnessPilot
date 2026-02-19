@@ -1,0 +1,61 @@
+ABSOLUTE OUTPUT RULES
+- Output ONLY raw Java source code.
+- NO markdown, NO backticks, NO ```java fences.
+- If you violate this, the output is invalid.
+
+TASK
+Generate a JUnit 5 robustness test class for the Java SUT below.
+
+SUT DETAILS
+- Package: pilot.micro
+- Class: ConfigParser
+- Method: ParsedConfig parse(String text)
+- Notes:
+  - Input is config lines "key=value"
+  - Ignores blank lines and lines starting with '#'
+  - Required keys: mode, timeoutMs, retries
+  - mode ∈ {FAST, SAFE}
+  - timeoutMs ∈ [1..60000]
+  - retries ∈ [0..10]
+  - Structural rules: non-empty non-comment lines must contain exactly one '='; key must not be empty; multiple '=' is invalid.
+  - Strict int parsing; overflow / non-integer rejected via IllegalArgumentException.
+  - lastGoodConfig updates only on successful parse.
+
+ROBUSTNESS ORACLE
+- Do NOT use assertions.
+- Do NOT use try/catch.
+- A robustness test is simply a call to parse(...) with abnormal input.
+- Survivability is evaluated externally (harness + canary + timeout).
+
+OUTPUT REQUIREMENTS
+- Package must be: pilot.micro
+- Imports: org.junit.jupiter.api.Test
+- Class name: LLMModelA_Micro_Robustness_str
+- Create EXACTLY 12 tests.
+
+FAILURE-DIVERSITY ENFORCEMENT (IMPORTANT)
+You MUST include exactly one test for each category below, and the method name MUST encode the category:
+
+1. null            -> method name: test_null_01
+2. malformed        -> test_malformed_01      (missing '=' or bad line)
+3. multi_equals     -> test_multi_equals_01
+4. empty_key        -> test_empty_key_01
+5. missing_key      -> test_missing_key_01    (missing required key but other lines valid)
+6. invalid_enum     -> test_invalid_enum_01   (invalid mode)
+7. out_of_range     -> test_out_of_range_01   (timeoutMs or retries out of allowed range)
+8. overflow         -> test_overflow_01       (very large integer string)
+9. non_integer      -> test_non_integer_01    (scientific notation or letters)
+10. unicode         -> test_unicode_01        (control/unicode in key or value)
+11. extreme_length  -> test_extreme_length_01 (very long input string)
+12. duplicate_keys  -> test_duplicate_keys_01 (same key twice; vary values)
+
+CONSTRUCTION RULES (IMPORTANT)
+- Each @Test method must create a NEW ConfigParser instance.
+- Each test must pass a SINGLE String to parse(...).
+- For categories 5–9, construct the config so it gets past basic parsing (use valid "key=value" lines) and fails for the intended reason.
+  Example baseline valid structure:
+    mode=SAFE
+    timeoutMs=1000
+    retries=3
+
+Return ONLY Java source code.

@@ -1,0 +1,31 @@
+Generate Java JUnit 5 robustness tests for pilot.commons.CommonsLangTargets.
+
+SUT API (use ONLY these methods):
+1) substr(String s, int start, int end)
+2) abbreviate(String s, int maxWidth)
+3) split(String s, char separator)
+4) createNumber(String s)
+5) toInt(String s, int defaultValue)
+
+Oracle: survivability (do not assert expected correctness).
+
+Output format constraints (must follow exactly):
+- Output ONLY one Java file content (no markdown, no extra text).
+- package pilot.commons;
+- public class CommonsLang_ModelB_Round2_RobustnessTest   
+- Use JUnit 5 (@Test).
+- 15 tests exactly.
+
+Test design constraints:
+- Each test must call exactly ONE wrapper method once.
+- Spread coverage across methods:
+  - 3 tests for substr
+  - 3 tests for abbreviate
+  - 3 tests for split
+  - 3 tests for createNumber
+  - 3 tests for toInt
+- Inputs must be deterministic.
+- Aim for failure diversity: vary input categories (null, empty, long, unicode, boundary ints, malformed numbers, extreme ranges).
+- Avoid illegal Java string escapes (do not use \u0000 literal).
+
+Deliverable: one Java class only.

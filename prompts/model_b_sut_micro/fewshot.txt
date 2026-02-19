@@ -1,0 +1,56 @@
+ABSOLUTE OUTPUT RULES
+- Output ONLY raw Java source code.
+- NO markdown, NO backticks, NO ```java fences.
+
+TASK
+Generate a JUnit 5 robustness test class for:
+pilot.micro.ConfigParser.parse(String)
+
+ROBUSTNESS ORACLE
+- Do NOT use assertions.
+- Do NOT use try/catch.
+- Each test directly calls new ConfigParser().parse(...).
+- External harness evaluates survivability.
+
+OUTPUT REQUIREMENTS
+- package: pilot.micro
+- import: org.junit.jupiter.api.Test
+- Class name: LLMModelB_Micro_Robustness_fs
+- EXACTLY 12 tests
+- Method names MUST follow: test_<category>_<NN>
+
+CATEGORIES (exactly one test per category)
+null, malformed, multi_equals, empty_key, missing_key, invalid_enum,
+out_of_range, overflow, non_integer, unicode, extreme_length, duplicate_keys
+
+VALID BASELINE STRUCTURE (use when needed)
+mode=SAFE
+timeoutMs=1000
+retries=3
+
+FEW-SHOT EXAMPLES (copy this style)
+Example 1 (null):
+@Test
+public void test_null_01() {
+    ConfigParser parser = new ConfigParser();
+    parser.parse(null);
+}
+
+Example 2 (multi_equals):
+@Test
+public void test_multi_equals_01() {
+    ConfigParser parser = new ConfigParser();
+    String cfg = "mode=SAFE\n" +
+                 "timeoutMs=1000\n" +
+                 "retries=3\n" +
+                 "key==value";
+    parser.parse(cfg);
+}
+
+NOW GENERATE THE FULL CLASS
+- Include the two example tests (you can reuse them exactly).
+- Implement the remaining 10 categories with the same style.
+- For missing_key / invalid_enum / out_of_range / overflow / non_integer:
+  keep the overall structure valid and fail for the intended reason.
+
+Return ONLY Java source code.

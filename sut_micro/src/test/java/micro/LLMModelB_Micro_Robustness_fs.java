@@ -1,0 +1,123 @@
+package pilot.micro;
+
+import org.junit.jupiter.api.Test;
+
+public class LLMModelB_Micro_Robustness_fs {
+
+    @Test
+    public void test_null_01() {
+        ConfigParser parser = new ConfigParser();
+        parser.parse(null);
+    }
+
+    @Test
+    public void test_malformed_01() {
+        ConfigParser parser = new ConfigParser();
+        String cfg = "mode=SAFE\n" +
+                     "timeoutMs=1000\n" +
+                     "retries=3\n" +
+                     "key=value";
+        parser.parse(cfg);
+    }
+
+    @Test
+    public void test_multi_equals_01() {
+        ConfigParser parser = new ConfigParser();
+        String cfg = "mode=SAFE\n" +
+                 "timeoutMs=1000\n" +
+                 "retries=3\n" +
+                 "key==value";
+        parser.parse(cfg);
+    }
+
+    @Test
+    public void test_empty_key_01() {
+        ConfigParser parser = new ConfigParser();
+        String cfg = "mode=SAFE\n" +
+                     "timeoutMs=1000\n" +
+                     "retries=3\n" +
+                     "=\"value\"";
+        parser.parse(cfg);
+    }
+
+    @Test
+    public void test_missing_key_01() {
+        ConfigParser parser = new ConfigParser();
+        String cfg = "mode=SAFE\n" +
+                     "timeoutMs=1000\n" +
+                     "\"key\"=\"value\"\n" +
+                     "anotherKey=value";
+        parser.parse(cfg);
+    }
+
+    @Test
+    public void test_invalid_enum_01() {
+        ConfigParser parser = new ConfigParser();
+        String cfg = "mode=INVALID_MODE\n" +
+                     "timeoutMs=1000\n" +
+                     "retries=3\n" +
+                     "key=value";
+        parser.parse(cfg);
+    }
+
+    @Test
+    public void test_out_of_range_01() {
+        ConfigParser parser = new ConfigParser();
+        String cfg = "mode=SAFE\n" +
+                     "timeoutMs=-1\n" +
+                     "retries=3\n" +
+                     "key=value";
+        parser.parse(cfg);
+    }
+
+    @Test
+    public void test_overflow_01() {
+        ConfigParser parser = new ConfigParser();
+        String cfg = "mode=SAFE\n" +
+                     "timeoutMs=2147483648\n" +
+                     "retries=3\n" +
+                     "key=value";
+        parser.parse(cfg);
+    }
+
+    @Test
+    public void test_non_integer_01() {
+        ConfigParser parser = new ConfigParser();
+        String cfg = "mode=SAFE\n" +
+                     "timeoutMs=abc\n" +
+                     "retries=3\n" +
+                     "key=value";
+        parser.parse(cfg);
+    }
+
+    @Test
+    public void test_unicode_01() {
+        ConfigParser parser = new ConfigParser();
+        String cfg = "mode=SAFE\n" +
+                     "timeoutMs=1000\n" +
+                     "retries=3\n" +
+                     "\u0001key=value";
+        parser.parse(cfg);
+    }
+
+    @Test
+    public void test_extreme_length_01() {
+        ConfigParser parser = new ConfigParser();
+        String cfg = "mode=SAFE\n" +
+                     "timeoutMs=1000\n" +
+                     "retries=3\n" +
+                     "key=".repeat(1024);
+        parser.parse(cfg);
+    }
+
+    @Test
+    public void test_duplicate_keys_01() {
+        ConfigParser parser = new ConfigParser();
+        String cfg = "mode=SAFE\n" +
+                     "timeoutMs=1000\n" +
+                     "retries=3\n" +
+                     "key=value\n" +
+                     "key=anotherValue";
+        parser.parse(cfg);
+    }
+}

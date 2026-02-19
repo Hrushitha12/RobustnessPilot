@@ -1,0 +1,41 @@
+ABSOLUTE OUTPUT RULES
+- Final output MUST be ONLY raw Java source code.
+- NO markdown, NO backticks, NO ``` fences.
+- If you add any explanation text, the output is invalid.
+
+TASK
+Generate a JUnit 5 robustness test class for:
+pilot.micro.ConfigParser.parse(String)
+
+ROBUSTNESS ORACLE
+- Do NOT use assertions.
+- Do NOT use try/catch.
+- Each test directly calls new ConfigParser().parse(...).
+- External harness evaluates survivability.
+
+OUTPUT REQUIREMENTS
+- package: pilot.micro
+- import: org.junit.jupiter.api.Test
+- Class name: LLMModelA_Micro_Robustness_self
+- EXACTLY 12 tests
+- Method names MUST follow: test_<category>_<NN>
+
+CATEGORIES (exactly one test per category)
+null, malformed, multi_equals, empty_key, missing_key, invalid_enum,
+out_of_range, overflow, non_integer, unicode, extreme_length, duplicate_keys
+
+VALID BASELINE STRUCTURE (use when needed)
+mode=SAFE
+timeoutMs=1000
+retries=3
+
+SELF-CHECK (do this internally before final output)
+Before you output final Java, verify:
+1. No markdown/backticks.
+2. No assertions, no try/catch.
+3. Exactly 12 @Test methods.
+4. All 12 categories present exactly once.
+5. Class name and file name match.
+6. Each test creates a new ConfigParser.
+
+Return ONLY Java source code.

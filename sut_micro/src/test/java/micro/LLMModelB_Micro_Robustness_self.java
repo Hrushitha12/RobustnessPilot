@@ -1,0 +1,70 @@
+package pilot.micro;
+
+import org.junit.jupiter.api.Test;
+
+public class LLMModelB_Micro_Robustness_self {
+
+    @Test
+    public void test_null() {
+        new ConfigParser().parse(null);
+    }
+
+    @Test
+    public void test_malformed() {
+        new ConfigParser().parse("malformed");
+    }
+
+    @Test
+    public void test_multi_equals() {
+        new ConfigParser().parse("{key1=key2}");
+    }
+
+    @Test
+    public void test_empty_key() {
+        new ConfigParser().parse("{\"\"=\"value\"}");
+    }
+
+    @Test
+    public void test_missing_key() {
+        new ConfigParser().parse("{\"key=\"}");
+    }
+
+    @Test
+    public void test_invalid_enum() {
+        new ConfigParser().parse("{\"invalid_enum\": \"value\"}");
+    }
+
+    @Test
+    public void test_out_of_range() {
+        new ConfigParser().parse("{\"outOfRange\": 1024}");
+    }
+
+    @Test
+    public void test_overflow() {
+        new ConfigParser().parse("{\"overflow\": 2147483648}");
+    }
+
+    @Test
+    public void test_non_integer() {
+        new ConfigParser().parse("{\"nonInteger\": \"value\"}");
+    }
+
+    @Test
+    public void test_unicode() {
+        new ConfigParser().parse("{\"unicode\": "\u0000"}");
+    }
+
+    @Test
+    public void test_extreme_length() {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < 20000; i++) {
+            builder.append("a");
+        }
+        new ConfigParser().parse(builder.toString());
+    }
+
+    @Test
+    public void test_duplicate_keys() {
+        new ConfigParser().parse("{\"key1\": \"value\", \"key2\": \"value\"}");
+    }
+}

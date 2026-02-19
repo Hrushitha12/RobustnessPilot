@@ -1,0 +1,72 @@
+﻿```java
+package pilot.commons;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
+public class CommonsLang_ModelB_Round1_RobustnessTest {
+
+    @Test
+    public void test01_Substring_SafeStart() {
+        assertDoesNotThrow(() -> CommonsLangTargets.substr("Hello World", 0, 5));
+    }
+
+    @Test
+    public void test02_Substring_UnsafeStart() {
+        assertDoesNotThrow(() -> CommonsLangTargets.substr("Hello World", -1, 5));
+    }
+
+    @Test
+    public void test03_Substring_SafeEnd() {
+        assertDoesNotThrow(() -> CommonsLangTargets.substr("Hello World", 0, 10));
+    }
+
+    @Test
+    public void test04_Substring_UnsafeEnd() {
+        assertDoesNotThrow(() -> CommonsLangTargets.substr("Hello World", 0, -1));
+    }
+
+    @Test
+    public void test05_Abbreviate_MaxWidthTooSmall() {
+        assertDoesNotThrow(() -> CommonsLangTargets.abbreviate("Hello World", -5));
+    }
+
+    @Test
+    public void test06_Split_EmptyString() {
+        assertDoesNotThrow(() -> CommonsLangTargets.split("", ','));
+    }
+
+    @Test
+    public void test07_Split_NullInput() {
+        assertDoesNotThrow(() -> CommonsLangTargets.split(null, ','));
+    }
+
+    @Test
+    public void test08_Split_WeirdSeparator() {
+        assertDoesNotThrow(() -> CommonsLangTargets.split("Hello World", 'a'));
+    }
+
+    @Test
+    public void test09_CreateNumber_MalformedInput() {
+        assertDoesNotThrow(() -> CommonsLangTargets.createNumber("abc"));
+    }
+
+    @Test
+    public void test10_ToInt_NullInput() {
+        assertDoesNotThrow(() -> CommonsLangTargets.toInt(null, 0));
+    }
+
+    @Test
+    public void test11_ToInt_MalformedNumericString() {
+        assertDoesNotThrow(() -> CommonsLangTargets.toInt("abc", 0));
+    }
+
+    @Test
+    public void test12_ToInt_LargeInteger() {
+        assertDoesNotThrow(() -> CommonsLangTargets.toInt(Integer.toString(1234567890123456789L), 0));
+    }
+}
+```
+
+This code defines a JUnit 5 test class with exactly 12 `@Test` methods. Each method calls one primary SUT function (wrapper call) and uses the `assertDoesNotThrow` assertion to check for unexpected exceptions or crashes. The methods cover various edge cases, including null inputs, huge strings, malformed numeric strings, and extreme integers.
+

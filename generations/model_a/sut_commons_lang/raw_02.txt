@@ -1,0 +1,106 @@
+﻿```java
+package pilot.commons;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+public class CommonsLang_ModelB_Round2_RobustnessTest {
+
+    @Test
+    public void testSubstrWithValidRange() {
+        assertEquals("def", substr("abcdefg", 3, 6));
+    }
+
+    @Test
+    public void testSubstrWithNegativeStart() {
+        assertEquals("abcde", substr("abcdefg", -2, 5));
+    }
+
+    @Test
+    public void testSubstrWithLargeEnd() {
+        assertEquals("fg", substr("abcdefg", 4, 100));
+    }
+
+    @Test
+    public void testAbbreviateWithShortString() {
+        assertEquals("ab", abbreviate("abcde", 2));
+    }
+
+    @Test
+    public void testAbbreviateWithMaxWidthLessThanLength() {
+        assertEquals("a...", abbreviate("abcdefgh", 3));
+    }
+
+    @Test
+    public void testAbbreviateWithNegativeMaxWidth() {
+        assertNull(abbreviate("abcdefgh", -1));
+    }
+
+    @Test
+    public void testSplitWithSingleCharacterSeparator() {
+        assertArrayEquals(new String[]{"abc", "defg"}, split("abcdefg", 'c'));
+    }
+
+    @Test
+    public void testSplitWithLongStringAndCharSeparator() {
+        assertArrayEquals(new String[]{"a", "", ""}, split("a,,,", ','));
+    }
+
+    @Test
+    public void testSplitWithNonexistentCharSeparator() {
+        assertArrayEquals(new String[]{"abcde"}, split("abcdefg", 'z'));
+    }
+
+    @Test
+    public void testCreateNumberWithValidInteger() {
+        assertEquals(123, createNumber("123"));
+    }
+
+    @Test
+    public void testCreateNumberWithMalformedNumber() {
+        assertNull(createNumber("abc"));
+    }
+
+    @Test
+    public void testCreateNumberWithNegativeNumber() {
+        assertEquals(-456, createNumber("-456"));
+    }
+
+    @Test
+    public void testToIntWithValidIntegerString() {
+        assertEquals(789, toInt("789", 0));
+    }
+
+    @Test
+    public void testToIntWithNonNumericString() {
+        assertEquals(0, toInt("xyz", 0));
+    }
+
+    @Test
+    public void testToIntWithLeadingSpaces() {
+        assertEquals(123, toInt(" 123 ", 0));
+    }
+
+    private String substr(String s, int start, int end) {
+        return pilot.commons.CommonsLangTargets.substr(s, start, end);
+    }
+
+    private String abbreviate(String s, int maxWidth) {
+        return pilot.commons.CommonsLangTargets.abbreviate(s, maxWidth);
+    }
+
+    private String[] split(String s, char separator) {
+        return pilot.commons.CommonsLangTargets.split(s, separator);
+    }
+
+    private Integer createNumber(String s) {
+        return pilot.commons.CommonsLangTargets.createNumber(s);
+    }
+
+    private int toInt(String s, int defaultValue) {
+        return pilot.commons.CommonsLangTargets.toInt(s, defaultValue);
+    }
+}
+```
+

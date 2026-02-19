@@ -1,0 +1,23 @@
+You are generating Java JUnit 5 robustness tests for a wrapper SUT.
+
+SUT API (use ONLY these methods):
+- pilot.commons.CommonsLangTargets.substr(String s, int start, int end)
+- pilot.commons.CommonsLangTargets.abbreviate(String s, int maxWidth)
+- pilot.commons.CommonsLangTargets.split(String s, char separator)
+- pilot.commons.CommonsLangTargets.createNumber(String s)
+- pilot.commons.CommonsLangTargets.toInt(String s, int defaultValue)
+
+Oracle: survivability, not correctness. The goal is to trigger crashes/hangs/unexpected exceptions safely.
+Do NOT write assertions about expected outputs (unless needed just to avoid unused results).
+
+Rules:
+- Output ONLY valid Java source code for ONE public test class. No markdown fences, no commentary.
+- Must compile under Maven + JUnit 5.
+- Package must be exactly: package pilot.commons;
+- Class name must be exactly: CommonsLang_ModelB_Round1_RobustnessTest   
+- 12–20 @Test methods.
+- Each @Test should make exactly ONE primary SUT call (one wrapper call).
+- Deterministic inputs only (no randomness).
+- Emphasize nasty inputs: null, empty, huge strings, weird unicode (avoid illegal escape sequences), extreme ints, malformed numeric strings, strange separators.
+
+Deliverable: a single Java class.

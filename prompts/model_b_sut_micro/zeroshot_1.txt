@@ -1,0 +1,35 @@
+You are generating JUnit 5 robustness tests for a Java system under test.
+
+SUT details:
+- Package: pilot.micro
+- Class: ConfigParser
+- Method under test: ParsedConfig parse(String text)
+- Behavior summary:
+  - Input is a config string with lines like "key=value"
+  - Ignores blank lines and lines starting with '#'
+  - Required keys: mode, timeoutMs, retries
+  - Rules:
+    - mode ∈ {FAST, SAFE}
+    - timeoutMs ∈ [1..60000]
+    - retries ∈ [0..10]
+  - Structural rules:
+    - text must not be null
+    - each non-empty non-comment line must contain exactly one '='
+    - key must not be empty
+    - if multiple '=' exist in a line → IllegalArgumentException
+  - Strict int parsing: only plain integer strings allowed (no scientific notation, no hex). Overflow becomes IllegalArgumentException.
+  - State: lastGoodConfig updates only on successful parse.
+
+Task:
+Generate ONE Java JUnit 5 test class named LLMModelB_Micro_Robustness_01 in package pilot.micro.
+
+Requirements:
+- Use org.junit.jupiter.api.Test.
+- Create 10–12 @Test methods.
+- Each test should call ConfigParser.parse(...) with an intentionally invalid or abnormal config string.
+- Do NOT use assertions (robustness oracle is survivability).
+- Keep each test independent (new ConfigParser instance inside each test).
+- Include a short comment above each test with a category label from:
+  [null, malformed, missing-key, multi-equals, empty-key, invalid-enum, out-of-range, overflow, non-integer, unicode/control-char, extreme-length]
+- Output ONLY the Java code (no markdown, no explanation).
+

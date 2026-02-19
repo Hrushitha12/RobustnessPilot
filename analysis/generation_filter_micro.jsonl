@@ -1,0 +1,13 @@
+{"stage":"compile_filter","model":"qwen2.5-coder:7b","sut":"sut_micro","gen_file":"generations/model_a/sut_micro/raw_02.txt","status":"REJECTED","reason":"markdown_code_fence_backticks_in_java_file","action":"strip_fences_and_retry_compile"}
+{"stage":"compile_filter","model":"qwen2.5-coder:7b","sut":"sut_micro","gen_file":"generations/model_a/sut_micro/raw_02.txt","status":"ACCEPTED_WITH_CLEANUP","cleanup":"removed_markdown_fences_only","action":"none"}
+{"stage":"compile_filter","model":"llama3.1:8b","sut":"sut_micro","gen_file":"generations/model_a/sut_micro/raw_03.txt","status":"ACCEPTED_WITH_CLEANUP","cleanup":"no_fences_but_added_braces","action":"none"}
+{"stage":"compile_filter","model":"qwen2.5-coder:7b","sut":"sut_micro","gen_file":"generations/model_b/sut_micro/raw_03.txt","status":"ACCEPTED_WITH_CLEANUP","cleanup":"removed_markdown_fences_only","action":"none"}
+{"stage":"compile_filter","model":"llama3.1:8b","sut":"micro_sut","artifact":"LLMModelB_Micro_Robustness_R3_02.java","status":"ACCEPTED_WITH_CLEANUP","cleanup":"removed_markdown_fence_and_trailing_natural_language_only"}
+{"stage":"compile_filter","model":"qwen2.5-coder:7b","sut":"sut_micro","gen_file":"generations/model_b/sut_micro/raw_04.txt","status":"ACCEPTED_WITH_CLEANUP","cleanup":"removed_markdown_fences_only","action":"none"}
+{"stage":"compile_filter","model":"llama3.1:8b","sut":"micro_sut","artifact":"LLMModelB_Micro_Robustness_R3_03.java","status":"ACCEPTED_WITH_CLEANUP","cleanup":"removed_markdown_fence_and_trailing_natural_language_only"}
+{"stage":"compile_filter","model":"qwen2.5-coder:7b","sut":"sut_micro","gen_file":"generations/model_b/sut_micro/raw_05.txt","status":"ACCEPTED_WITH_CLEANUP","cleanup":"removed_markdown_fences_only","action":"none"}
+{"stage":"compile_filter","model":"llama3.1:8b","sut":"micro_sut","artifact":"LLMModelB_Micro_Robustness_R3_04.java","status":"ACCEPTED_WITH_CLEANUP","cleanup":"removed_markdown_fence_and_trailing_natural_language_only"}
+{"stage":"compile_filter","model":"qwen2.5-coder:7b","sut":"sut_micro","gen_file":"generations/model_b/sut_micro/raw_05.txt","status":"ACCEPTED_WITH_CLEANUP","cleanup":"removed_markdown_fences_only","action":"none"}
+{"stage":"compile_filter","model":"llama3.1:8b","sut":"micro_sut","artifact":"LLMModelB_Micro_Robustness_R3_04.java","status":"ACCEPTED_WITH_CLEANUP","cleanup":"removed_markdown_fence_and_trailing_natural_language_only"}
+{"stage":"compile_filter","round":"round5","model":"model_b","sut":"micro_sut","artifact":"LLMModelB_Micro_Robustness_self.java","status":"REJECTED","reason":"type_error_parse_argument_not_string","compiler_error":"ParsedConfig cannot be converted to String"}
+

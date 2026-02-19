@@ -1,0 +1,13 @@
+-------------------------------------------------------------------------------
+Test set: pilot.micro.LLMModelA_Micro_Robustness_01
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.074 s <<< FAILURE! -- in pilot.micro.LLMModelA_Micro_Robustness_01
+pilot.micro.LLMModelA_Micro_Robustness_01.testUnicodeControlChar -- Time elapsed: 0.034 s <<< ERROR!
+java.lang.IllegalArgumentException: missing required key: mode
+	at pilot.micro.ConfigParser.requireKey(ConfigParser.java:90)
+	at pilot.micro.ConfigParser.parse(ConfigParser.java:63)
+	at pilot.micro.LLMModelA_Micro_Robustness_01.testUnicodeControlChar(LLMModelA_Micro_Robustness_01.java:71)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+

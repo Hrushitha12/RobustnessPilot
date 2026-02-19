@@ -1,0 +1,73 @@
+﻿```java
+package pilot.micro;
+
+import org.junit.jupiter.api.Test;
+
+public class LLMModelA_Micro_Robustness_self {
+
+    @Test
+    public void test_null() {
+        new ConfigParser().parse(null);
+    }
+
+    @Test
+    public void test_malformed() {
+        new ConfigParser().parse("malformed_key:value");
+    }
+
+    @Test
+    public void test_multi_equals() {
+        new ConfigParser().parse("key=value1=value2");
+    }
+
+    @Test
+    public void test_empty_key() {
+        new ConfigParser().parse(":value");
+    }
+
+    @Test
+    public void test_missing_key() {
+        new ConfigParser().parse("=value");
+    }
+
+    @Test
+    public void test_invalid_enum() {
+        new ConfigParser().parse("key:INVALID_ENUM");
+    }
+
+    @Test
+    public void test_out_of_range() {
+        new ConfigParser().parse("key:12345678901234567890");
+    }
+
+    @Test
+    public void test_overflow() {
+        new ConfigParser().parse("key:9223372036854775808");
+    }
+
+    @Test
+    public void test_non_integer() {
+        new ConfigParser().parse("key:not_an_int");
+    }
+
+    @Test
+    public void test_unicode() {
+        new ConfigParser().parse("key:\u00E9xampl\u00E9");
+    }
+
+    @Test
+    public void test_extreme_length() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 100000; i++) {
+            sb.append("a=");
+        }
+        new ConfigParser().parse(sb.toString());
+    }
+
+    @Test
+    public void test_duplicate_keys() {
+        new ConfigParser().parse("key:value,key:value");
+    }
+}
+```
+

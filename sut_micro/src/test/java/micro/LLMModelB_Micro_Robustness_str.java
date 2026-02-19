@@ -1,0 +1,84 @@
+package pilot.micro;
+
+import org.junit.jupiter.api.Test;
+
+public class LLMModelB_Micro_Robustness_str {
+
+  @Test
+  public void test_null_01() {
+    ConfigParser parser = new ConfigParser();
+    parser.parse(null);
+  }
+
+  @Test
+  public void test_malformed_01() {
+    ConfigParser parser = new ConfigParser();
+    parser.parse("key");
+  }
+
+  @Test
+  public void test_multi_equals_01() {
+    ConfigParser parser = new ConfigParser();
+    parser.parse("key= value=");
+  }
+
+  @Test
+  public void test_empty_key_01() {
+    ConfigParser parser = new ConfigParser();
+    parser.parse(" =value");
+  }
+
+  @Test
+  public void test_missing_key_01() {
+    ConfigParser parser = new ConfigParser();
+    parser.parse("mode=SAFE\ntimeoutMs=1000\nretries=3\n key=value");
+  }
+
+  @Test
+  public void test_invalid_enum_01() {
+    ConfigParser parser = new ConfigParser();
+    parser.parse("mode=FOO\ntimeoutMs=1000\nretries=3");
+  }
+
+  @Test
+  public void test_out_of_range_01() {
+    ConfigParser parser = new ConfigParser();
+    parser.parse("mode=SAFE\ntimeoutMs=-1\nretries=3");
+  }
+
+  @Test
+  public void test_overflow_01() {
+    ConfigParser parser = new ConfigParser();
+    parser.parse("mode=SAFE\ntimeoutMs=1000000000\nretries=3");
+  }
+
+  @Test
+  public void test_non_integer_01() {
+    ConfigParser parser = new ConfigParser();
+    parser.parse("mode=SAFE\ntimeoutMs=1.2e10\nretries=3");
+  }
+
+  @Test
+  public void test_unicode_01() {
+    ConfigParser parser = new ConfigParser();
+    parser.parse("mode=SAFE\u0000timeoutMs=1000\nretries=3");
+  }
+
+  @Test
+  public void test_extreme_length_01() {
+    ConfigParser parser = new ConfigParser();
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < 10000; i++) {
+      sb.append("key=");
+      sb.append(i);
+      sb.append("\n");
+    }
+    parser.parse(sb.toString());
+  }
+
+  @Test
+  public void test_duplicate_keys_01() {
+    ConfigParser parser = new ConfigParser();
+    parser.parse("mode=SAFE\nkey=value\nkey=other_value");
+  }
+}
