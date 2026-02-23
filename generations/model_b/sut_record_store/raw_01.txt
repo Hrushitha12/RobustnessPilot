@@ -1,0 +1,103 @@
+﻿Here is the JUnit 5 robustness test class for RecordStore:
+```
+package pilot.records;
+
+import org.junit.jupiter.api.Test;
+import java.util.Map;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class RecordStore_ModelA_Round1_RobustnessTest {
+
+    @Test
+    public void test01_Ctor_InvalidCapacity() {
+        new RecordStore(101, RecordType.STRING_ONLY);
+    }
+
+    @Test
+    public void test02_Ctor_NullRecordType() {
+        new RecordStore(10, null);
+    }
+
+    @Test
+    public void test03_Close_StoreStillOpenAfterClose() {
+        RecordStore store = new RecordStore(10, RecordType.STRING_ONLY);
+        store.close();
+        assertTrue(store.isOpen());
+    }
+
+    @Test
+    public void test04_Put_NullKey() {
+        RecordStore store = new RecordStore(10, RecordType.STRING_ONLY);
+        store.put(null, "value");
+    }
+
+    @Test
+    public void test05_Put_BlankKey() {
+        RecordStore store = new RecordStore(10, RecordType.STRING_ONLY);
+        store.put("", "value");
+    }
+
+    @Test
+    public void test06_Put_TooLongKey() {
+        RecordStore store = new RecordStore(10, RecordType.STRING_ONLY);
+        store.put("a".repeat(MAX_KEY_LENGTH + 1), "value");
+    }
+
+    @Test
+    public void test07_Put_NullValue() {
+        RecordStore store = new RecordStore(10, RecordType.STRING_ONLY);
+        store.put("key", null);
+    }
+
+    @Test
+    public void test08_PutNumeric_NullKey() {
+        RecordStore store = new RecordStore(10, RecordType.NUMERIC_ONLY);
+        store.putNumeric(null, "123");
+    }
+
+    @Test
+    public void test09_PutNumeric_BlankKey() {
+        RecordStore store = new RecordStore(10, RecordType.NUMERIC_ONLY);
+        store.putNumeric("", "123");
+    }
+
+    @Test
+    public void test10_PutNumeric_TooLongKey() {
+        RecordStore store = new RecordStore(10, RecordType.NUMERIC_ONLY);
+        store.putNumeric("a".repeat(MAX_KEY_LENGTH + 1), "123");
+    }
+
+    @Test
+    public void test11_PutNumeric_NullValue() {
+        RecordStore store = new RecordStore(10, RecordType.NUMERIC_ONLY);
+        store.putNumeric("key", null);
+    }
+
+    @Test
+    public void test12_PutNumeric_NotANumber() {
+        RecordStore store = new RecordStore(10, RecordType.NUMERIC_ONLY);
+        store.putNumeric("key", "abc");
+    }
+
+    @Test
+    public void test13_PutNumeric_OutOfRange() {
+        RecordStore store = new RecordStore(10, RecordType.NUMERIC_ONLY);
+        store.putNumeric("key", Integer.MAX_VALUE + 1 + "");
+    }
+
+    @Test
+    public void test14_PutOnClosedStore() {
+        RecordStore store = new RecordStore(10, RecordType.STRING_ONLY);
+        store.close();
+        store.put("key", "value");
+    }
+
+    @Test
+    public void test15_PutNumericOnStringOnlyStore() {
+        RecordStore store = new RecordStore(10, RecordType.STRING_ONLY);
+        store.putNumeric("key", "123");
+    }
+}
+```
+

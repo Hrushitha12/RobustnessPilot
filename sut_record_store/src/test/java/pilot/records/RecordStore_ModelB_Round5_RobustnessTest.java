@@ -1,0 +1,117 @@
+package pilot.records;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.util.*;
+
+public class RecordStore_ModelB_Round5_RobustnessTest {
+
+    @Test
+    public void testConstructor_RecordTypeNull() {
+        assertThrows(NullPointerException.class, () -> new RecordStore(10, null));
+    }
+
+    @Test
+    public void testConstructor_CapacityTooLow() {
+        assertThrows(IllegalArgumentException.class, () -> new RecordStore(-1, RecordType.STRING_ONLY));
+    }
+
+    @Test
+    public void testConstructor_CapacityTooHigh() {
+        assertThrows(IllegalArgumentException.class, () -> new RecordStore(101, RecordType.STRING_ONLY));
+    }
+
+    @Test
+    public void testPut_EmptyKey() {
+        assertThrows(IllegalArgumentException.class, () -> new RecordStore(10, RecordType.STRING_ONLY).put("", "value"));
+    }
+
+    @Test
+    public void testPut_TooLongKey() {
+        String key = new String(new char[33]).replace("\0", "a");
+        assertThrows(IllegalArgumentException.class, () -> new RecordStore(10, RecordType.STRING_ONLY).put(key, "value"));
+    }
+
+    @Test
+    public void testPut_NullValue() {
+        assertThrows(NullPointerException.class, () -> new RecordStore(10, RecordType.STRING_ONLY).put("key", null));
+    }
+
+    @Test
+    public void testPutNumeric_ValueNotInt() {
+        String key = "key";
+        String value = "123.45"; // not an integer string
+        assertThrows(IllegalArgumentException.class, () -> new RecordStore(10, RecordType.NUMERIC_ONLY).putNumeric(key, value));
+    }
+
+    @Test
+    public void testPutNumeric_ValueBelowMin() {
+        String key = "key";
+        String value = "-100001"; // below MIN_NUMERIC
+        assertThrows(IllegalArgumentException.class, () -> new RecordStore(10, RecordType.NUMERIC_ONLY).putNumeric(key, value));
+    }
+
+    @Test
+    public void testPutNumeric_ValueAboveMax() {
+        String key = "key";
+        String value = "100001"; // above MAX_NUMERIC
+        assertThrows(IllegalArgumentException.class, () -> new RecordStore(10, RecordType.NUMERIC_ONLY).putNumeric(key, value));
+    }
+
+    @Test
+    public void testPutNumeric_RecordTypeNotNUMERIC_ONLY() {
+        String key = "key";
+        String value = "12345"; // integer string
+        assertThrows(IllegalArgumentException.class, () -> new RecordStore(10, RecordType.STRING_ONLY).putNumeric(key, value));
+    }
+
+    @Test
+    public void testPutRecordTypeBlock_PutOnNUMERIC_ONLY() {
+        String key = "key";
+        String value = "value"; // not an integer string
+        assertThrows(IllegalArgumentException.class, () -> new RecordStore(10, RecordType.NUMERIC_ONLY).put(key, value));
+    }
+
+    @Test
+    public void testPutRecordTypeBlock_PutNumericOnSTRING_ONLY() {
+        String key = "key";
+        String value = "12345"; // integer string
+        assertThrows(IllegalArgumentException.class, () -> new RecordStore(10, RecordType.STRING_ONLY).putNumeric(key, value));
+    }
+
+    @Test
+    public void testPutAll_NullEntries() {
+        Map<String, String> entries = null;
+        assertThrows(NullPointerException.class, () -> new RecordStore(10, RecordType.STRING_ONLY).putAll(entries));
+    }
+
+    @Test
+    public void testGet_RecordNotOpen() {
+        // note: cannot use assertThrows because get() does not throw an exception if record is closed
+        // we need to check that get() returns null when record is closed
+        RecordStore store = new RecordStore(10, RecordType.STRING_ONLY);
+        store.close();
+        String result = store.get("key");
+        assert (result == null || result.isEmpty());
+    }
+
+    @Test
+    public void testSize_RecordNotOpen() {
+        // note: cannot use assertThrows because size() does not throw an exception if record is closed
+        // we need to check that size() returns 0 when record is closed
+        RecordStore store = new RecordStore(10, RecordType.STRING_ONLY);
+        store.close();
+        int result = store.size();
+        assert (result == 0);
+    }
+
+    @Test
+    public void testPutAll_EntryCountTooHigh() {
+        Map<String, String> entries = new HashMap<>();
+        for (int i = 0; i < 101; i++) {
+            entries.put("key" + i, "value");
+        }
+        assertThrows(IllegalArgumentException.class, () -> new RecordStore(10, RecordType.STRING_ONLY).putAll(entries));
+    }
+
+}

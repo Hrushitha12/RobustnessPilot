@@ -11,3 +11,4 @@
 {"stage":"compile_filter","model":"llama3.1:8b","sut":"micro_sut","artifact":"LLMModelB_Micro_Robustness_R3_04.java","status":"ACCEPTED_WITH_CLEANUP","cleanup":"removed_markdown_fence_and_trailing_natural_language_only"}
 {"stage":"compile_filter","round":"round5","model":"model_b","sut":"micro_sut","artifact":"LLMModelB_Micro_Robustness_self.java","status":"REJECTED","reason":"type_error_parse_argument_not_string","compiler_error":"ParsedConfig cannot be converted to String"}
 
+SHOULD REWRITE 

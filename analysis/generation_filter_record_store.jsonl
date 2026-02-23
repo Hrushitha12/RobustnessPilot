@@ -1,0 +1,24 @@
+{"stage":"compile_filter","model":"qwen2.5-coder:7b","sut":"sut_record_store","gen_file":"generations/model_a/sut_record_store/raw_01.txt","status":"ACCEPTED_WITH_CLEANUP","cleanup":"removed_markdown_fences_only"}
+{"stage":"compile_filter","model":"qwen2.5-coder:7b","sut":"sut_record_store","gen_file":"generations/model_a/sut_record_store/raw_02.txt","status":"ACCEPTED_WITH_CLEANUP","cleanup":"removed_markdown_fences_only"}
+{"stage":"compile_filter","model":"qwen2.5-coder:7b","sut":"sut_record_store","gen_file":"generations/model_a/sut_record_store/raw_03.txt","status":"ACCEPTED_WITH_CLEANUP","cleanup":"removed_markdown_fences_only"}
+{"stage":"compile_filter","model":"qwen2.5-coder:7b","sut":"sut_record_store","gen_file":"generations/model_a/sut_record_store/raw_04.txt","status":"ACCEPTED_WITH_CLEANUP","cleanup":"removed_markdown_fences_only"}
+{"stage":"compile_filter","model":"qwen2.5-coder:7b","sut":"sut_record_store","gen_file":"generations/model_a/sut_record_store/raw_05.txt","status":"ACCEPTED_WITH_CLEANUP","cleanup":"removed_markdown_fences_only"}
+{"stage":"compile_filter","model":"llama3.1:8b","sut":"sut_record_store","gen_file":"generations/model_b/sut_record_store/raw_01.txt","status":"ACCEPTED_WITH_CLEANUP","cleanup":"removed_markdown_fences_and_leading_natural_language"}
+{"stage":"compile_filter","model":"llama3.1:8b","sut":"sut_record_store","gen_file":"generations/model_b/sut_record_store/raw_02.txt","status":"ACCEPTED_WITH_CLEANUP","cleanup":"removed_markdown_fences_only"}
+{"stage":"compile_filter","model":"llama3.1:8b","sut":"sut_record_store","gen_file":"generations/model_b/sut_record_store/raw_03.txt","status":"ACCEPTED_WITH_CLEANUP","cleanup":"removed_markdown_fences_only"}
+{"stage":"compile_filter","model":"llama3.1:8b","sut":"sut_record_store","gen_file":"generations/model_b/sut_record_store/raw_04.txt","status":"ACCEPTED_WITH_CLEANUP","cleanup":"removed_markdown_fences_only"}
+{"stage":"compile_filter","model":"llama3.1:8b","sut":"sut_record_store","gen_file":"generations/model_b/sut_record_store/raw_05.txt","status":"ACCEPTED_WITH_CLEANUP","cleanup":"removed_markdown_fences_and_leading_natural_language"}
+
+{"stage":"compile_filter","model":"qwen2.5-coder:7b","sut":"sut_record_store","gen_file":"generations/model_a/sut_record_store/raw_01.txt","decision":"REJECT","reason":"semantic_logic_broken: used assertThrows instead of direct call; prompt instruction ignored"}
+{"stage":"compile_filter","model":"qwen2.5-coder:7b","sut":"sut_record_store","gen_file":"generations/model_a/sut_record_store/raw_02.txt","decision":"REJECT","reason":"semantic_logic_broken: used assertThrows and try-with-resources on non-AutoCloseable; prompt instruction ignored"}
+
+{"stage":"compile_filter","model":"qwen2.5-coder:7b","sut":"sut_record_store","gen_file":"generations/model_a/sut_record_store/raw_03.txt","decision":"REJECT","reason":"missing_package_declaration: class not in pilot.records package, cannot resolve RecordStore or RecordType"}
+
+{"stage":"compile_filter","model":"qwen2.5-coder:7b","sut":"sut_record_store","gen_file":"generations/model_a/sut_record_store/raw_05.txt","decision":"ACCEPTED_WITH_CLEANUP","cleanup":"added_RecordStore_qualifier_to_MIN_NUMERIC_and_MAX_NUMERIC"}
+
+{"stage":"compile_filter","model":"llama3.1:8b","sut":"sut_record_store","gen_file":"generations/model_b/sut_record_store/raw_02.txt","decision":"REJECT","reason":"semantic_logic_broken: void method used in boolean context; fail() used without import; assertion-based structure"}
+
+{"stage":"compile_filter","model":"llama3.1:8b","sut":"sut_record_store","gen_file":"generations/model_b/sut_record_store/raw_04.txt","decision":"REJECT","reason":"non_compilable: null passed to primitive int parameter in constructor"}
+
+{"stage":"runtime","model":"llama3.1:8b","sut":"sut_record_store","round":"Round5","test":"testPutNumeric_ValueBelowMin","status":"TIMEOUT","canary_status":"TIMEOUT","note":"canary_poisoned: JVM hang suspected; subsequent canary also timed out"}
+{"stage":"runtime","model":"llama3.1:8b","sut":"sut_record_store","round":"Round5","test":"testPutRecordTypeBlock_PutOnNUMERIC_ONLY","status":"TIMEOUT","canary_status":"TIMEOUT","note":"canary_poisoned: possible infinite loop in generated test logic"}

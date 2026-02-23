@@ -1,0 +1,12 @@
+-------------------------------------------------------------------------------
+Test set: pilot.records.RobustnessTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.080 s <<< FAILURE! -- in pilot.records.RobustnessTests
+pilot.records.RobustnessTests.test_R1_null_value_on_put -- Time elapsed: 0.035 s <<< ERROR!
+java.lang.IllegalArgumentException: value must not be null
+	at pilot.records.RecordStore.put(RecordStore.java:80)
+	at pilot.records.RobustnessTests.test_R1_null_value_on_put(RobustnessTests.java:29)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+

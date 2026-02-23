@@ -1,0 +1,133 @@
+﻿```java
+package pilot.records;
+
+import org.junit.jupiter.api.*;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
+
+public class RecordStore_ModelA_Round2_RobustnessTest {
+
+    @Test
+    public void testInvalidCapacityThrowsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> new RecordStore(0, RecordType.STRING_ONLY));
+        assertThrows(IllegalArgumentException.class, () -> new RecordStore(101, RecordType.STRING_ONLY));
+    }
+
+    @Test
+    public void testNullTypeThrowsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> new RecordStore(10, null));
+    }
+
+    @Test
+    public void testNonBlankKeyAllowsPut() {
+        try (RecordStore store = new RecordStore(10, RecordType.MIXED)) {
+            store.put("key", "value");
+        }
+    }
+
+    @Test
+    public void testBlankKeyThrowsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            try (RecordStore store = new RecordStore(10, RecordType.MIXED)) {
+                store.put("", "value");
+            }
+        });
+    }
+
+    @Test
+    public void testNullValueThrowsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            try (RecordStore store = new RecordStore(10, RecordType.MIXED)) {
+                store.put("key", null);
+            }
+        });
+    }
+
+    @Test
+    public void testInvalidNumericValueThrowsNumberFormatException() {
+        assertThrows(NumberFormatException.class, () -> {
+            try (RecordStore store = new RecordStore(10, RecordType.NUMERIC_ONLY)) {
+                store.putNumeric("key", "invalid");
+            }
+        });
+    }
+
+    @Test
+    public void testNumericValueOutOfRangeThrowsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            try (RecordStore store = new RecordStore(10, RecordType.NUMERIC_ONLY)) {
+                store.putNumeric("key", String.valueOf(Integer.MIN_VALUE - 1));
+            }
+        });
+    }
+
+    @Test
+    public void testPutNotAllowedOnNumericOnlyStoreThrowsUnsupportedOperationException() {
+        assertThrows(UnsupportedOperationException.class, () -> {
+            try (RecordStore store = new RecordStore(10, RecordType.NUMERIC_ONLY)) {
+                store.put("key", "value");
+            }
+        });
+    }
+
+    @Test
+    public void testPutNumericNotAllowedOnStringOnlyStoreThrowsUnsupportedOperationException() {
+        assertThrows(UnsupportedOperationException.class, () -> {
+            try (RecordStore store = new RecordStore(10, RecordType.STRING_ONLY)) {
+                store.putNumeric("key", "123");
+            }
+        });
+    }
+
+    @Test
+    public void testNoWritesAllowedAfterCloseThrowsIllegalStateException() {
+        try (RecordStore store = new RecordStore(10, RecordType.MIXED)) {
+            store.close();
+            assertThrows(IllegalStateException.class, () -> store.put("key", "value"));
+        }
+    }
+
+    @Test
+    public void testCapacityLimitThrowsIndexOutOfBoundsException() {
+        int capacity = 5;
+        try (RecordStore store = new RecordStore(capacity, RecordType.MIXED)) {
+            for (int i = 0; i < capacity; i++) {
+                store.put("key" + i, "value" + i);
+            }
+            assertThrows(IndexOutOfBoundsException.class, () -> store.put("key" + capacity, "value" + capacity));
+        }
+    }
+
+    @Test
+    public void testPutAllValidEntries() {
+        try (RecordStore store = new RecordStore(10, RecordType.MIXED)) {
+            Map<String, String> entries = new HashMap<>();
+            entries.put("key1", "value1");
+            entries.put("key2", "value2");
+            store.putAll(entries);
+        }
+    }
+
+    @Test
+    public void testPutAllInvalidEntries() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            try (RecordStore store = new RecordStore(10, RecordType.MIXED)) {
+                Map<String, String> entries = new HashMap<>();
+                entries.put("key", null);
+                store.putAll(entries);
+            }
+        });
+    }
+
+    @Test
+    public void testRemoveKey() {
+        try (RecordStore store = new RecordStore(10, RecordType.MIXED)) {
+            store.put("key", "value");
+            store.remove("key");
+        }
+    }
+}
+```
+

@@ -1,0 +1,105 @@
+﻿```java
+package pilot.records;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+import java.util.*;
+
+public class RecordStore_ModelA_Round4_RobustnessTest {
+
+    @Test
+    public void testNullCapacity() {
+        RecordStore store = new RecordStore(null, RecordType.STRING_ONLY);
+        Assertions.assertThrows(NullPointerException.class, () -> store.isOpen());
+    }
+
+    @Test
+    public void testZeroCapacity() {
+        RecordStore store = new RecordStore(0, RecordType.STRING_ONLY);
+        Assertions.assertFalse(store.isOpen());
+    }
+
+    @Test
+    public void testMaxCapacity() {
+        RecordStore store = new RecordStore(100, RecordType.STRING_ONLY);
+        Assertions.assertTrue(store.isOpen());
+    }
+
+    @Test
+    public void testNullRecordType() {
+        RecordStore store = new RecordStore(100, null);
+        Assertions.assertThrows(NullPointerException.class, () -> store.isOpen());
+    }
+
+    @Test
+    public void testBlankKey() {
+        RecordStore store = new RecordStore(100, RecordType.STRING_ONLY);
+        store.put("  ", "value");
+        Assertions.assertEquals(1, store.size());
+    }
+
+    @Test
+    public void testEmptyKey() {
+        RecordStore store = new RecordStore(100, RecordType.STRING_ONLY);
+        store.put("", "value");
+        Assertions.assertEquals(0, store.size());
+    }
+
+    @Test
+    public void testNullKey() {
+        RecordStore store = new RecordStore(100, RecordType.STRING_ONLY);
+        store.put(null, "value");
+        Assertions.assertEquals(0, store.size());
+    }
+
+    @Test
+    public void testNullValue() {
+        RecordStore store = new RecordStore(100, RecordType.STRING_ONLY);
+        store.put("key", null);
+        Assertions.assertEquals(0, store.size());
+    }
+
+    @Test
+    public void testKeyTooLong() {
+        RecordStore store = new RecordStore(100, RecordType.STRING_ONLY);
+        String key = new String(new char[33]).replace("\0", "a");
+        store.put(key, "value");
+        Assertions.assertEquals(0, store.size());
+    }
+
+    @Test
+    public void testPutOnNumericOnly() {
+        RecordStore store = new RecordStore(100, RecordType.NUMERIC_ONLY);
+        store.put("key", "value");
+        Assertions.assertEquals(0, store.size());
+    }
+
+    @Test
+    public void testPutNumericOnStringOnly() {
+        RecordStore store = new RecordStore(100, RecordType.STRING_ONLY);
+        store.putNumeric("key", "123");
+        Assertions.assertEquals(0, store.size());
+    }
+
+    @Test
+    public void testGetFromNonExistentKey() {
+        RecordStore store = new RecordStore(100, RecordType.STRING_ONLY);
+        Assertions.assertNull(store.get("non-existent-key"));
+    }
+
+    @Test
+    public void testPutNumericOutOfBounds() {
+        RecordStore store = new RecordStore(100, RecordType.NUMERIC_ONLY);
+        store.putNumeric("key", "123456789012345678901234567890");
+        Assertions.assertEquals(0, store.size());
+    }
+
+    @Test
+    public void testRemoveNonExistentKey() {
+        RecordStore store = new RecordStore(100, RecordType.STRING_ONLY);
+        store.remove("non-existent-key");
+        Assertions.assertEquals(0, store.size());
+    }
+}
+```
+

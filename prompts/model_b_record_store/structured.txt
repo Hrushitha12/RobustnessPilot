@@ -1,0 +1,41 @@
+You are a software tester writing JUnit 5 robustness tests in Java 17.
+The system under test is RecordStore in package pilot.records.
+API: 
+public class RecordStore {
+
+    public static final int MAX_KEY_LENGTH = 32;
+    public static final int MIN_NUMERIC    = -100_000;
+    public static final int MAX_NUMERIC    =  100_000;
+
+    public RecordStore(int capacity, RecordType type)
+    public void close()
+    public boolean isOpen()
+
+    public void put(String key, String value)
+    public void putNumeric(String key, String numericValue)
+    public void remove(String key)
+    public void putAll(Map<String, String> entries)
+
+    public String get(String key)
+    public int getNumeric(String key)
+    public int size()
+    public List<String> keys()
+}
+
+public enum RecordType { STRING_ONLY, NUMERIC_ONLY, MIXED }
+Rules enforced by the SUT
+RuleViolation triggerscapacity must be 1..100IllegalArgumentExceptiontype must not be nullIllegalArgumentExceptionkey must be non-null, non-blank, max 32 charsIllegalArgumentExceptionvalue must not be nullIllegalArgumentExceptionputNumeric: must be a plain integer stringNumberFormatExceptionputNumeric: value must be within MIN_NUMERIC..MAX_NUMERICIllegalArgumentExceptionput not allowed on NUMERIC_ONLY storeUnsupportedOperationExceptionputNumeric not allowed on STRING_ONLY storeUnsupportedOperationExceptionno writes allowed after close()IllegalStateExceptionstore capacity must not be exceededIndexOutOfBoundsException
+Your task
+Write a JUnit 5 test class with exactly 15 to 18 robustness tests.
+Cover as many of the rule categories above as possible.
+Aim to spread your tests across different failure categories rather than repeating the same one.
+Output format
+
+Package: pilot.records
+Class name: RecordStore_ModelB_Round2_RobustnessTest
+Each test must have a unique @Test method name describing what it tests
+Each test must create its own fresh RecordStore instance
+Do NOT use assertThrows — call the method directly and let any exception propagate
+Do NOT add assertions — the survivability oracle is applied externally
+Imports: only java.util.* and org.junit.jupiter.api.*
+Output only the Java class, no explanation text

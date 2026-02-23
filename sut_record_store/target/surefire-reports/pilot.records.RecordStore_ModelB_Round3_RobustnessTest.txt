@@ -1,0 +1,13 @@
+-------------------------------------------------------------------------------
+Test set: pilot.records.RecordStore_ModelB_Round3_RobustnessTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.080 s <<< FAILURE! -- in pilot.records.RecordStore_ModelB_Round3_RobustnessTest
+pilot.records.RecordStore_ModelB_Round3_RobustnessTest.test_capacity_exceeded -- Time elapsed: 0.049 s <<< ERROR!
+java.lang.IndexOutOfBoundsException: store is full (capacity=2)
+	at pilot.records.RecordStore.checkCapacity(RecordStore.java:230)
+	at pilot.records.RecordStore.put(RecordStore.java:86)
+	at pilot.records.RecordStore_ModelB_Round3_RobustnessTest.test_capacity_exceeded(RecordStore_ModelB_Round3_RobustnessTest.java:72)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+

@@ -1,0 +1,112 @@
+﻿```java
+package pilot.records;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class RecordStore_ModelA_Round4_RobustnessTest {
+
+    private RecordStore recordStore;
+
+    @BeforeEach
+    public void setUp() {
+        recordStore = new RecordStore(10, RecordType.MIXED);
+    }
+
+    @AfterEach
+    public void tearDown() {
+        if (recordStore.isOpen()) {
+            recordStore.close();
+        }
+    }
+
+    @Test
+    public void testCloseAndWriteAfterwards() {
+        recordStore.close();
+        recordStore.put("key", "value");
+    }
+
+    @Test
+    public void testInvalidCapacityConstructor() {
+        new RecordStore(0, RecordType.STRING_ONLY);
+    }
+
+    @Test
+    public void testNullRecordTypeConstructor() {
+        new RecordStore(10, null);
+    }
+
+    @Test
+    public void testBlankKeyPut() {
+        recordStore.put("", "value");
+    }
+
+    @Test
+    public void testTooLongKeyPut() {
+        StringBuilder key = new StringBuilder();
+        for (int i = 0; i <= RecordStore.MAX_KEY_LENGTH; i++) {
+            key.append("a");
+        }
+        recordStore.put(key.toString(), "value");
+    }
+
+    @Test
+    public void testNullValuePut() {
+        recordStore.put("key", null);
+    }
+
+    @Test
+    public void testNumericKeyWithNonNumericValue() {
+        recordStore.putNumeric("123", "abc");
+    }
+
+    @Test
+    public void testNumericKeyWithValueOutsideRange() {
+        recordStore.putNumeric("123", String.valueOf(RecordStore.MAX_NUMERIC + 1));
+    }
+
+    @Test
+    public void testStringOnlyTypePutNumeric() {
+        RecordStore store = new RecordStore(10, RecordType.STRING_ONLY);
+        store.putNumeric("key", "123");
+    }
+
+    @Test
+    public void testNumericOnlyTypePut() {
+        RecordStore store = new RecordStore(10, RecordType.NUMERIC_ONLY);
+        store.put("key", "value");
+    }
+
+    @Test
+    public void testNullKeyRemove() {
+        recordStore.remove(null);
+    }
+
+    @Test
+    public void testPutAllWithNullValue() {
+        Map<String, String> entries = new HashMap<>();
+        entries.put("key1", "value1");
+        entries.put("key2", null);
+        recordStore.putAll(entries);
+    }
+
+    @Test
+    public void testGetNonExistentKey() {
+        recordStore.get("non-existent-key");
+    }
+
+    @Test
+    public void testGetNumericNonNumericKey() {
+        recordStore.putNumeric("123", "456");
+        recordStore.getNumeric("abc");
+    }
+}
+```
+

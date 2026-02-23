@@ -1,0 +1,80 @@
+You are a software tester writing JUnit 5 robustness tests in Java 17.
+The system under test is RecordStore in package pilot.records.
+API
+public class RecordStore {
+
+    public static final int MAX_KEY_LENGTH = 32;
+    public static final int MIN_NUMERIC    = -100_000;
+    public static final int MAX_NUMERIC    =  100_000;
+
+    public RecordStore(int capacity, RecordType type)
+    public void close()
+    public boolean isOpen()
+
+    public void put(String key, String value)
+    public void putNumeric(String key, String numericValue)
+    public void remove(String key)
+    public void putAll(Map<String, String> entries)
+
+    public String get(String key)
+    public int getNumeric(String key)
+    public int size()
+    public List<String> keys()
+}
+
+public enum RecordType { STRING_ONLY, NUMERIC_ONLY, MIXED }
+Rules enforced by the SUT
+
+capacity must be 1..100; type must not be null
+keys must be non-null, non-blank, at most 32 characters
+values must not be null
+putNumeric only accepts plain integer strings (no floats, hex, scientific notation)
+putNumeric range: MIN_NUMERIC..MAX_NUMERIC
+put not allowed on NUMERIC_ONLY; putNumeric not allowed on STRING_ONLY
+no writes after close(); capacity must not be exceeded
+
+Examples of correctly written robustness tests
+java@Test
+void test_null_key_on_put() {
+    RecordStore store = new RecordStore(10, RecordType.MIXED);
+    store.put(null, "value");
+}
+
+@Test
+void test_float_value_on_putNumeric() {
+    RecordStore store = new RecordStore(10, RecordType.MIXED);
+    store.putNumeric("key", "3.14");
+}
+
+@Test
+void test_put_after_close() {
+    RecordStore store = new RecordStore(10, RecordType.MIXED);
+    store.close();
+    store.put("key", "value");
+}
+
+@Test
+void test_put_on_numeric_only_store() {
+    RecordStore store = new RecordStore(10, RecordType.NUMERIC_ONLY);
+    store.put("name", "alice");
+}
+
+@Test
+void test_capacity_exceeded() {
+    RecordStore store = new RecordStore(2, RecordType.MIXED);
+    store.put("a", "1");
+    store.put("b", "2");
+    store.put("c", "overflow");
+}
+Notice: each test creates its own store, calls one operation that should violate a rule, and has no assertions.
+Your task
+Following the same style as the examples above, write a JUnit 5 test class with 15 to 18 robustness tests. Cover as many different rule categories as possible.
+
+Package: pilot.records
+Class name: RecordStore_ModelB_Round3_RobustnessTest
+Each test must have a unique @Test method name
+Each test must create its own fresh RecordStore instance
+Do NOT use assertThrows
+Do NOT add any assertions
+Imports: only java.util.* and org.junit.jupiter.api.*
+Output only the Java class, no explanation

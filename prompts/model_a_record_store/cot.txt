@@ -1,0 +1,63 @@
+You are a software tester writing JUnit 5 robustness tests in Java 17.
+The system under test is RecordStore in package pilot.records.
+API
+public class RecordStore {
+
+    public static final int MAX_KEY_LENGTH = 32;
+    public static final int MIN_NUMERIC    = -100_000;
+    public static final int MAX_NUMERIC    =  100_000;
+
+    public RecordStore(int capacity, RecordType type)
+    public void close()
+    public boolean isOpen()
+
+    public void put(String key, String value)
+    public void putNumeric(String key, String numericValue)
+    public void remove(String key)
+    public void putAll(Map<String, String> entries)
+
+    public String get(String key)
+    public int getNumeric(String key)
+    public int size()
+    public List<String> keys()
+}
+
+public enum RecordType { STRING_ONLY, NUMERIC_ONLY, MIXED }
+Rules enforced by the SUT
+
+capacity must be 1..100; type must not be null
+keys must be non-null, non-blank, at most 32 characters
+values must not be null
+putNumeric only accepts plain integer strings (no floats, hex, scientific notation)
+putNumeric range: MIN_NUMERIC..MAX_NUMERIC
+put not allowed on NUMERIC_ONLY; putNumeric not allowed on STRING_ONLY
+no writes after close(); capacity must not be exceeded
+
+Reasoning steps — work through these before writing any code
+Step 1 — Identify input categories:
+List every parameter and constructor argument that can receive invalid input.
+For each one, name the specific violation and which exception it should trigger.
+Step 2 — Identify state-based violations:
+What object states exist? What operations are illegal in each state?
+What sequence of calls is needed to reach those states?
+Step 3 — Identify type-contract violations:
+Which RecordType values block which operations?
+What happens if RecordType itself is invalid at construction time?
+Step 4 — Identify boundary conditions:
+What are the exact numeric boundaries for capacity, key length, and numeric values?
+Write one test just below the boundary (valid) and one just above (invalid) for each.
+Step 5 — Select 15 to 18 tests:
+From your analysis above, select the most distinct violations — avoid duplicating
+the same failure path twice. Prefer tests that each trigger a different exception type.
+Step 6 — Write the Java class:
+Translate your selected violations into JUnit 5 test methods.
+Output format
+
+Package: pilot.records
+Class name: RecordStore_ModelA_Round5_RobustnessTest
+Each test must have a unique @Test method name
+Each test must create its own fresh RecordStore instance
+Do NOT use assertThrows
+Do NOT add any assertions
+Imports: only java.util.* and org.junit.jupiter.api.*
+Output only the final Java class, no reasoning commentary in the output

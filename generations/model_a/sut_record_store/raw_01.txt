@@ -1,0 +1,102 @@
+﻿```java
+package pilot.records;
+
+import org.junit.jupiter.api.Test;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class RecordStore_ModelA_Round1_RobustnessTest {
+
+    @Test
+    public void testCreateRecordStoreWithInvalidCapacity() {
+        new RecordStore(0, RecordType.STRING_ONLY);
+        new RecordStore(101, RecordType.NUMERIC_ONLY);
+    }
+
+    @Test
+    public void testCreateRecordStoreWithNullType() {
+        assertThrows(NullPointerException.class, () -> new RecordStore(10, null));
+    }
+
+    @Test
+    public void testPutStringOnNumericOnlyStore() {
+        RecordStore store = new RecordStore(10, RecordType.NUMERIC_ONLY);
+        assertThrows(IllegalArgumentException.class, () -> store.put("key", "value"));
+    }
+
+    @Test
+    public void testPutNumericOnStringOnlyStore() {
+        RecordStore store = new RecordStore(10, RecordType.STRING_ONLY);
+        assertThrows(IllegalArgumentException.class, () -> store.putNumeric("key", "123"));
+    }
+
+    @Test
+    public void testPutNullKey() {
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        assertThrows(NullPointerException.class, () -> store.put(null, "value"));
+    }
+
+    @Test
+    public void testPutBlankKey() {
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        assertThrows(IllegalArgumentException.class, () -> store.put("   ", "value"));
+    }
+
+    @Test
+    public void testPutNumericWithFloatValue() {
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        assertThrows(NumberFormatException.class, () -> store.putNumeric("key", "123.45"));
+    }
+
+    @Test
+    public void testPutNumericWithHexValue() {
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        assertThrows(NumberFormatException.class, () -> store.putNumeric("key", "0x1A"));
+    }
+
+    @Test
+    public void testPutNumericWithScientificNotation() {
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        assertThrows(NumberFormatException.class, () -> store.putNumeric("key", "1.23e4"));
+    }
+
+    @Test
+    public void testPutNumericWithBlankString() {
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        assertThrows(NumberFormatException.class, () -> store.putNumeric("key", ""));
+    }
+
+    @Test
+    public void testRemoveNonExistentKey() {
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        store.remove("non-existent-key");
+    }
+
+    @Test
+    public void testPutAllWithNullMap() {
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        assertThrows(NullPointerException.class, () -> store.putAll(null));
+    }
+
+    @Test
+    public void testCloseAndWriteAfterwards() {
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        store.close();
+        assertThrows(IllegalStateException.class, () -> store.put("key", "value"));
+    }
+
+    @Test
+    public void testPutNumericBelowMinValue() {
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        assertThrows(IllegalArgumentException.class, () -> store.putNumeric("key", "-100001"));
+    }
+
+    @Test
+    public void testPutNumericAboveMaxValue() {
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        assertThrows(IllegalArgumentException.class, () -> store.putNumeric("key", "100001"));
+    }
+}
+```
+

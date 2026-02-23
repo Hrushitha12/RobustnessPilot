@@ -1,0 +1,130 @@
+﻿```java
+package pilot.records;
+
+import org.junit.jupiter.api.Test;
+import java.util.*;
+
+public class RecordStore_ModelA_Round2_RobustnessTest {
+
+    @Test
+    public void testRecordStoreConstructorCapacityTooHigh() {
+        // Arrange & Act & Assert
+        RecordStore sut = new RecordStore(101, RecordType.STRING_ONLY);
+    }
+
+    @Test
+    public void testRecordStoreConstructorCapacityZero() {
+        // Arrange & Act & Assert
+        assert doesNotThrow(() -> new RecordStore(0, RecordType.STRING_ONLY));
+    }
+
+    @Test
+    public void testRecordStoreConstructorInvalidRecordType() {
+        // Arrange & Act & Assert
+        RecordStore sut = new RecordStore(10, null);
+    }
+
+    @Test
+    public void testCloseMethodBeforeOpen() {
+        // Arrange & Act & Assert
+        RecordStore sut = new RecordStore(10, RecordType.STRING_ONLY);
+        sut.close();
+    }
+
+    @Test
+    public void testIsOpenMethodAfterClosing() {
+        // Arrange & Act & Assert
+        RecordStore sut = new RecordStore(10, RecordType.STRING_ONLY);
+        assert !sut.isOpen();
+    }
+
+    @Test
+    public void testPutNullKey() {
+        // Arrange & Act & Assert
+        RecordStore sut = new RecordStore(10, RecordType.STRING_ONLY);
+        sut.put(null, "Hello");
+    }
+
+    @Test
+    public void testPutBlankKey() {
+        // Arrange & Act & Assert
+        RecordStore sut = new RecordStore(10, RecordType.STRING_ONLY);
+        sut.put("", "World");
+    }
+
+    @Test
+    public void testPutKeyTooLong() {
+        // Arrange & Act & Assert
+        RecordStore sut = new RecordStore(10, RecordType.STRING_ONLY);
+        sut.put("very long key longer than 32 chars", "Hello");
+    }
+
+    @Test
+    public void testPutNullValue() {
+        // Arrange & Act & Assert
+        RecordStore sut = new RecordStore(10, RecordType.STRING_ONLY);
+        sut.put("key", null);
+    }
+
+    @Test
+    public void testGetNonExistingKey() {
+        // Arrange & Act & Assert
+        RecordStore sut = new RecordStore(10, RecordType.STRING_ONLY);
+        assert !(sut.get("non existing key") != null);
+    }
+
+    @Test
+    public void testPutNumericTooHighValue() {
+        // Arrange & Act & Assert
+        RecordStore sut = new RecordStore(10, RecordType.NUMERIC_ONLY);
+        sut.putNumeric("key", "100001");
+    }
+
+    @Test
+    public void testPutNumericTooLowValue() {
+        // Arrange & Act & Assert
+        RecordStore sut = new RecordStore(10, RecordType.NUMERIC_ONLY);
+        sut.putNumeric("key", "-100001");
+    }
+
+    @Test
+    public void testPutOnNUMERIC_ONLYStore() {
+        // Arrange & Act & Assert
+        RecordStore sut = new RecordStore(10, RecordType.NUMERIC_ONLY);
+        sut.put("key", "value");
+    }
+
+    @Test
+    public void testPutNumericOnSTRING_ONLYStore() {
+        // Arrange & Act & Assert
+        RecordStore sut = new RecordStore(10, RecordType.STRING_ONLY);
+        sut.putNumeric("key", "100");
+    }
+
+    @Test
+    public void testWriteAfterClosingStore() {
+        // Arrange & Act & Assert
+        RecordStore sut = new RecordStore(10, RecordType.STRING_ONLY);
+        sut.close();
+        sut.put("key", "value");
+    }
+
+    @Test
+    public void testExceedingRecordCapacity() {
+        // Arrange & Act & Assert
+        RecordStore sut = new RecordStore(5, RecordType.STRING_ONLY);
+        for (int i = 0; i < 10; i++) {
+            sut.put("key", "value");
+        }
+    }
+
+    private void doesNotThrow(Runnable runnable) {
+        try {
+            runnable.run();
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+}
+```
+

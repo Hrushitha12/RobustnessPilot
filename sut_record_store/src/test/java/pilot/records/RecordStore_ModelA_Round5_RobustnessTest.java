@@ -1,0 +1,91 @@
+package pilot.records;
+
+import static org.junit.jupiter.api.Assertions.*;
+import java.util.HashMap;
+import java.util.Map;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+class RecordStore_ModelA_Round5_RobustnessTest {
+
+    private RecordStore recordStore;
+
+    @BeforeEach
+    void setUp() {
+        recordStore = new RecordStore(10, RecordType.MIXED);
+    }
+
+    @Test
+    void testConstructorInvalidCapacityBelowMinThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> new RecordStore(0, RecordType.MIXED));
+    }
+
+    @Test
+    void testConstructorInvalidCapacityAboveMaxThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> new RecordStore(101, RecordType.MIXED));
+    }
+
+    @Test
+    void testConstructorNullTypeThrowsException() {
+        assertThrows(NullPointerException.class, () -> new RecordStore(10, null));
+    }
+
+    @Test
+    void testPutNullKeyThrowsException() {
+        assertThrows(NullPointerException.class, () -> recordStore.put(null, "value"));
+    }
+
+    @Test
+    void testPutBlankKeyThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> recordStore.put("  ", "value"));
+    }
+
+    @Test
+    void testPutKeyAboveMaxLengthThrowsException() {
+        String longKey = "a".repeat(33);
+        assertThrows(IllegalArgumentException.class, () -> recordStore.put(longKey, "value"));
+    }
+
+    @Test
+    void testPutNumericNonIntegerValueThrowsException() {
+        assertThrows(NumberFormatException.class, () -> recordStore.putNumeric("key", "123.45"));
+    }
+
+    @Test
+    void testPutNumericOutsideRangeThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> recordStore.putNumeric("key", String.valueOf(RecordStore.MIN_NUMERIC - 1)));
+        assertThrows(IllegalArgumentException.class, () -> recordStore.putNumeric("key", String.valueOf(RecordStore.MAX_NUMERIC + 1)));
+    }
+
+    @Test
+    void testPutOnNUMERIC_ONLYTypeThrowsException() {
+        RecordStore numericOnly = new RecordStore(10, RecordType.NUMERIC_ONLY);
+        assertThrows(IllegalStateException.class, () -> numericOnly.put("key", "value"));
+    }
+
+    @Test
+    void testPutNumericOnSTRING_ONLYTypeThrowsException() {
+        RecordStore stringOnly = new RecordStore(10, RecordType.STRING_ONLY);
+        assertThrows(IllegalStateException.class, () -> stringOnly.putNumeric("key", "123"));
+    }
+
+    @Test
+    void testRemoveNullKeyThrowsException() {
+        assertThrows(NullPointerException.class, () -> recordStore.remove(null));
+    }
+
+    @Test
+    void testPutAllWithNullMapThrowsException() {
+        assertThrows(NullPointerException.class, () -> recordStore.putAll(null));
+    }
+
+    @Test
+    void testGetNullKeyThrowsException() {
+        assertThrows(NullPointerException.class, () -> recordStore.get(null));
+    }
+
+    @Test
+    void testGetNumericNullKeyThrowsException() {
+        assertThrows(NullPointerException.class, () -> recordStore.getNumeric(null));
+    }
+}

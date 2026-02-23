@@ -1,0 +1,155 @@
+﻿```java
+import java.util.*;
+import org.junit.jupiter.api.*;
+
+public class RecordStore_ModelA_Round3_RobustnessTest {
+
+    @Test
+    void test_null_type_on_constructor() {
+        RecordType type = null;
+        int capacity = 10;
+        try {
+            new RecordStore(capacity, type);
+        } catch (NullPointerException e) {
+            // No action needed as we expect a NullPointerException
+        }
+    }
+
+    @Test
+    void test_negative_capacity_on_constructor() {
+        int capacity = -5;
+        RecordType type = RecordType.MIXED;
+        try {
+            new RecordStore(capacity, type);
+        } catch (IllegalArgumentException e) {
+            // No action needed as we expect an IllegalArgumentException
+        }
+    }
+
+    @Test
+    void test_zero_capacity_on_constructor() {
+        int capacity = 0;
+        RecordType type = RecordType.MIXED;
+        try {
+            new RecordStore(capacity, type);
+        } catch (IllegalArgumentException e) {
+            // No action needed as we expect an IllegalArgumentException
+        }
+    }
+
+    @Test
+    void test_capacity_over_100_on_constructor() {
+        int capacity = 120;
+        RecordType type = RecordType.MIXED;
+        try {
+            new RecordStore(capacity, type);
+        } catch (IllegalArgumentException e) {
+            // No action needed as we expect an IllegalArgumentException
+        }
+    }
+
+    @Test
+    void test_blank_key_on_put() {
+        String key = " ";
+        String value = "value";
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        store.put(key, value);
+    }
+
+    @Test
+    void test_over_32_char_key_on_put() {
+        String key = "a".repeat(33);
+        String value = "value";
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        store.put(key, value);
+    }
+
+    @Test
+    void test_null_value_on_put() {
+        String key = "key";
+        String value = null;
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        store.put(key, value);
+    }
+
+    @Test
+    void test_non_integer_value_on_putNumeric() {
+        String key = "key";
+        String numericValue = "abc";
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        store.putNumeric(key, numericValue);
+    }
+
+    @Test
+    void test_numeric_outside_range_on_putNumeric() {
+        String key = "key";
+        String numericValue = String.valueOf(MAX_NUMERIC + 1);
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        store.putNumeric(key, numericValue);
+    }
+
+    @Test
+    void test_string_write_on_numeric_only_store() {
+        RecordStore store = new RecordStore(10, RecordType.NUMERIC_ONLY);
+        store.put("name", "alice");
+    }
+
+    @Test
+    void test_numeric_write_on_string_only_store() {
+        RecordStore store = new RecordStore(10, RecordType.STRING_ONLY);
+        store.putNumeric("key", "3.14");
+    }
+
+    @Test
+    void test_put_all_with_null_value() {
+        Map<String, String> entries = new HashMap<>();
+        entries.put("key1", "value1");
+        entries.put("key2", null);
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        store.putAll(entries);
+    }
+
+    @Test
+    void test_put_all_with_over_32_char_key() {
+        Map<String, String> entries = new HashMap<>();
+        entries.put("a".repeat(33), "value");
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        store.putAll(entries);
+    }
+
+    @Test
+    void test_put_all_with_negative_capacity() {
+        int capacity = -5;
+        RecordType type = RecordType.MIXED;
+        try {
+            new RecordStore(capacity, type).putAll(new HashMap<>());
+        } catch (IllegalArgumentException e) {
+            // No action needed as we expect an IllegalArgumentException
+        }
+    }
+
+    @Test
+    void test_put_all_with_over_100_capacity() {
+        int capacity = 120;
+        RecordType type = RecordType.MIXED;
+        try {
+            new RecordStore(capacity, type).putAll(new HashMap<>());
+        } catch (IllegalArgumentException e) {
+            // No action needed as we expect an IllegalArgumentException
+        }
+    }
+
+    @Test
+    void test_put_all_after_close() {
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        store.close();
+        try {
+            store.putAll(new HashMap<>());
+        } catch (IllegalStateException e) {
+            // No action needed as we expect an IllegalStateException
+        }
+    }
+
+}
+```
+

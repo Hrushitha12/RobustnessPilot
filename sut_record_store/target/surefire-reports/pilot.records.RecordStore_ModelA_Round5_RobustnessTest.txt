@@ -1,0 +1,20 @@
+-------------------------------------------------------------------------------
+Test set: pilot.records.RecordStore_ModelA_Round5_RobustnessTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.089 s <<< FAILURE! -- in pilot.records.RecordStore_ModelA_Round5_RobustnessTest
+pilot.records.RecordStore_ModelA_Round5_RobustnessTest.testPutNumericOnSTRING_ONLYTypeThrowsException -- Time elapsed: 0.047 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Unexpected exception type thrown, expected: <java.lang.IllegalStateException> but was: <java.lang.UnsupportedOperationException>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:67)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:35)
+	at org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3115)
+	at pilot.records.RecordStore_ModelA_Round5_RobustnessTest.testPutNumericOnSTRING_ONLYTypeThrowsException(RecordStore_ModelA_Round5_RobustnessTest.java:69)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+Caused by: java.lang.UnsupportedOperationException: putNumeric not allowed on a STRING_ONLY store
+	at pilot.records.RecordStore.putNumeric(RecordStore.java:102)
+	at pilot.records.RecordStore_ModelA_Round5_RobustnessTest.lambda$testPutNumericOnSTRING_ONLYTypeThrowsException$10(RecordStore_ModelA_Round5_RobustnessTest.java:69)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:53)
+	... 6 more
+
