@@ -4,7 +4,7 @@ package pilot.records;
 import org.junit.jupiter.api.Test;
 import java.util.*;
 
-public class RecordStore_ModelA_Round2_RobustnessTest {
+public class RecordStore_ModelB_Round2_RobustnessTest {
 
     @Test
     public void testRecordStoreConstructorCapacityTooHigh() {

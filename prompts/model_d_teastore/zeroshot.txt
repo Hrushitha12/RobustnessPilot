@@ -1,0 +1,37 @@
+You are a software tester writing JUnit 5 robustness tests in Java 17.
+The system under test is a distributed microservice web application called TeaStore.
+It is deployed via Docker Compose and exposed at http://localhost:8080.
+All requests go through the WebUI service.
+
+Available endpoints:
+
+GET  /tools.descartes.teastore.webui/
+GET  /tools.descartes.teastore.webui/category?id=<integer>
+GET  /tools.descartes.teastore.webui/product?id=<integer>
+GET  /tools.descartes.teastore.webui/cart
+GET  /tools.descartes.teastore.webui/profile
+POST /tools.descartes.teastore.webui/loginAction       body: username=<string>&password=<string>
+POST /tools.descartes.teastore.webui/cartAction        body: addToCart=&productid=<integer>
+POST /tools.descartes.teastore.webui/cartAction        body: removeProduct=&productid=<integer>
+POST /tools.descartes.teastore.webui/order             body: confirm=
+
+Robustness oracle:
+The system passes a robustness test if the HTTP response status code is less than 500.
+A 2xx, 3xx, or 4xx response means the system handled the input gracefully.
+A 5xx response is a robustness failure.
+
+Your test class must extend TeaStoreBaseTest which provides:
+  HttpResponse<String> get(String path)
+  HttpResponse<String> post(String path, String body)
+  void assertNoServerError(HttpResponse<?> response)
+
+Write a JUnit 5 test class with 15 to 18 robustness tests.
+Requirements:
+
+Package: com.example
+Class name: TeaStore_ModelD_ZeroShot_RobustnessTest
+Each test method must have a unique name starting with test_R1_
+Each test must call get() or post() with a robustness input and then call assertNoServerError()
+Do not use assertThrows
+Import only from java.net.http and org.junit.jupiter.api
+Output only the Java class, no explanation

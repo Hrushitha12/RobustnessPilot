@@ -1,0 +1,634 @@
+time="2026-03-04T00:42:26-05:00" level=warning msg="C:\\Users\\hrush\\Desktop\\experiments\\RobustnessPilot\\sut_teastore\\env\\docker-compose_default.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+auth-1  | 04-Mar-2026 05:33:16.410 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version name:   Apache Tomcat/10.0.7
+auth-1  | 04-Mar-2026 05:33:16.468 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server built:          Jun 8 2021 16:31:06 UTC
+auth-1  | 04-Mar-2026 05:33:16.468 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version number: 10.0.7.0
+auth-1  | 04-Mar-2026 05:33:16.469 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Name:               Linux
+auth-1  | 04-Mar-2026 05:33:16.470 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Version:            6.6.87.2-microsoft-standard-WSL2
+auth-1  | 04-Mar-2026 05:33:16.470 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Architecture:          amd64
+auth-1  | 04-Mar-2026 05:33:16.470 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Java Home:             /usr/local/openjdk-11
+auth-1  | 04-Mar-2026 05:33:16.471 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Version:           11.0.11+9
+auth-1  | 04-Mar-2026 05:33:16.471 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Vendor:            Oracle Corporation
+auth-1  | 04-Mar-2026 05:33:16.481 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:         /usr/local/tomcat
+auth-1  | 04-Mar-2026 05:33:16.482 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:         /usr/local/tomcat
+auth-1  | 04-Mar-2026 05:33:16.595 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.config.file=/usr/local/tomcat/conf/logging.properties
+auth-1  | 04-Mar-2026 05:33:16.596 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+auth-1  | 04-Mar-2026 05:33:16.596 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -javaagent:/kieker/agent/agent.jar
+auth-1  | 04-Mar-2026 05:33:16.598 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.lang=ALL-UNNAMED
+auth-1  | 04-Mar-2026 05:33:16.599 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dkieker.monitoring.configuration=/kieker/config/kieker.monitoring.properties
+auth-1  | 04-Mar-2026 05:33:16.600 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Daj.weaving.verbose=false
+auth-1  | 04-Mar-2026 05:33:16.605 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dorg.aspectj.weaver.loadtime.configuration=aop.xml
+auth-1  | 04-Mar-2026 05:33:16.616 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dkieker.monitoring.skipDefaultAOPConfiguration=true
+auth-1  | 04-Mar-2026 05:33:16.631 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Daj.weaving.loadersToSkip=java.net.URLClassLoader
+auth-1  | 04-Mar-2026 05:33:16.632 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcom.sun.jndi.ldap.object.disableEndpointIdentification=true
+auth-1  | 04-Mar-2026 05:33:16.632 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djdk.tls.ephemeralDHKeySize=2048
+auth-1  | 04-Mar-2026 05:33:16.632 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.protocol.handler.pkgs=org.apache.catalina.webresources
+auth-1  | 04-Mar-2026 05:33:16.632 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dorg.apache.catalina.security.SecurityListener.UMASK=0027
+auth-1  | 04-Mar-2026 05:33:16.632 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dignore.endorsed.dirs=
+auth-1  | 04-Mar-2026 05:33:16.633 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.base=/usr/local/tomcat
+auth-1  | 04-Mar-2026 05:33:16.633 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.home=/usr/local/tomcat
+auth-1  | 04-Mar-2026 05:33:16.633 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.io.tmpdir=/usr/local/tomcat/temp
+auth-1  | 04-Mar-2026 05:33:16.679 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent Loaded Apache Tomcat Native library [1.2.30] using APR version [1.6.5].
+auth-1  | 04-Mar-2026 05:33:16.680 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true], UDS [true].
+auth-1  | 04-Mar-2026 05:33:16.709 INFO [main] org.apache.catalina.core.AprLifecycleListener.initializeSSL OpenSSL successfully initialized [OpenSSL 1.1.1d  10 Sep 2019]
+auth-1  | 04-Mar-2026 05:33:19.157 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8080"]
+auth-1  | 04-Mar-2026 05:33:19.240 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["ajp-nio-127.0.0.1-8009"]
+auth-1  | 04-Mar-2026 05:33:19.254 INFO [main] org.apache.catalina.startup.Catalina.load Server initialization in [3966] milliseconds
+auth-1  | 04-Mar-2026 05:33:19.463 INFO [main] org.apache.catalina.core.StandardService.startInternal Starting service [Catalina]
+auth-1  | 04-Mar-2026 05:33:19.464 INFO [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet engine: [Apache Tomcat/10.0.7]
+auth-1  | 04-Mar-2026 05:33:19.520 INFO [main] org.apache.catalina.startup.HostConfig.deployWAR Deploying web application archive [/usr/local/tomcat/webapps/tools.descartes.teastore.auth.war]
+auth-1  | 04-Mar-2026 05:33:26.859 INFO [main] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+auth-1  | [main] INFO tools.descartes.teastore.registryclient.loadbalancers.ServiceLoadBalancer - Pre-initializing client-side load balancer for target: tools.descartes.teastore.persistence
+auth-1  | [main] INFO kieker.monitoring.core.configuration.ConfigurationFactory - Loading configuration from JVM-specified location: '/kieker/config/kieker.monitoring.properties'
+auth-1  | [main] INFO kieker.monitoring.core.controller.TCPController - Could not parse port for the TCPController, deactivating this option. Received string was: 
+auth-1  | WriterController: WriterClassName: kieker.monitoring.writer.filesystem.FileWriter
+auth-1  | [main] INFO kieker.monitoring.core.controller.MonitoringController - Current State of kieker.monitoring (1.15-SNAPSHOT) Status: 'disabled'
+auth-1  | 	Name: 'KIEKER'; Hostname: '8b4ff5b71339'; experimentID: '1'
+auth-1  | JMXController: JMX disabled
+auth-1  | TimeSource: 'kieker.monitoring.timer.SystemNanoTimer'
+auth-1  | 	Time in nanoseconds (with nanoseconds precision) since Thu Jan 01 00:00:00 UTC 1970'
+auth-1  | ProbeController: disabled
+auth-1  | WriterController:
+auth-1  | 	Queue type: class kieker.monitoring.queue.BlockingQueueDecorator
+auth-1  | 	Queue capacity: 10000
+auth-1  | 	Insert behavior (a.k.a. QueueFullBehavior): class kieker.monitoring.queue.behavior.BlockOnFailedInsertBehavior
+auth-1  | 		numBlocked: 0
+auth-1  | Writer: 'kieker.monitoring.writer.filesystem.FileWriter'
+auth-1  | 	Configuration:
+auth-1  | 		kieker.monitoring.writer.filesystem.FileWriter.logFilePoolHandler='kieker.monitoring.writer.filesystem.RotatingLogFilePoolHandler'
+auth-1  | 		kieker.monitoring.writer.filesystem.FileWriter.PrioritizedQueueSize='100'
+auth-1  | 		kieker.monitoring.writer.filesystem.FileWriter.charsetName='UTF-8'
+auth-1  | 		kieker.monitoring.writer.filesystem.FileWriter.logStreamHandler='kieker.monitoring.writer.filesystem.TextLogStreamHandler'
+auth-1  | 		kieker.monitoring.writer.filesystem.FileWriter.bufferSize='8192'
+auth-1  | 		kieker.monitoring.writer.filesystem.FileWriter.maxEntriesInFile='25000'
+auth-1  | 		kieker.monitoring.writer.filesystem.FileWriter.maxLogFiles='-1'
+auth-1  | 		kieker.monitoring.writer.filesystem.FileWriter.MaxShutdownDelay='-1'
+auth-1  | 		kieker.monitoring.writer.filesystem.FileWriter.maxLogSize='-1'
+auth-1  | 		kieker.monitoring.writer.filesystem.FileWriter.mapFileHandler='kieker.monitoring.writer.filesystem.TextMapFileHandler'
+auth-1  | 		kieker.monitoring.writer.filesystem.FileWriter.flush='true'
+auth-1  | 		kieker.monitoring.writer.filesystem.FileWriter.QueueFullBehavior='0'
+auth-1  | 		kieker.monitoring.writer.filesystem.FileWriter.QueueSize='10000'
+auth-1  | 		kieker.monitoring.writer.filesystem.FileWriter.customStoragePath='/kieker/logs/'
+auth-1  | 		kieker.monitoring.writer.filesystem.FileWriter.actualStoragePath='/kieker/logs/kieker-20260304-053332-12519995755550-UTC--KIEKER'
+auth-1  | 
+auth-1  | 	Automatic assignment of logging timestamps: 'true'
+auth-1  | Sampling Controller: Periodic Sensor available: Poolsize: '0'; Scheduled Tasks: '0'
+auth-1  | [main] INFO kieker.monitoring.core.registry.ControlFlowRegistry - First threadId will be 8506877483637800960
+auth-1  | 04-Mar-2026 05:33:35.450 WARNING [main] org.glassfish.jersey.server.wadl.WadlFeature.configure JAX-B API not found . WADL feature is disabled.
+auth-1  | 04-Mar-2026 05:33:36.205 INFO [main] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive [/usr/local/tomcat/webapps/tools.descartes.teastore.auth.war] has finished in [16,684] ms
+auth-1  | 04-Mar-2026 05:33:36.219 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8080"]
+auth-1  | 04-Mar-2026 05:33:36.257 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["ajp-nio-127.0.0.1-8009"]
+auth-1  | 04-Mar-2026 05:33:36.273 INFO [main] org.apache.catalina.startup.Catalina.start Server startup in [17018] milliseconds
+auth-1  | [pool-1-thread-1] WARN com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+auth-1  | [pool-1-thread-1] INFO com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+auth-1  | [pool-1-thread-1] INFO com.netflix.loadbalancer.BaseLoadBalancer - Client:  instantiated a LoadBalancer: {NFLoadBalancer:name=,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}
+image-1  | 04-Mar-2026 05:33:16.361 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version name:   Apache Tomcat/10.0.7
+image-1  | 04-Mar-2026 05:33:16.445 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server built:          Jun 8 2021 16:31:06 UTC
+image-1  | 04-Mar-2026 05:33:16.446 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version number: 10.0.7.0
+image-1  | 04-Mar-2026 05:33:16.447 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Name:               Linux
+image-1  | 04-Mar-2026 05:33:16.447 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Version:            6.6.87.2-microsoft-standard-WSL2
+db-1     | 2026-03-04 05:33:13+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 1:10.4.12+maria~bionic started.
+db-1     | 2026-03-04 05:33:14+00:00 [Note] [Entrypoint]: Switching to dedicated user 'mysql'
+db-1     | 2026-03-04 05:33:14+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 1:10.4.12+maria~bionic started.
+registry-1  | 04-Mar-2026 05:33:16.232 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version name:   Apache Tomcat/10.0.7
+registry-1  | 04-Mar-2026 05:33:16.257 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server built:          Jun 8 2021 16:31:06 UTC
+registry-1  | 04-Mar-2026 05:33:16.258 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version number: 10.0.7.0
+image-1  | 04-Mar-2026 05:33:16.450 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Architecture:          amd64
+image-1     | 04-Mar-2026 05:33:16.451 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Java Home:             /usr/local/openjdk-11
+image-1     | 04-Mar-2026 05:33:16.453 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Version:           11.0.11+9
+image-1     | 04-Mar-2026 05:33:16.453 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Vendor:            Oracle Corporation
+image-1     | 04-Mar-2026 05:33:16.453 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:         /usr/local/tomcat
+image-1     | 04-Mar-2026 05:33:16.453 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:         /usr/local/tomcat
+db-1        | 2026-03-04 05:33:15+00:00 [Note] [Entrypoint]: Initializing database files
+db-1        | 
+db-1        | 
+db-1        | PLEASE REMEMBER TO SET A PASSWORD FOR THE MariaDB root USER !
+db-1        | To do so, start the server, then issue the following commands:
+db-1        | 
+registry-1  | 04-Mar-2026 05:33:16.258 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Name:               Linux
+registry-1  | 04-Mar-2026 05:33:16.258 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Version:            6.6.87.2-microsoft-standard-WSL2
+registry-1  | 04-Mar-2026 05:33:16.258 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Architecture:          amd64
+webui-1  | 04-Mar-2026 05:33:16.662 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version name:   Apache Tomcat/10.0.7
+webui-1     | 04-Mar-2026 05:33:16.690 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server built:          Jun 8 2021 16:31:06 UTC
+webui-1     | 04-Mar-2026 05:33:16.690 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version number: 10.0.7.0
+webui-1     | 04-Mar-2026 05:33:16.690 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Name:               Linux
+registry-1  | 04-Mar-2026 05:33:16.259 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Java Home:             /usr/local/openjdk-11
+registry-1  | 04-Mar-2026 05:33:16.259 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Version:           11.0.11+9
+registry-1  | 04-Mar-2026 05:33:16.264 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Vendor:            Oracle Corporation
+registry-1  | 04-Mar-2026 05:33:16.264 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:         /usr/local/tomcat
+image-1     | 04-Mar-2026 05:33:16.518 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.config.file=/usr/local/tomcat/conf/logging.properties
+image-1     | 04-Mar-2026 05:33:16.557 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+image-1     | 04-Mar-2026 05:33:16.572 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -javaagent:/kieker/agent/agent.jar
+registry-1  | 04-Mar-2026 05:33:16.265 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:         /usr/local/tomcat
+registry-1  | 04-Mar-2026 05:33:16.334 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.config.file=/usr/local/tomcat/conf/logging.properties
+image-1     | 04-Mar-2026 05:33:16.574 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.lang=ALL-UNNAMED
+image-1     | 04-Mar-2026 05:33:16.576 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dkieker.monitoring.configuration=/kieker/config/kieker.monitoring.properties
+image-1     | 04-Mar-2026 05:33:16.576 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Daj.weaving.verbose=false
+image-1     | 04-Mar-2026 05:33:16.579 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dorg.aspectj.weaver.loadtime.configuration=aop.xml
+image-1     | 04-Mar-2026 05:33:16.579 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dkieker.monitoring.skipDefaultAOPConfiguration=true
+image-1     | 04-Mar-2026 05:33:16.584 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Daj.weaving.loadersToSkip=java.net.URLClassLoader
+image-1     | 04-Mar-2026 05:33:16.586 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcom.sun.jndi.ldap.object.disableEndpointIdentification=true
+image-1     | 04-Mar-2026 05:33:16.592 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djdk.tls.ephemeralDHKeySize=2048
+image-1     | 04-Mar-2026 05:33:16.593 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.protocol.handler.pkgs=org.apache.catalina.webresources
+image-1     | 04-Mar-2026 05:33:16.593 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dorg.apache.catalina.security.SecurityListener.UMASK=0027
+image-1     | 04-Mar-2026 05:33:16.593 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dignore.endorsed.dirs=
+image-1     | 04-Mar-2026 05:33:16.593 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.base=/usr/local/tomcat
+image-1     | 04-Mar-2026 05:33:16.594 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.home=/usr/local/tomcat
+image-1     | 04-Mar-2026 05:33:16.594 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.io.tmpdir=/usr/local/tomcat/temp
+registry-1  | 04-Mar-2026 05:33:16.335 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+registry-1  | 04-Mar-2026 05:33:16.335 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -javaagent:/kieker/agent/agent.jar
+registry-1  | 04-Mar-2026 05:33:16.335 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.lang=ALL-UNNAMED
+registry-1  | 04-Mar-2026 05:33:16.335 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dkieker.monitoring.configuration=/kieker/config/kieker.monitoring.properties
+registry-1  | 04-Mar-2026 05:33:16.335 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Daj.weaving.verbose=false
+registry-1  | 04-Mar-2026 05:33:16.336 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dorg.aspectj.weaver.loadtime.configuration=aop.xml
+registry-1  | 04-Mar-2026 05:33:16.336 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dkieker.monitoring.skipDefaultAOPConfiguration=true
+webui-1     | 04-Mar-2026 05:33:16.690 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Version:            6.6.87.2-microsoft-standard-WSL2
+webui-1     | 04-Mar-2026 05:33:16.690 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Architecture:          amd64
+image-1     | 04-Mar-2026 05:33:16.621 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent Loaded Apache Tomcat Native library [1.2.30] using APR version [1.6.5].
+registry-1  | 04-Mar-2026 05:33:16.336 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Daj.weaving.loadersToSkip=java.net.URLClassLoader
+registry-1  | 04-Mar-2026 05:33:16.337 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcom.sun.jndi.ldap.object.disableEndpointIdentification=true
+registry-1  | 04-Mar-2026 05:33:16.337 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djdk.tls.ephemeralDHKeySize=2048
+registry-1  | 04-Mar-2026 05:33:16.338 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.protocol.handler.pkgs=org.apache.catalina.webresources
+registry-1  | 04-Mar-2026 05:33:16.338 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dorg.apache.catalina.security.SecurityListener.UMASK=0027
+registry-1  | 04-Mar-2026 05:33:16.338 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dignore.endorsed.dirs=
+webui-1     | 04-Mar-2026 05:33:16.690 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Java Home:             /usr/local/openjdk-11
+webui-1     | 04-Mar-2026 05:33:16.690 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Version:           11.0.11+9
+webui-1     | 04-Mar-2026 05:33:16.691 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Vendor:            Oracle Corporation
+webui-1     | 04-Mar-2026 05:33:16.691 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:         /usr/local/tomcat
+db-1        | '/usr/bin/mysqladmin' -u root password 'new-password'
+db-1        | '/usr/bin/mysqladmin' -u root -h  password 'new-password'
+db-1        | 
+db-1        | Alternatively you can run:
+db-1        | '/usr/bin/mysql_secure_installation'
+db-1        | 
+db-1        | which will also give you the option of removing the test
+db-1        | databases and anonymous user created by default.  This is
+db-1        | strongly recommended for production servers.
+db-1        | 
+db-1        | See the MariaDB Knowledgebase at http://mariadb.com/kb or the
+db-1        | MySQL manual for more instructions.
+image-1     | 04-Mar-2026 05:33:16.621 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true], UDS [true].
+db-1        | 
+db-1        | Please report any problems at http://mariadb.org/jira
+registry-1  | 04-Mar-2026 05:33:16.339 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.base=/usr/local/tomcat
+db-1        | 
+db-1        | The latest information about MariaDB is available at http://mariadb.org/.
+db-1        | You can find additional information about the MySQL part at:
+db-1        | http://dev.mysql.com
+db-1        | Consider joining MariaDB's strong and vibrant community:
+db-1        | https://mariadb.org/get-involved/
+db-1        | 
+db-1        | 2026-03-04 05:33:22+00:00 [Note] [Entrypoint]: Database files initialized
+db-1        | 2026-03-04 05:33:22+00:00 [Note] [Entrypoint]: Starting temporary server
+registry-1  | 04-Mar-2026 05:33:16.339 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.home=/usr/local/tomcat
+registry-1  | 04-Mar-2026 05:33:16.340 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.io.tmpdir=/usr/local/tomcat/temp
+registry-1  | 04-Mar-2026 05:33:16.357 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent Loaded Apache Tomcat Native library [1.2.30] using APR version [1.6.5].
+registry-1  | 04-Mar-2026 05:33:16.358 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true], UDS [true].
+registry-1  | 04-Mar-2026 05:33:16.374 INFO [main] org.apache.catalina.core.AprLifecycleListener.initializeSSL OpenSSL successfully initialized [OpenSSL 1.1.1d  10 Sep 2019]
+registry-1  | 04-Mar-2026 05:33:18.424 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8080"]
+registry-1  | 04-Mar-2026 05:33:18.726 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["ajp-nio-127.0.0.1-8009"]
+webui-1     | 04-Mar-2026 05:33:16.691 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:         /usr/local/tomcat
+db-1        | 2026-03-04 05:33:22+00:00 [Note] [Entrypoint]: Waiting for server startup
+db-1        | 2026-03-04  5:33:22 0 [Note] mysqld (mysqld 10.4.12-MariaDB-1:10.4.12+maria~bionic) starting as process 123 ...
+db-1        | 2026-03-04  5:33:22 0 [Note] InnoDB: Using Linux native AIO
+db-1        | 2026-03-04  5:33:22 0 [Note] InnoDB: Mutexes and rw_locks use GCC atomic builtins
+image-1     | 04-Mar-2026 05:33:16.668 INFO [main] org.apache.catalina.core.AprLifecycleListener.initializeSSL OpenSSL successfully initialized [OpenSSL 1.1.1d  10 Sep 2019]
+db-1        | 2026-03-04  5:33:22 0 [Note] InnoDB: Uses event mutexes
+db-1        | 2026-03-04  5:33:22 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+db-1        | 2026-03-04  5:33:22 0 [Note] InnoDB: Number of pools: 1
+db-1        | 2026-03-04  5:33:22 0 [Note] InnoDB: Using SSE2 crc32 instructions
+db-1        | 2026-03-04  5:33:22 0 [Note] mysqld: O_TMPFILE is not supported on /tmp (disabling future attempts)
+db-1        | 2026-03-04  5:33:22 0 [Note] InnoDB: Initializing buffer pool, total size = 256M, instances = 1, chunk size = 128M
+db-1        | 2026-03-04  5:33:22 0 [Note] InnoDB: Completed initialization of buffer pool
+db-1        | 2026-03-04  5:33:22 0 [Note] InnoDB: If the mysqld execution user is authorized, page cleaner thread priority can be changed. See the man page of setpriority().
+db-1        | 2026-03-04  5:33:22 0 [Note] InnoDB: 128 out of 128 rollback segments are active.
+db-1        | 2026-03-04  5:33:22 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+db-1        | 2026-03-04  5:33:22 0 [Note] InnoDB: Setting file './ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+db-1        | 2026-03-04  5:33:22 0 [Note] InnoDB: File './ibtmp1' size is now 12 MB.
+db-1        | 2026-03-04  5:33:22 0 [Note] InnoDB: Waiting for purge to start
+db-1        | 2026-03-04  5:33:22 0 [Note] InnoDB: 10.4.12 started; log sequence number 60981; transaction id 21
+webui-1     | 04-Mar-2026 05:33:16.847 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.config.file=/usr/local/tomcat/conf/logging.properties
+db-1        | 2026-03-04  5:33:22 0 [Note] InnoDB: Loading buffer pool(s) from /var/lib/mysql/ib_buffer_pool
+db-1        | 2026-03-04  5:33:22 0 [Note] Plugin 'FEEDBACK' is disabled.
+db-1        | 2026-03-04  5:33:23 0 [Warning] 'user' entry 'root@33a970d57b81' ignored in --skip-name-resolve mode.
+db-1        | 2026-03-04  5:33:23 0 [Warning] 'user' entry '@33a970d57b81' ignored in --skip-name-resolve mode.
+db-1        | 2026-03-04  5:33:23 0 [Warning] 'proxies_priv' entry '@% root@33a970d57b81' ignored in --skip-name-resolve mode.
+db-1        | 2026-03-04  5:33:23 0 [Note] InnoDB: Buffer pool(s) load completed at 260304  5:33:23
+webui-1     | 04-Mar-2026 05:33:16.854 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+webui-1     | 04-Mar-2026 05:33:16.855 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -javaagent:/kieker/agent/agent.jar
+webui-1     | 04-Mar-2026 05:33:16.856 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.lang=ALL-UNNAMED
+webui-1     | 04-Mar-2026 05:33:16.856 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dkieker.monitoring.configuration=/kieker/config/kieker.monitoring.properties
+image-1     | 04-Mar-2026 05:33:18.422 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8080"]
+image-1     | 04-Mar-2026 05:33:18.615 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["ajp-nio-127.0.0.1-8009"]
+image-1     | 04-Mar-2026 05:33:18.624 INFO [main] org.apache.catalina.startup.Catalina.load Server initialization in [3286] milliseconds
+image-1     | 04-Mar-2026 05:33:19.009 INFO [main] org.apache.catalina.core.StandardService.startInternal Starting service [Catalina]
+image-1     | 04-Mar-2026 05:33:19.010 INFO [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet engine: [Apache Tomcat/10.0.7]
+db-1        | 2026-03-04  5:33:23 0 [Note] Reading of all Master_info entries succeeded
+webui-1     | 04-Mar-2026 05:33:16.857 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Daj.weaving.verbose=false
+webui-1     | 04-Mar-2026 05:33:16.857 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dorg.aspectj.weaver.loadtime.configuration=aop.xml
+webui-1     | 04-Mar-2026 05:33:16.857 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dkieker.monitoring.skipDefaultAOPConfiguration=true
+webui-1     | 04-Mar-2026 05:33:16.857 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Daj.weaving.loadersToSkip=java.net.URLClassLoader
+webui-1     | 04-Mar-2026 05:33:16.858 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcom.sun.jndi.ldap.object.disableEndpointIdentification=true
+webui-1     | 04-Mar-2026 05:33:16.858 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djdk.tls.ephemeralDHKeySize=2048
+webui-1     | 04-Mar-2026 05:33:16.858 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.protocol.handler.pkgs=org.apache.catalina.webresources
+webui-1     | 04-Mar-2026 05:33:16.858 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dorg.apache.catalina.security.SecurityListener.UMASK=0027
+webui-1     | 04-Mar-2026 05:33:16.858 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dignore.endorsed.dirs=
+webui-1     | 04-Mar-2026 05:33:16.859 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.base=/usr/local/tomcat
+webui-1     | 04-Mar-2026 05:33:16.859 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.home=/usr/local/tomcat
+webui-1     | 04-Mar-2026 05:33:16.859 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.io.tmpdir=/usr/local/tomcat/temp
+webui-1     | 04-Mar-2026 05:33:16.877 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent Loaded Apache Tomcat Native library [1.2.30] using APR version [1.6.5].
+image-1     | 04-Mar-2026 05:33:19.112 INFO [main] org.apache.catalina.startup.HostConfig.deployWAR Deploying web application archive [/usr/local/tomcat/webapps/tools.descartes.teastore.image.war]
+registry-1  | 04-Mar-2026 05:33:18.740 INFO [main] org.apache.catalina.startup.Catalina.load Server initialization in [3566] milliseconds
+registry-1  | 04-Mar-2026 05:33:19.242 INFO [main] org.apache.catalina.core.StandardService.startInternal Starting service [Catalina]
+registry-1  | 04-Mar-2026 05:33:19.244 INFO [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet engine: [Apache Tomcat/10.0.7]
+registry-1  | 04-Mar-2026 05:33:19.340 INFO [main] org.apache.catalina.startup.HostConfig.deployWAR Deploying web application archive [/usr/local/tomcat/webapps/tools.descartes.teastore.registry.war]
+registry-1  | [ParallelWebappClassLoader@67d18ed7] error Cannot find parent aspect for: <concrete-aspect name='kieker.monitoring.probe.aspectj.operationExecution.TargetedAspect' extends='tools.descartes.teastore.kieker.probes.AbstractOperationExecutionWithParameterAspect' perclause='null'/> in aop.xml
+registry-1  | [ParallelWebappClassLoader@67d18ed7] error Concrete-aspect 'kieker.monitoring.probe.aspectj.operationExecution.TargetedAspect' could not be registered
+registry-1  | [ParallelWebappClassLoader@67d18ed7] warning failure(s) registering aspects. Disabling weaver for class loader org.apache.catalina.loader.ParallelWebappClassLoader@67d18ed7
+registry-1  | 04-Mar-2026 05:33:21.544 INFO [main] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+registry-1  | [main] INFO tools.descartes.teastore.registry.rest.RegistryStartup - Registry online
+image-1     | 04-Mar-2026 05:33:25.434 INFO [main] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+image-1     | [main] INFO tools.descartes.teastore.registryclient.loadbalancers.ServiceLoadBalancer - Pre-initializing client-side load balancer for target: tools.descartes.teastore.persistence
+image-1     | [main] INFO kieker.monitoring.core.configuration.ConfigurationFactory - Loading configuration from JVM-specified location: '/kieker/config/kieker.monitoring.properties'
+image-1     | [main] INFO kieker.monitoring.core.controller.TCPController - Could not parse port for the TCPController, deactivating this option. Received string was: 
+image-1     | WriterController: WriterClassName: kieker.monitoring.writer.filesystem.FileWriter
+image-1     | [pool-3-thread-1] INFO tools.descartes.teastore.registryclient.RegistryClient - tools.descartes.teastore.persistence not online. IMAGE is waiting for it to come online
+image-1     | [main] INFO kieker.monitoring.core.controller.MonitoringController - Current State of kieker.monitoring (1.15-SNAPSHOT) Status: 'disabled'
+image-1     | 	Name: 'KIEKER'; Hostname: '5e515f864e3f'; experimentID: '1'
+image-1     | JMXController: JMX disabled
+image-1     | TimeSource: 'kieker.monitoring.timer.SystemNanoTimer'
+webui-1     | 04-Mar-2026 05:33:16.878 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true], UDS [true].
+webui-1     | 04-Mar-2026 05:33:16.894 INFO [main] org.apache.catalina.core.AprLifecycleListener.initializeSSL OpenSSL successfully initialized [OpenSSL 1.1.1d  10 Sep 2019]
+webui-1     | 04-Mar-2026 05:33:19.304 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8080"]
+webui-1     | 04-Mar-2026 05:33:19.373 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["ajp-nio-127.0.0.1-8009"]
+webui-1     | 04-Mar-2026 05:33:19.379 INFO [main] org.apache.catalina.startup.Catalina.load Server initialization in [3797] milliseconds
+webui-1     | 04-Mar-2026 05:33:19.568 INFO [main] org.apache.catalina.core.StandardService.startInternal Starting service [Catalina]
+webui-1     | 04-Mar-2026 05:33:19.570 INFO [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet engine: [Apache Tomcat/10.0.7]
+webui-1     | 04-Mar-2026 05:33:19.624 INFO [main] org.apache.catalina.startup.HostConfig.deployWAR Deploying web application archive [/usr/local/tomcat/webapps/tools.descartes.teastore.webui.war]
+webui-1     | 04-Mar-2026 05:33:29.678 INFO [main] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+webui-1     | [main] WARN com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+webui-1     | [main] INFO com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+image-1     | 	Time in nanoseconds (with nanoseconds precision) since Thu Jan 01 00:00:00 UTC 1970'
+image-1     | ProbeController: disabled
+image-1     | WriterController:
+image-1     | 	Queue type: class kieker.monitoring.queue.BlockingQueueDecorator
+image-1     | 	Queue capacity: 10000
+image-1     | 	Insert behavior (a.k.a. QueueFullBehavior): class kieker.monitoring.queue.behavior.BlockOnFailedInsertBehavior
+registry-1  | 04-Mar-2026 05:33:24.451 WARNING [main] org.glassfish.jersey.server.wadl.WadlFeature.configure JAX-B API not found . WADL feature is disabled.
+registry-1  | 04-Mar-2026 05:33:27.862 INFO [main] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive [/usr/local/tomcat/webapps/tools.descartes.teastore.registry.war] has finished in [8,519] ms
+registry-1  | 04-Mar-2026 05:33:27.879 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8080"]
+registry-1  | 04-Mar-2026 05:33:27.968 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["ajp-nio-127.0.0.1-8009"]
+registry-1  | 04-Mar-2026 05:33:28.013 INFO [main] org.apache.catalina.startup.Catalina.start Server startup in [9271] milliseconds
+registry-1  | [http-nio-8080-exec-9] INFO tools.descartes.teastore.registry.rest.Registry - Registered tools.descartes.teastore.auth@auth:8080
+registry-1  | [http-nio-8080-exec-5] INFO tools.descartes.teastore.registry.rest.Registry - Registered tools.descartes.teastore.webui@webui:8080
+webui-1     | [main] INFO com.netflix.loadbalancer.BaseLoadBalancer - Client:  instantiated a LoadBalancer: {NFLoadBalancer:name=,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}
+webui-1     | [main] INFO tools.descartes.teastore.registryclient.loadbalancers.ServiceLoadBalancer - Pre-initializing client-side load balancer for target: tools.descartes.teastore.auth
+webui-1     | [main] INFO tools.descartes.teastore.registryclient.loadbalancers.ServiceLoadBalancer - Pre-initializing client-side load balancer for target: tools.descartes.teastore.image
+webui-1     | [main] INFO tools.descartes.teastore.registryclient.loadbalancers.ServiceLoadBalancer - Pre-initializing client-side load balancer for target: tools.descartes.teastore.persistence
+webui-1     | [main] INFO tools.descartes.teastore.registryclient.loadbalancers.ServiceLoadBalancer - Pre-initializing client-side load balancer for target: tools.descartes.teastore.recommender
+webui-1     | [main] INFO kieker.monitoring.core.configuration.ConfigurationFactory - Loading configuration from JVM-specified location: '/kieker/config/kieker.monitoring.properties'
+webui-1     | [main] INFO kieker.monitoring.core.controller.TCPController - Could not parse port for the TCPController, deactivating this option. Received string was: 
+db-1        | 2026-03-04  5:33:23 0 [Note] Added new Master_info '' to hash table
+db-1        | 2026-03-04  5:33:23 0 [Note] mysqld: ready for connections.
+webui-1     | WriterController: WriterClassName: kieker.monitoring.writer.filesystem.FileWriter
+webui-1     | [main] INFO kieker.monitoring.core.controller.MonitoringController - Current State of kieker.monitoring (1.15-SNAPSHOT) Status: 'disabled'
+webui-1     | 	Name: 'KIEKER'; Hostname: '0738b5ed336a'; experimentID: '1'
+webui-1     | JMXController: JMX disabled
+webui-1     | TimeSource: 'kieker.monitoring.timer.SystemNanoTimer'
+db-1        | Version: '10.4.12-MariaDB-1:10.4.12+maria~bionic'  socket: '/var/run/mysqld/mysqld.sock'  port: 0  mariadb.org binary distribution
+registry-1  | [http-nio-8080-exec-5] INFO tools.descartes.teastore.registry.rest.Registry - Registered tools.descartes.teastore.persistence@persistence:8080
+db-1        | 2026-03-04 05:33:23+00:00 [Note] [Entrypoint]: Temporary server started.
+db-1        | Warning: Unable to load '/usr/share/zoneinfo/leap-seconds.list' as time zone. Skipping it.
+db-1        | 2026-03-04  5:33:51 10 [Warning] 'proxies_priv' entry '@% root@33a970d57b81' ignored in --skip-name-resolve mode.
+db-1        | 
+db-1        | 2026-03-04 05:33:51+00:00 [Note] [Entrypoint]: /usr/local/bin/docker-entrypoint.sh: running /docker-entrypoint-initdb.d/setup_0.sql
+db-1        | 2026-03-04  5:33:51 11 [Warning] 'proxies_priv' entry '@% root@33a970d57b81' ignored in --skip-name-resolve mode.
+db-1        | 
+db-1        | 
+db-1        | 2026-03-04 05:33:51+00:00 [Note] [Entrypoint]: Stopping temporary server
+registry-1  | [http-nio-8080-exec-2] INFO tools.descartes.teastore.registry.rest.Registry - Registered tools.descartes.teastore.image@image:8080
+db-1        | 2026-03-04  5:33:51 0 [Note] mysqld (initiated by: root[root] @ localhost []): Normal shutdown
+db-1        | 2026-03-04  5:33:51 0 [Note] Event Scheduler: Purging the queue. 0 events
+db-1        | 2026-03-04  5:33:51 0 [Note] InnoDB: FTS optimize thread exiting.
+db-1        | 2026-03-04  5:33:51 0 [Note] InnoDB: Starting shutdown...
+db-1        | 2026-03-04  5:33:51 0 [Note] InnoDB: Dumping buffer pool(s) to /var/lib/mysql/ib_buffer_pool
+db-1        | 2026-03-04  5:33:51 0 [Note] InnoDB: Buffer pool(s) dump completed at 260304  5:33:51
+db-1        | 2026-03-04  5:33:53 0 [Note] InnoDB: Shutdown completed; log sequence number 60990; transaction id 24
+db-1        | 2026-03-04  5:33:53 0 [Note] InnoDB: Removed temporary tablespace data file: "ibtmp1"
+db-1        | 2026-03-04  5:33:53 0 [Note] mysqld: Shutdown complete
+registry-1  | [http-nio-8080-exec-5] INFO tools.descartes.teastore.registry.rest.Registry - Registered tools.descartes.teastore.recommender@recommender:8080
+db-1        | 
+db-1        | 2026-03-04 05:33:53+00:00 [Note] [Entrypoint]: Temporary server stopped
+image-1     | 		numBlocked: 0
+image-1     | Writer: 'kieker.monitoring.writer.filesystem.FileWriter'
+image-1     | 	Configuration:
+image-1     | 		kieker.monitoring.writer.filesystem.FileWriter.logFilePoolHandler='kieker.monitoring.writer.filesystem.RotatingLogFilePoolHandler'
+image-1     | 		kieker.monitoring.writer.filesystem.FileWriter.PrioritizedQueueSize='100'
+webui-1     | 	Time in nanoseconds (with nanoseconds precision) since Thu Jan 01 00:00:00 UTC 1970'
+webui-1     | ProbeController: disabled
+webui-1     | WriterController:
+image-1     | 		kieker.monitoring.writer.filesystem.FileWriter.charsetName='UTF-8'
+image-1     | 		kieker.monitoring.writer.filesystem.FileWriter.logStreamHandler='kieker.monitoring.writer.filesystem.TextLogStreamHandler'
+webui-1     | 	Queue type: class kieker.monitoring.queue.BlockingQueueDecorator
+webui-1     | 	Queue capacity: 10000
+webui-1     | 	Insert behavior (a.k.a. QueueFullBehavior): class kieker.monitoring.queue.behavior.BlockOnFailedInsertBehavior
+webui-1     | 		numBlocked: 0
+webui-1     | Writer: 'kieker.monitoring.writer.filesystem.FileWriter'
+webui-1     | 	Configuration:
+webui-1     | 		kieker.monitoring.writer.filesystem.FileWriter.logFilePoolHandler='kieker.monitoring.writer.filesystem.RotatingLogFilePoolHandler'
+webui-1        | 		kieker.monitoring.writer.filesystem.FileWriter.PrioritizedQueueSize='100'
+webui-1        | 		kieker.monitoring.writer.filesystem.FileWriter.charsetName='UTF-8'
+webui-1        | 		kieker.monitoring.writer.filesystem.FileWriter.logStreamHandler='kieker.monitoring.writer.filesystem.TextLogStreamHandler'
+webui-1        | 		kieker.monitoring.writer.filesystem.FileWriter.bufferSize='8192'
+recommender-1  | 04-Mar-2026 05:33:16.256 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version name:   Apache Tomcat/10.0.7
+recommender-1  | 04-Mar-2026 05:33:16.287 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server built:          Jun 8 2021 16:31:06 UTC
+recommender-1  | 04-Mar-2026 05:33:16.296 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version number: 10.0.7.0
+recommender-1  | 04-Mar-2026 05:33:16.297 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Name:               Linux
+recommender-1  | 04-Mar-2026 05:33:16.298 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Version:            6.6.87.2-microsoft-standard-WSL2
+recommender-1  | 04-Mar-2026 05:33:16.299 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Architecture:          amd64
+recommender-1  | 04-Mar-2026 05:33:16.299 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Java Home:             /usr/local/openjdk-11
+recommender-1  | 04-Mar-2026 05:33:16.299 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Version:           11.0.11+9
+image-1     | 		kieker.monitoring.writer.filesystem.FileWriter.bufferSize='8192'
+image-1        | 		kieker.monitoring.writer.filesystem.FileWriter.maxEntriesInFile='25000'
+image-1        | 		kieker.monitoring.writer.filesystem.FileWriter.maxLogFiles='-1'
+image-1        | 		kieker.monitoring.writer.filesystem.FileWriter.MaxShutdownDelay='-1'
+recommender-1  | 04-Mar-2026 05:33:16.300 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Vendor:            Oracle Corporation
+recommender-1  | 04-Mar-2026 05:33:16.300 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:         /usr/local/tomcat
+image-1        | 		kieker.monitoring.writer.filesystem.FileWriter.maxLogSize='-1'
+recommender-1  | 04-Mar-2026 05:33:16.300 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:         /usr/local/tomcat
+recommender-1  | 04-Mar-2026 05:33:16.346 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.config.file=/usr/local/tomcat/conf/logging.properties
+recommender-1  | 04-Mar-2026 05:33:16.347 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+image-1        | 		kieker.monitoring.writer.filesystem.FileWriter.mapFileHandler='kieker.monitoring.writer.filesystem.TextMapFileHandler'
+image-1        | 		kieker.monitoring.writer.filesystem.FileWriter.flush='true'
+image-1        | 		kieker.monitoring.writer.filesystem.FileWriter.QueueFullBehavior='0'
+image-1        | 		kieker.monitoring.writer.filesystem.FileWriter.QueueSize='10000'
+image-1        | 		kieker.monitoring.writer.filesystem.FileWriter.customStoragePath='/kieker/logs/'
+image-1        | 		kieker.monitoring.writer.filesystem.FileWriter.actualStoragePath='/kieker/logs/kieker-20260304-053332-12519304933016-UTC--KIEKER'
+db-1        | 
+recommender-1  | 04-Mar-2026 05:33:16.347 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -javaagent:/kieker/agent/agent.jar
+recommender-1  | 04-Mar-2026 05:33:16.347 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.lang=ALL-UNNAMED
+recommender-1  | 04-Mar-2026 05:33:16.348 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dkieker.monitoring.configuration=/kieker/config/kieker.monitoring.properties
+recommender-1  | 04-Mar-2026 05:33:16.352 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Daj.weaving.verbose=false
+db-1           | 2026-03-04 05:33:53+00:00 [Note] [Entrypoint]: MySQL init process done. Ready for start up.
+db-1           | 
+recommender-1  | 04-Mar-2026 05:33:16.356 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dorg.aspectj.weaver.loadtime.configuration=aop.xml
+webui-1        | 		kieker.monitoring.writer.filesystem.FileWriter.maxEntriesInFile='25000'
+webui-1        | 		kieker.monitoring.writer.filesystem.FileWriter.maxLogFiles='-1'
+webui-1        | 		kieker.monitoring.writer.filesystem.FileWriter.MaxShutdownDelay='-1'
+webui-1        | 		kieker.monitoring.writer.filesystem.FileWriter.maxLogSize='-1'
+recommender-1  | 04-Mar-2026 05:33:16.358 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dkieker.monitoring.skipDefaultAOPConfiguration=true
+recommender-1  | 04-Mar-2026 05:33:16.361 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Daj.weaving.loadersToSkip=java.net.URLClassLoader
+recommender-1  | 04-Mar-2026 05:33:16.361 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcom.sun.jndi.ldap.object.disableEndpointIdentification=true
+recommender-1  | 04-Mar-2026 05:33:16.362 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djdk.tls.ephemeralDHKeySize=2048
+recommender-1  | 04-Mar-2026 05:33:16.363 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.protocol.handler.pkgs=org.apache.catalina.webresources
+db-1           | 2026-03-04  5:33:54 0 [Note] mysqld (mysqld 10.4.12-MariaDB-1:10.4.12+maria~bionic) starting as process 1 ...
+db-1           | 2026-03-04  5:33:54 0 [Note] InnoDB: Using Linux native AIO
+webui-1        | 		kieker.monitoring.writer.filesystem.FileWriter.mapFileHandler='kieker.monitoring.writer.filesystem.TextMapFileHandler'
+recommender-1  | 04-Mar-2026 05:33:16.363 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dorg.apache.catalina.security.SecurityListener.UMASK=0027
+image-1        | 
+db-1           | 2026-03-04  5:33:54 0 [Note] InnoDB: Mutexes and rw_locks use GCC atomic builtins
+db-1           | 2026-03-04  5:33:54 0 [Note] InnoDB: Uses event mutexes
+db-1           | 2026-03-04  5:33:54 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+db-1           | 2026-03-04  5:33:54 0 [Note] InnoDB: Number of pools: 1
+db-1           | 2026-03-04  5:33:54 0 [Note] InnoDB: Using SSE2 crc32 instructions
+db-1           | 2026-03-04  5:33:54 0 [Note] mysqld: O_TMPFILE is not supported on /tmp (disabling future attempts)
+db-1           | 2026-03-04  5:33:54 0 [Note] InnoDB: Initializing buffer pool, total size = 256M, instances = 1, chunk size = 128M
+db-1           | 2026-03-04  5:33:54 0 [Note] InnoDB: Completed initialization of buffer pool
+db-1           | 2026-03-04  5:33:54 0 [Note] InnoDB: If the mysqld execution user is authorized, page cleaner thread priority can be changed. See the man page of setpriority().
+db-1           | 2026-03-04  5:33:54 0 [Note] InnoDB: 128 out of 128 rollback segments are active.
+webui-1        | 		kieker.monitoring.writer.filesystem.FileWriter.flush='true'
+webui-1        | 		kieker.monitoring.writer.filesystem.FileWriter.QueueFullBehavior='0'
+webui-1        | 		kieker.monitoring.writer.filesystem.FileWriter.QueueSize='10000'
+db-1           | 2026-03-04  5:33:54 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+db-1           | 2026-03-04  5:33:54 0 [Note] InnoDB: Setting file './ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+db-1           | 2026-03-04  5:33:54 0 [Note] InnoDB: File './ibtmp1' size is now 12 MB.
+webui-1        | 		kieker.monitoring.writer.filesystem.FileWriter.customStoragePath='/kieker/logs/'
+webui-1        | 		kieker.monitoring.writer.filesystem.FileWriter.actualStoragePath='/kieker/logs/kieker-20260304-053336-12523177242342-UTC--KIEKER'
+webui-1        | 
+webui-1        | 	Automatic assignment of logging timestamps: 'true'
+webui-1        | Sampling Controller: Periodic Sensor available: Poolsize: '0'; Scheduled Tasks: '0'
+webui-1        | [main] INFO kieker.monitoring.core.registry.ControlFlowRegistry - First threadId will be 3679159420584984576
+webui-1        | 04-Mar-2026 05:33:36.542 WARNING [main] org.glassfish.jersey.server.wadl.WadlFeature.configure JAXBContext implementation could not be found. WADL feature is disabled.
+webui-1        | 04-Mar-2026 05:33:37.131 INFO [main] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive [/usr/local/tomcat/webapps/tools.descartes.teastore.webui.war] has finished in [17,506] ms
+webui-1        | 04-Mar-2026 05:33:37.132 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/usr/local/tomcat/webapps/ROOT]
+webui-1        | 04-Mar-2026 05:33:37.189 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/usr/local/tomcat/webapps/ROOT] has finished in [53] ms
+persistence-1  | 04-Mar-2026 05:33:16.456 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version name:   Apache Tomcat/10.0.7
+persistence-1  | 04-Mar-2026 05:33:16.464 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server built:          Jun 8 2021 16:31:06 UTC
+persistence-1  | 04-Mar-2026 05:33:16.464 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version number: 10.0.7.0
+persistence-1  | 04-Mar-2026 05:33:16.473 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Name:               Linux
+db-1           | 2026-03-04  5:33:54 0 [Note] InnoDB: 10.4.12 started; log sequence number 60990; transaction id 21
+persistence-1  | 04-Mar-2026 05:33:16.473 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Version:            6.6.87.2-microsoft-standard-WSL2
+persistence-1  | 04-Mar-2026 05:33:16.474 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Architecture:          amd64
+persistence-1  | 04-Mar-2026 05:33:16.475 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Java Home:             /usr/local/openjdk-11
+persistence-1  | 04-Mar-2026 05:33:16.476 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Version:           11.0.11+9
+db-1           | 2026-03-04  5:33:54 0 [Note] InnoDB: Loading buffer pool(s) from /var/lib/mysql/ib_buffer_pool
+db-1           | 2026-03-04  5:33:54 0 [Note] Plugin 'FEEDBACK' is disabled.
+db-1           | 2026-03-04  5:33:54 0 [Note] Server socket created on IP: '::'.
+db-1           | 2026-03-04  5:33:54 0 [Warning] 'proxies_priv' entry '@% root@33a970d57b81' ignored in --skip-name-resolve mode.
+db-1           | 2026-03-04  5:33:54 0 [Note] InnoDB: Buffer pool(s) load completed at 260304  5:33:54
+db-1           | 2026-03-04  5:33:54 0 [Note] Reading of all Master_info entries succeeded
+db-1           | 2026-03-04  5:33:54 0 [Note] Added new Master_info '' to hash table
+db-1           | 2026-03-04  5:33:54 0 [Note] mysqld: ready for connections.
+db-1           | Version: '10.4.12-MariaDB-1:10.4.12+maria~bionic'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  mariadb.org binary distribution
+recommender-1  | 04-Mar-2026 05:33:16.364 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dignore.endorsed.dirs=
+persistence-1  | 04-Mar-2026 05:33:16.476 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Vendor:            Oracle Corporation
+recommender-1  | 04-Mar-2026 05:33:16.366 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.base=/usr/local/tomcat
+recommender-1  | 04-Mar-2026 05:33:16.368 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.home=/usr/local/tomcat
+recommender-1  | 04-Mar-2026 05:33:16.369 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.io.tmpdir=/usr/local/tomcat/temp
+recommender-1  | 04-Mar-2026 05:33:16.394 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent Loaded Apache Tomcat Native library [1.2.30] using APR version [1.6.5].
+recommender-1  | 04-Mar-2026 05:33:16.394 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true], UDS [true].
+recommender-1  | 04-Mar-2026 05:33:16.408 INFO [main] org.apache.catalina.core.AprLifecycleListener.initializeSSL OpenSSL successfully initialized [OpenSSL 1.1.1d  10 Sep 2019]
+recommender-1  | 04-Mar-2026 05:33:19.008 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8080"]
+recommender-1  | 04-Mar-2026 05:33:19.239 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["ajp-nio-127.0.0.1-8009"]
+recommender-1  | 04-Mar-2026 05:33:19.261 INFO [main] org.apache.catalina.startup.Catalina.load Server initialization in [4089] milliseconds
+recommender-1  | 04-Mar-2026 05:33:19.479 INFO [main] org.apache.catalina.core.StandardService.startInternal Starting service [Catalina]
+recommender-1  | 04-Mar-2026 05:33:19.480 INFO [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet engine: [Apache Tomcat/10.0.7]
+recommender-1  | 04-Mar-2026 05:33:19.526 INFO [main] org.apache.catalina.startup.HostConfig.deployWAR Deploying web application archive [/usr/local/tomcat/webapps/tools.descartes.teastore.recommender.war]
+recommender-1  | 04-Mar-2026 05:33:26.761 INFO [main] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+recommender-1  | [main] INFO tools.descartes.teastore.registryclient.loadbalancers.ServiceLoadBalancer - Pre-initializing client-side load balancer for target: tools.descartes.teastore.persistence
+recommender-1  | [main] INFO tools.descartes.teastore.recommender.servlet.RecommenderStartup - Recommender loop time not set. Disabling periodic retraining.
+persistence-1  | 04-Mar-2026 05:33:16.476 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:         /usr/local/tomcat
+persistence-1  | 04-Mar-2026 05:33:16.476 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:         /usr/local/tomcat
+persistence-1  | 04-Mar-2026 05:33:16.558 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.config.file=/usr/local/tomcat/conf/logging.properties
+recommender-1  | [main] INFO kieker.monitoring.core.configuration.ConfigurationFactory - Loading configuration from JVM-specified location: '/kieker/config/kieker.monitoring.properties'
+recommender-1  | [main] INFO kieker.monitoring.core.controller.TCPController - Could not parse port for the TCPController, deactivating this option. Received string was: 
+webui-1        | 04-Mar-2026 05:33:37.206 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8080"]
+webui-1        | 04-Mar-2026 05:33:37.239 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["ajp-nio-127.0.0.1-8009"]
+webui-1        | 04-Mar-2026 05:33:37.255 INFO [main] org.apache.catalina.startup.Catalina.start Server startup in [17875] milliseconds
+webui-1        | [http-nio-8080-exec-4] WARN tools.descartes.teastore.registryclient.loadbalancers.ServiceLoadBalancer - Load Balancer was not initialized for service: tools.descartes.teastore.persistence. Is Registry up?
+webui-1        | [http-nio-8080-exec-4] WARN tools.descartes.teastore.registryclient.loadbalancers.ServiceLoadBalancer - No Server registered for Service: tools.descartes.teastore.persistence
+recommender-1  | WriterController: WriterClassName: kieker.monitoring.writer.filesystem.FileWriter
+recommender-1  | [pool-3-thread-1] INFO tools.descartes.teastore.registryclient.RegistryClient - tools.descartes.teastore.persistence not online. RECOMMENDER is waiting for it to come online
+persistence-1  | 04-Mar-2026 05:33:16.558 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+persistence-1  | 04-Mar-2026 05:33:16.558 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -javaagent:/kieker/agent/agent.jar
+persistence-1  | 04-Mar-2026 05:33:16.559 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.lang=ALL-UNNAMED
+persistence-1  | 04-Mar-2026 05:33:16.559 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dkieker.monitoring.configuration=/kieker/config/kieker.monitoring.properties
+persistence-1  | 04-Mar-2026 05:33:16.559 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Daj.weaving.verbose=false
+persistence-1  | 04-Mar-2026 05:33:16.559 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dorg.aspectj.weaver.loadtime.configuration=aop.xml
+persistence-1  | 04-Mar-2026 05:33:16.559 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dkieker.monitoring.skipDefaultAOPConfiguration=true
+persistence-1  | 04-Mar-2026 05:33:16.559 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Daj.weaving.loadersToSkip=java.net.URLClassLoader
+image-1        | 	Automatic assignment of logging timestamps: 'true'
+webui-1        | [http-nio-8080-exec-4] WARN tools.descartes.teastore.registryclient.loadbalancers.ServiceLoadBalancer - Load Balancer was not initialized for service: tools.descartes.teastore.image. Is Registry up?
+webui-1        | [http-nio-8080-exec-4] WARN tools.descartes.teastore.registryclient.loadbalancers.ServiceLoadBalancer - No Server registered for Service: tools.descartes.teastore.image
+webui-1        | [pool-1-thread-1] INFO com.netflix.loadbalancer.BaseLoadBalancer - Client:  instantiated a LoadBalancer: {NFLoadBalancer:name=,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}
+webui-1        | [pool-1-thread-1] INFO com.netflix.loadbalancer.BaseLoadBalancer - Client:  instantiated a LoadBalancer: {NFLoadBalancer:name=,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}
+webui-1        | [pool-1-thread-1] INFO com.netflix.loadbalancer.BaseLoadBalancer - Client:  instantiated a LoadBalancer: {NFLoadBalancer:name=,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}
+recommender-1  | [main] INFO kieker.monitoring.core.controller.MonitoringController - Current State of kieker.monitoring (1.15-SNAPSHOT) Status: 'disabled'
+recommender-1  | 	Name: 'KIEKER'; Hostname: '66af9ab9f03e'; experimentID: '1'
+recommender-1  | JMXController: JMX disabled
+recommender-1  | TimeSource: 'kieker.monitoring.timer.SystemNanoTimer'
+recommender-1  | 	Time in nanoseconds (with nanoseconds precision) since Thu Jan 01 00:00:00 UTC 1970'
+recommender-1  | ProbeController: disabled
+recommender-1  | WriterController:
+persistence-1  | 04-Mar-2026 05:33:16.560 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcom.sun.jndi.ldap.object.disableEndpointIdentification=true
+persistence-1  | 04-Mar-2026 05:33:16.560 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djdk.tls.ephemeralDHKeySize=2048
+persistence-1  | 04-Mar-2026 05:33:16.560 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.protocol.handler.pkgs=org.apache.catalina.webresources
+persistence-1  | 04-Mar-2026 05:33:16.560 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dorg.apache.catalina.security.SecurityListener.UMASK=0027
+persistence-1  | 04-Mar-2026 05:33:16.560 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dignore.endorsed.dirs=
+image-1        | Sampling Controller: Periodic Sensor available: Poolsize: '0'; Scheduled Tasks: '0'
+persistence-1  | 04-Mar-2026 05:33:16.560 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.base=/usr/local/tomcat
+persistence-1  | 04-Mar-2026 05:33:16.560 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.home=/usr/local/tomcat
+persistence-1  | 04-Mar-2026 05:33:16.561 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.io.tmpdir=/usr/local/tomcat/temp
+recommender-1  | 	Queue type: class kieker.monitoring.queue.BlockingQueueDecorator
+recommender-1  | 	Queue capacity: 10000
+recommender-1  | 	Insert behavior (a.k.a. QueueFullBehavior): class kieker.monitoring.queue.behavior.BlockOnFailedInsertBehavior
+image-1        | [main] INFO kieker.monitoring.core.registry.ControlFlowRegistry - First threadId will be 3652560035285827584
+recommender-1  | 		numBlocked: 0
+recommender-1  | Writer: 'kieker.monitoring.writer.filesystem.FileWriter'
+recommender-1  | 	Configuration:
+recommender-1  | 		kieker.monitoring.writer.filesystem.FileWriter.logFilePoolHandler='kieker.monitoring.writer.filesystem.RotatingLogFilePoolHandler'
+recommender-1  | 		kieker.monitoring.writer.filesystem.FileWriter.PrioritizedQueueSize='100'
+image-1        | 04-Mar-2026 05:33:33.942 WARNING [main] org.glassfish.jersey.server.wadl.WadlFeature.configure JAX-B API not found . WADL feature is disabled.
+recommender-1  | 		kieker.monitoring.writer.filesystem.FileWriter.charsetName='UTF-8'
+recommender-1  | 		kieker.monitoring.writer.filesystem.FileWriter.logStreamHandler='kieker.monitoring.writer.filesystem.TextLogStreamHandler'
+recommender-1  | 		kieker.monitoring.writer.filesystem.FileWriter.bufferSize='8192'
+image-1        | 04-Mar-2026 05:33:35.014 INFO [main] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive [/usr/local/tomcat/webapps/tools.descartes.teastore.image.war] has finished in [15,902] ms
+persistence-1  | 04-Mar-2026 05:33:16.598 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent Loaded Apache Tomcat Native library [1.2.30] using APR version [1.6.5].
+image-1        | 04-Mar-2026 05:33:35.030 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8080"]
+recommender-1  | 		kieker.monitoring.writer.filesystem.FileWriter.maxEntriesInFile='25000'
+recommender-1  | 		kieker.monitoring.writer.filesystem.FileWriter.maxLogFiles='-1'
+recommender-1  | 		kieker.monitoring.writer.filesystem.FileWriter.MaxShutdownDelay='-1'
+recommender-1  | 		kieker.monitoring.writer.filesystem.FileWriter.maxLogSize='-1'
+recommender-1  | 		kieker.monitoring.writer.filesystem.FileWriter.mapFileHandler='kieker.monitoring.writer.filesystem.TextMapFileHandler'
+recommender-1  | 		kieker.monitoring.writer.filesystem.FileWriter.flush='true'
+recommender-1  | 		kieker.monitoring.writer.filesystem.FileWriter.QueueFullBehavior='0'
+recommender-1  | 		kieker.monitoring.writer.filesystem.FileWriter.QueueSize='10000'
+persistence-1  | 04-Mar-2026 05:33:16.598 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true], UDS [true].
+persistence-1  | 04-Mar-2026 05:33:16.615 INFO [main] org.apache.catalina.core.AprLifecycleListener.initializeSSL OpenSSL successfully initialized [OpenSSL 1.1.1d  10 Sep 2019]
+persistence-1  | 04-Mar-2026 05:33:18.813 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8080"]
+image-1        | 04-Mar-2026 05:33:35.059 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["ajp-nio-127.0.0.1-8009"]
+image-1        | 04-Mar-2026 05:33:35.075 INFO [main] org.apache.catalina.startup.Catalina.start Server startup in [16449] milliseconds
+image-1        | [pool-3-thread-1] INFO tools.descartes.teastore.image.setup.SetupController - Deleted images in working directory /usr/local/tomcat/images. 0 images deleted.
+image-1        | [pool-3-thread-1] INFO tools.descartes.teastore.image.setup.SetupController - Working directory /usr/local/tomcat/images not deleted.
+image-1        | [pool-3-thread-1] INFO tools.descartes.teastore.image.setup.SetupController - Working directory /usr/local/tomcat/images created.
+image-1        | [pool-3-thread-1] INFO tools.descartes.teastore.image.setup.SetupController - Found resource directory with existing images at /usr/local/tomcat/webapps/tools.descartes.teastore.image/WEB-INF/classes/tools/descartes/teastore/image/setup/existingimg.
+image-1        | [pool-3-thread-1] INFO tools.descartes.teastore.image.setup.SetupController - Scanned path /usr/local/tomcat/webapps/tools.descartes.teastore.image/WEB-INF/classes/tools/descartes/teastore/image/setup/existingimg for existing images. 11 images found.
+persistence-1  | 04-Mar-2026 05:33:18.921 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["ajp-nio-127.0.0.1-8009"]
+persistence-1  | 04-Mar-2026 05:33:18.937 INFO [main] org.apache.catalina.startup.Catalina.load Server initialization in [3505] milliseconds
+persistence-1  | 04-Mar-2026 05:33:19.374 INFO [main] org.apache.catalina.core.StandardService.startInternal Starting service [Catalina]
+persistence-1  | 04-Mar-2026 05:33:19.376 INFO [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet engine: [Apache Tomcat/10.0.7]
+image-1        | [pool-3-thread-1] INFO tools.descartes.teastore.image.setup.SetupController - Trying to find images that indicate categories in generated images.
+image-1        | [pool-3-thread-1] INFO tools.descartes.teastore.image.setup.SetupController - Found resource directory with category images at /usr/local/tomcat/webapps/tools.descartes.teastore.image/WEB-INF/classes/tools/descartes/teastore/image/setup/categoryimg.
+image-1        | [pool-3-thread-1] INFO tools.descartes.teastore.image.setup.SetupController - Found 9 images for categories.
+image-1        | [pool-3-thread-1] WARN com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+image-1        | [pool-3-thread-1] INFO com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+image-1        | [pool-3-thread-1] INFO com.netflix.loadbalancer.BaseLoadBalancer - Client:  instantiated a LoadBalancer: {NFLoadBalancer:name=,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}
+image-1        | [pool-3-thread-1] INFO tools.descartes.teastore.image.setup.SetupController - 5 categories found.
+image-1        | [pool-3-thread-1] INFO tools.descartes.teastore.image.setup.SetupController - Category Black Tea (2) contains 100 products.
+image-1        | [pool-3-thread-1] INFO tools.descartes.teastore.image.setup.SetupController - Category Green Tea (3) contains 100 products.
+image-1        | [pool-3-thread-1] INFO tools.descartes.teastore.image.setup.SetupController - Category Herbal Tea (4) contains 100 products.
+image-1        | [pool-3-thread-1] INFO tools.descartes.teastore.image.setup.SetupController - Category Rooibos (5) contains 100 products.
+image-1        | [pool-3-thread-1] INFO tools.descartes.teastore.image.setup.SetupController - Category White Tea (6) contains 100 products.
+image-1        | [pool-3-thread-1] INFO tools.descartes.teastore.image.setup.SetupController - Found matching category Rooibos (5) for image rooibos.png.
+image-1        | [pool-3-thread-1] INFO tools.descartes.teastore.image.setup.SetupController - Found matching category White Tea (6) for image white-tea.png.
+image-1        | [pool-3-thread-1] INFO tools.descartes.teastore.image.setup.SetupController - Found matching category Black Tea (2) for image black-tea.png.
+image-1        | [pool-3-thread-1] INFO tools.descartes.teastore.image.setup.SetupController - Found matching category Herbal Tea (4) for image herbal-tea.png.
+persistence-1  | 04-Mar-2026 05:33:19.418 INFO [main] org.apache.catalina.startup.HostConfig.deployWAR Deploying web application archive [/usr/local/tomcat/webapps/tools.descartes.teastore.persistence.war]
+persistence-1  | 04-Mar-2026 05:33:25.951 INFO [main] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+persistence-1  | [main] INFO tools.descartes.teastore.persistence.repository.EMFManager - Using MySQL/MariaDB database.
+persistence-1  | [main] INFO tools.descartes.teastore.persistence.repository.EMFManager - Setting jdbc url to "jdbc:mysql://db:3306/teadb".
+persistence-1  | TEST
+recommender-1  | 		kieker.monitoring.writer.filesystem.FileWriter.customStoragePath='/kieker/logs/'
+recommender-1  | 		kieker.monitoring.writer.filesystem.FileWriter.actualStoragePath='/kieker/logs/kieker-20260304-053332-12519656295551-UTC--KIEKER'
+recommender-1  | 
+recommender-1  | 	Automatic assignment of logging timestamps: 'true'
+recommender-1  | Sampling Controller: Periodic Sensor available: Poolsize: '0'; Scheduled Tasks: '0'
+persistence-1  | [main] WARN tools.descartes.teastore.persistence.daemons.InitialDataGenerationDaemon - Exception connecting to database. Is database offline? Wating for 2000 ms.
+recommender-1  | [main] INFO kieker.monitoring.core.registry.ControlFlowRegistry - First threadId will be 4866139397373820928
+recommender-1  | 04-Mar-2026 05:33:34.846 WARNING [main] org.glassfish.jersey.server.wadl.WadlFeature.configure JAX-B API not found . WADL feature is disabled.
+image-1        | [pool-3-thread-1] INFO tools.descartes.teastore.image.setup.SetupController - Found matching category Green Tea (3) for image green-tea.png.
+recommender-1  | 04-Mar-2026 05:33:35.605 INFO [main] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive [/usr/local/tomcat/webapps/tools.descartes.teastore.recommender.war] has finished in [16,078] ms
+recommender-1  | 04-Mar-2026 05:33:35.621 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8080"]
+persistence-1  | TEST
+persistence-1  | [main] WARN tools.descartes.teastore.persistence.daemons.InitialDataGenerationDaemon - Exception connecting to database. Is database offline? Wating for 2000 ms.
+persistence-1  | [main] WARN tools.descartes.teastore.persistence.daemons.InitialDataGenerationDaemon - Exception connecting to database. Is database offline? Wating for 2000 ms.
+persistence-1  | TEST
+persistence-1  | TEST
+persistence-1  | [main] WARN tools.descartes.teastore.persistence.daemons.InitialDataGenerationDaemon - Exception connecting to database. Is database offline? Wating for 2000 ms.
+persistence-1  | TEST
+persistence-1  | [main] WARN tools.descartes.teastore.persistence.daemons.InitialDataGenerationDaemon - Exception connecting to database. Is database offline? Wating for 2000 ms.
+image-1        | [pool-3-thread-1] INFO tools.descartes.teastore.image.setup.SetupController - Image creator thread started. 500 300x300 sized images to generate using 12 threads.
+image-1        | [pool-3-thread-1] INFO tools.descartes.teastore.image.setup.SetupController - Storage setup done.
+persistence-1  | TEST
+persistence-1  | [main] WARN tools.descartes.teastore.persistence.daemons.InitialDataGenerationDaemon - Exception connecting to database. Is database offline? Wating for 2000 ms.
+persistence-1  | [main] WARN tools.descartes.teastore.persistence.daemons.InitialDataGenerationDaemon - Exception connecting to database. Is database offline? Wating for 2000 ms.
+persistence-1  | TEST
+persistence-1  | TEST
+persistence-1  | [main] WARN tools.descartes.teastore.persistence.daemons.InitialDataGenerationDaemon - Exception connecting to database. Is database offline? Wating for 2000 ms.
+persistence-1  | TEST
+persistence-1  | [main] WARN tools.descartes.teastore.persistence.daemons.InitialDataGenerationDaemon - Exception connecting to database. Is database offline? Wating for 2000 ms.
+persistence-1  | [main] WARN tools.descartes.teastore.persistence.daemons.InitialDataGenerationDaemon - Exception connecting to database. Is database offline? Wating for 2000 ms.
+image-1        | [pool-3-thread-1] INFO tools.descartes.teastore.image.setup.SetupController - Storage and image database handed over to image provider
+recommender-1  | 04-Mar-2026 05:33:35.658 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["ajp-nio-127.0.0.1-8009"]
+recommender-1  | 04-Mar-2026 05:33:35.674 INFO [main] org.apache.catalina.startup.Catalina.start Server startup in [16399] milliseconds
+persistence-1  | TEST
+persistence-1  | TEST
+persistence-1  | [main] WARN tools.descartes.teastore.persistence.daemons.InitialDataGenerationDaemon - Exception connecting to database. Is database offline? Wating for 2000 ms.
+persistence-1  | [main] INFO tools.descartes.teastore.persistence.daemons.InitialDataGenerationDaemon - Database is empty. Generating new database content
+persistence-1  | [main] INFO kieker.monitoring.core.configuration.ConfigurationFactory - Loading configuration from JVM-specified location: '/kieker/config/kieker.monitoring.properties'
+persistence-1  | [main] INFO kieker.monitoring.core.controller.TCPController - Could not parse port for the TCPController, deactivating this option. Received string was: 
+recommender-1  | [pool-3-thread-1] WARN com.netflix.config.sources.URLConfigurationSource - No URLs will be polled as dynamic configuration sources.
+recommender-1  | [pool-3-thread-1] INFO com.netflix.config.sources.URLConfigurationSource - To enable URLs as dynamic configuration sources, define System property archaius.configurationSource.additionalUrls or make config.properties available on classpath.
+recommender-1  | [pool-3-thread-1] INFO com.netflix.loadbalancer.BaseLoadBalancer - Client:  instantiated a LoadBalancer: {NFLoadBalancer:name=,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}
+recommender-1  | [pool-3-thread-1] INFO tools.descartes.teastore.recommender.algorithm.AbstractRecommender - Training recommender finished. Training took: 19ms.
+recommender-1  | [pool-3-thread-1] INFO tools.descartes.teastore.recommender.algorithm.AbstractRecommender - Training recommender finished. Training took: 2ms.
+persistence-1  | WriterController: WriterClassName: kieker.monitoring.writer.filesystem.FileWriter
+persistence-1  | [main] INFO kieker.monitoring.core.controller.MonitoringController - Current State of kieker.monitoring (1.15-SNAPSHOT) Status: 'disabled'
+persistence-1  | 	Name: 'KIEKER'; Hostname: '0916b739b8ed'; experimentID: '1'
+persistence-1  | JMXController: JMX disabled
+persistence-1  | TimeSource: 'kieker.monitoring.timer.SystemNanoTimer'
+persistence-1  | 	Time in nanoseconds (with nanoseconds precision) since Thu Jan 01 00:00:00 UTC 1970'
+persistence-1  | ProbeController: disabled
+persistence-1  | WriterController:
+recommender-1  | [pool-1-thread-1] INFO com.netflix.loadbalancer.BaseLoadBalancer - Client:  instantiated a LoadBalancer: {NFLoadBalancer:name=,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}
+persistence-1  | 	Queue type: class kieker.monitoring.queue.BlockingQueueDecorator
+persistence-1  | 	Queue capacity: 10000
+persistence-1  | 	Insert behavior (a.k.a. QueueFullBehavior): class kieker.monitoring.queue.behavior.BlockOnFailedInsertBehavior
+persistence-1  | 		numBlocked: 0
+persistence-1  | Writer: 'kieker.monitoring.writer.filesystem.FileWriter'
+persistence-1  | 	Configuration:
+persistence-1  | 		kieker.monitoring.writer.filesystem.FileWriter.logFilePoolHandler='kieker.monitoring.writer.filesystem.RotatingLogFilePoolHandler'
+persistence-1  | 		kieker.monitoring.writer.filesystem.FileWriter.PrioritizedQueueSize='100'
+persistence-1  | 		kieker.monitoring.writer.filesystem.FileWriter.charsetName='UTF-8'
+persistence-1  | 		kieker.monitoring.writer.filesystem.FileWriter.logStreamHandler='kieker.monitoring.writer.filesystem.TextLogStreamHandler'
+persistence-1  | 		kieker.monitoring.writer.filesystem.FileWriter.bufferSize='8192'
+persistence-1  | 		kieker.monitoring.writer.filesystem.FileWriter.maxEntriesInFile='25000'
+persistence-1  | 		kieker.monitoring.writer.filesystem.FileWriter.maxLogFiles='-1'
+persistence-1  | 		kieker.monitoring.writer.filesystem.FileWriter.MaxShutdownDelay='-1'
+persistence-1  | 		kieker.monitoring.writer.filesystem.FileWriter.maxLogSize='-1'
+persistence-1  | 		kieker.monitoring.writer.filesystem.FileWriter.mapFileHandler='kieker.monitoring.writer.filesystem.TextMapFileHandler'
+persistence-1  | 		kieker.monitoring.writer.filesystem.FileWriter.flush='true'
+persistence-1  | 		kieker.monitoring.writer.filesystem.FileWriter.QueueFullBehavior='0'
+persistence-1  | 		kieker.monitoring.writer.filesystem.FileWriter.QueueSize='10000'
+persistence-1  | 		kieker.monitoring.writer.filesystem.FileWriter.customStoragePath='/kieker/logs/'
+persistence-1  | 		kieker.monitoring.writer.filesystem.FileWriter.actualStoragePath='/kieker/logs/kieker-20260304-053355-12542625643036-UTC--KIEKER'
+persistence-1  | 
+persistence-1  | 	Automatic assignment of logging timestamps: 'true'
+persistence-1  | Sampling Controller: Periodic Sensor available: Poolsize: '0'; Scheduled Tasks: '0'
+persistence-1  | [main] INFO kieker.monitoring.core.registry.ControlFlowRegistry - First threadId will be 950400258863529984
+persistence-1  | [main] INFO tools.descartes.teastore.persistence.daemons.InitialDataGenerationDaemon - Persistence finished initializing database
+persistence-1  | [main] INFO tools.descartes.teastore.persistence.daemons.InitialDataGenerationDaemon - Persistence started registration daemon
+persistence-1  | 04-Mar-2026 05:34:01.967 WARNING [main] org.glassfish.jersey.server.wadl.WadlFeature.configure JAX-B API not found . WADL feature is disabled.
+persistence-1  | 04-Mar-2026 05:34:02.503 INFO [main] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive [/usr/local/tomcat/webapps/tools.descartes.teastore.persistence.war] has finished in [43,084] ms
+persistence-1  | 04-Mar-2026 05:34:02.507 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8080"]
+persistence-1  | 04-Mar-2026 05:34:02.516 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["ajp-nio-127.0.0.1-8009"]
+persistence-1  | 04-Mar-2026 05:34:02.518 INFO [main] org.apache.catalina.startup.Catalina.start Server startup in [43583] milliseconds

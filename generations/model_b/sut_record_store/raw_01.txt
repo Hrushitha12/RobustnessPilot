@@ -7,7 +7,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class RecordStore_ModelA_Round1_RobustnessTest {
+public class RecordStore_ModelB_Round1_RobustnessTest {
 
     @Test
     public void test01_Ctor_InvalidCapacity() {
