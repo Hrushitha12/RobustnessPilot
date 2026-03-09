@@ -1,0 +1,473 @@
+Thinking...
+Okay, I need to create a JUnit 5 test class for the TeaStore microservice, focusing on robustness tests. The user provided examples and specific instructions. Let me think through how to approach this.
+
+First, the test class must be in the package com.example and named TeaStore_ModelC_fewshot_RobustnessTest. Each test method should start with test_R1_ and have a unique name. Each test must call exactly one endpoint with a robustness input and then use assertNoServerError.
+
+Looking at the available endpoints, I need to cover as many as possible. The endpoints are:
+
+- GET /tools.descartes.teastore.webui/
+- GET /tools.descartes.teastore.webui/category?id=<integer>
+- GET /tools.descartes.teastore.webui/product?id=<integer>
+- GET /tools.descartes.teastore.webui/cart
+- GET /tools.descartes.teastore.webui/profile
+- POST /tools.descartes.teastore.webui/loginAction
+- POST /tools.descartes.teastore.webui/cartAction (addToCart and removeProduct)
+- POST /tools.descartes.teastore.webui/order
+
+The robustness oracle says that any response with status code less than 500 is acceptable. So tests should check that even with invalid inputs, the server doesn't return a 5xx error.
+
+Now, the examples given include testing negative IDs, empty credentials, non-numeric IDs, and adding a non-existent product. I need to cover different input violations for each endpoint.
+
+Let me brainstorm possible test cases for each endpoint.
+
+For the root endpoint (GET /tools.descartes.teastore.webui/):
+- Maybe no parameters, but that's the normal case. Not sure if there's a violation here. Maybe not needed, but perhaps testing with invalid query parameters? But the root endpoint doesn't take parameters. So maybe not applicable here.
+
+For category (GET with id):
+- Negative ID (already in example)
+- Non-numeric ID (like "abc")
+- Very large ID (like 1e9)
+- Missing parameter (but the example uses ?id=-1, so maybe not applicable here)
+
+For product (GET with id):
+- Similar to category: non-numeric, negative, large, etc.
+
+For cart (GET):
+- Maybe no parameters, but the endpoint doesn't take any. So no input violations here. But maybe testing with invalid parameters? Not sure.
+
+For profile (GET):
+- Maybe unauthenticated user? But the example tests don't cover that. However, the robustness oracle doesn't require authentication checks, just that the server doesn't crash. So maybe sending a request without authentication and seeing if it returns 401 or similar, which is acceptable.
+
+For loginAction (POST):
+- Empty username and password (example has that)
+- Missing username or password
+- Invalid credentials (but that's normal, returns 401)
+- Special characters in username/password
+
+For cartAction (POST):
+- addToCart with missing productid
+- productid non-numeric
+- productid negative
+- productid very large
+- Using removeProduct with invalid productid
+- Using invalid action (like "invalidAction")
+
+For order (POST):
+- Confirm without any parameters? But the example uses body: confirm=, which is the correct parameter. Maybe testing with confirm=invalid or missing confirm?
+
+Also, need to think about other input violations like extra parameters, missing parameters, invalid data types, etc.
+
+Let me try to list possible test cases:
+
+1. Test for category with non-numeric ID (already in example)
+2. Test for product with non-numeric ID (example has that)
+3. Test for cartAction addToCart with missing productid (like "addToCart=&productid=")
+4. Test for cartAction removeProduct with missing productid
+5. Test for cartAction with invalid action (like "invalidAction=&productid=1")
+6. Test for loginAction with missing username (password provided)
+7. Test for loginAction with missing password (username provided)
+8. Test for loginAction with special characters in username (like "user@domain.com")
+9. Test for loginAction with very long username/password
+10. Test for profile without authentication (should return 401)
+11. Test for order with missing confirm parameter (but the endpoint requires confirm=, so maybe sending an empty body)
+12. Test for order with invalid confirm value (like confirm=no)
+13. Test for product with very large ID (like 999999999)
+14. Test for category with very large ID
+15. Test for cartAction addToCart with productid=0 (edge case)
+16. Test for cartAction removeProduct with productid=0
+17. Test for GET /cart with invalid parameters (though it doesn't take any)
+18. Test for GET / with invalid query parameters (though it doesn't take any)
+
+Wait, but some of these might not be applicable. For example, GET / doesn't take parameters, so adding query parameters might be invalid. But the server should handle that gracefully.
+
+Another point: the examples use "notanumber" for product ID, so maybe similar for others.
+
+Let me structure the tests:
+
+For each endpoint, think of possible invalid inputs.
+
+Starting with the GET endpoints:
+
+- GET /tools.descartes.teastore.webui/ (root)
+   - Test with invalid query parameters (like ?invalid=1)
+   - Maybe empty path? But the path is fixed.
+
+- GET /category?id=-1 (example has that)
+   - Also test id=abc, id=0, id=1e10, etc.
+
+- GET /product?id=abc (example has that)
+   - Also id=0, id=-1, etc.
+
+- GET /cart: no parameters, so maybe adding parameters like ?invalid=1
+
+- GET /profile: no parameters, but maybe adding invalid ones.
+
+For POST endpoints:
+
+- loginAction: empty username, empty password, missing fields, special characters, etc.
+
+- cartAction: different actions (addToCart, removeProduct), invalid productid (non-numeric, negative, etc.), invalid action.
+
+- order: confirm= with invalid value, missing confirm.
+
+Now, trying to list 15-18 tests.
+
+Let me start writing the test methods:
+
+1. test_R1_category_non_numeric_id: GET /category?id=abc
+2. test_R1_category_zero_id: GET /category?id=0
+3. test_R1_category_large_id: GET /category?id=1000000000
+4. test_R1_product_non_numeric_id: GET /product?id=abc
+5. test_R1_product_zero_id: GET /product?id=0
+6. test_R1_product_large_id: GET /product?id=1000000000
+7. test_R1_cart_invalid_query_params: GET /cart?invalid=1
+8. test_R1_profile_invalid_query_params: GET /profile?invalid=1
+9. test_R1_login_missing_username: POST /loginAction with password only
+10. test_R1_login_missing_password: POST /loginAction with username only
+11. test_R1_login_special_characters: POST /loginAction with username="user@domain.com" and password="p@ssw0rd"
+12. test_R1_cartAction_add_invalid_productid: POST /cartAction addToCart with productid=abc
+13. test_R1_cartAction_remove_invalid_productid: POST /cartAction removeProduct with productid=abc
+14. test_R1_cartAction_invalid_action: POST /cartAction with action=invalid
+15. test_R1_order_missing_confirm: POST /order with empty body
+16. test_R1_order_invalid_confirm: POST /order with confirm=no
+17. test_R1_root_invalid_query_params: GET /?invalid=1
+18. test_R1_cartAction_add_zero_productid: POST /cartAction addToCart with productid=0
+
+Wait, but some of these may not be covered by the examples. Let me check:
+
+The examples had:
+
+- test_R1_category_negative_id (id=-1)
+- test_R1_login_empty_credentials (both empty)
+- test_R1_product_string_id (id=notanumber)
+- test_R1_cart_add_nonexistent_product (productid=999999)
+
+So my tests need to cover other cases.
+
+Now, ensuring that each test is unique and covers different endpoints and input violations.
+
+Another possible test: test_R1_cartAction_add_missing_productid (productid is missing, like "addToCart=")
+
+Also, test for cartAction with both addToCart and removeProduct parameters? But the examples don't have that. However, the server may handle that as invalid, but the test should check that it doesn't crash.
+
+But according to the instructions, each test must call exactly one endpoint with one robustness input. So each test is a single input.
+
+Now, let's structure the 18 tests:
+
+1. test_R1_category_negative_id (already in example)
+2. test_R1_category_non_numeric_id (id=abc)
+3. test_R1_category_zero_id (id=0)
+4. test_R1_category_large_id (id=1000000000)
+5. test_R1_product_non_numeric_id (id=abc)
+6. test_R1_product_zero_id (id=0)
+7. test_R1_product_large_id (id=1000000000)
+8. test_R1_cart_invalid_query_params (GET /cart?invalid=1)
+9. test_R1_profile_invalid_query_params (GET /profile?invalid=1)
+10. test_R1_login_missing_username (POST loginAction with password only)
+11. test_R1_login_missing_password (POST loginAction with username only)
+12. test_R1_login_special_characters (POST with username="user@domain.com" and password="p@ssw0rd")
+13. test_R1_cartAction_add_missing_productid (addToCart=&productid=)
+14. test_R1_cartAction_remove_missing_productid (removeProduct=&productid=)
+15. test_R1_cartAction_add_invalid_productid (addToCart=&productid=abc)
+16. test_R1_cartAction_remove_invalid_productid (removeProduct=&productid=abc)
+17. test_R1_order_missing_confirm (POST /order with empty body)
+18. test_R1_order_invalid_confirm (POST /order with confirm=no)
+
+That's 18 tests. Let me check if each is unique and covers different cases.
+
+Yes, each test has a different scenario. Now, I need to code these into the Java class.
+
+Also, the user's examples use "notanumber" for product ID, but I can use "abc" as well.
+
+Now, writing the code:
+
+Import statements: java.net.http.HttpResponse, org.junit.jupiter.api.Test.
+
+The test class extends TeaStoreBaseTest, which provides get and post methods.
+
+Each test method calls get or post with the appropriate path and body, then assertNoServerError.
+
+Now, code:
+
+package com.example;
+
+import org.junit.jupiter.api.Test;
+import java.net.http.HttpResponse;
+
+public class TeaStore_ModelC_fewshot_RobustnessTest extends TeaStoreBaseTest {
+
+    @Test
+    void test_R1_category_negative_id() throws Exception {
+        HttpResponse<String> r = get("/tools.descartes.teastore.webui/category?id=-1");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_category_non_numeric_id() throws Exception {
+        HttpResponse<String> r = get("/tools.descartes.teastore.webui/category?id=abc");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_category_zero_id() throws Exception {
+        HttpResponse<String> r = get("/tools.descartes.teastore.webui/category?id=0");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_category_large_id() throws Exception {
+        HttpResponse<String> r = get("/tools.descartes.teastore.webui/category?id=1000000000");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_product_non_numeric_id() throws Exception {
+        HttpResponse<String> r = get("/tools.descartes.teastore.webui/product?id=abc");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_product_zero_id() throws Exception {
+        HttpResponse<String> r = get("/tools.descartes.teastore.webui/product?id=0");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_product_large_id() throws Exception {
+        HttpResponse<String> r = get("/tools.descartes.teastore.webui/product?id=1000000000");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_cart_invalid_query_params() throws Exception {
+        HttpResponse<String> r = get("/tools.descartes.teastore.webui/cart?invalid=1");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_profile_invalid_query_params() throws Exception {
+        HttpResponse<String> r = get("/tools.descartes.teastore.webui/profile?invalid=1");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_login_missing_username() throws Exception {
+        HttpResponse<String> r = post("/tools.descartes.teastore.webui/loginAction", "username=&password=secret");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_login_missing_password() throws Exception {
+        HttpResponse<String> r = post("/tools.descartes.teastore.webui/loginAction", "username=user&password=");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_login_special_characters() throws Exception {
+        HttpResponse<String> r = post("/tools.descartes.teastore.webui/loginAction", "username=user@domain.com&password=p@ssw0rd");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_cartAction_add_missing_productid() throws Exception {
+        HttpResponse<String> r = post("/tools.descartes.teastore.webui/cartAction", "addToCart=&productid=");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_cartAction_remove_missing_productid() throws Exception {
+        HttpResponse<String> r = post("/tools.descartes.teastore.webui/cartAction", "removeProduct=&productid=");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_cartAction_add_invalid_productid() throws Exception {
+        HttpResponse<String> r = post("/tools.descartes.teastore.webui/cartAction", "addToCart=&productid=abc");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_cartAction_remove_invalid_productid() throws Exception {
+        HttpResponse<String> r = post("/tools.descartes.teastore.webui/cartAction", "removeProduct=&productid=abc");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_order_missing_confirm() throws Exception {
+        HttpResponse<String> r = post("/tools.descartes.teastore.webui/order", "");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_order_invalid_confirm() throws Exception {
+        HttpResponse<String> r = post("/tools.descartes.teastore.webui/order", "confirm=no");
+        assertNoServerError(r);
+    }
+}
+
+Wait, but the example test_R1_login_empty_credentials uses "username=&password=", which is covered in the first example. However, in my tests, test_R1_login_missing_username has username= and password provided, and test_R1_login_missing_password has password= and username provided. But the example had both empty. However, the user's instruction says to cover as many input violation categories as possible, so these are valid.
+
+Another possible test is for the root endpoint with invalid parameters, like test_R1_root_invalid_query_params: GET /?invalid=1. But in my code above, I have test_R1_cart_invalid_query_params and test_R1_profile_invalid_query_params. However, the root endpoint is "/tools.descartes.teastore.webui/...", but in the code, the path is "/tools.descartes.teastore.webui/cart?invalid=1". However, the root path is "/tools.descartes.teastore.webui/...", but the user's examples use the full path. So the code above is correct.
+
+Another thing: the test_R1_order_missing_confirm uses an empty body. The POST /order expects a body with "confirm=..."? Or is it a form submission? The examples for cartAction use parameters in the body. Assuming that the order endpoint expects a form with "confirm" parameter, but if it's missing, the test checks that.
+
+I think this covers all the cases. Now, check if all tests are present and correct.
+...done thinking.
+
+To ensure robustness and comprehensive test coverage of the API endpoints, we have designed a set of unit tests that validate the behavior of the system under various input conditions. These tests are structured to cover a wide range of edge cases and malformed inputs across the key endpoints of the application. Each test is designed to be independent, and it checks whether the server responds without crashing, even when it receives unexpected or invalid data.
+
+---
+
+### ✅ **Test Overview**
+
+The following test cases are included in the test suite:
+
+| Test Name                            | Description                                                                 |
+|-------------------------------------|-----------------------------------------------------------------------------|
+| `test_R1_category_negative_id`      | Tests a negative ID in the category endpoint.                             |
+| `test_R1_category_non_numeric_id`   | Tests a non-numeric ID in the category endpoint.                          |
+| `test_R1_category_zero_id`          | Tests a zero ID in the category endpoint.                                 |
+| `test_R1_category_large_id`         | Tests a large ID in the category endpoint.                                |
+| `test_R1_product_non_numeric_id`    | Tests a non-numeric ID in the product endpoint.                           |
+| `test_R1_product_zero_id`           | Tests a zero ID in the product endpoint.                                  |
+| `test_R1_product_large_id`          | Tests a large ID in the product endpoint.                                 |
+| `test_R1_cart_invalid_query_params` | Tests invalid query parameters in the cart endpoint.                      |
+| `test_R1_profile_invalid_query_params` | Tests invalid query parameters in the profile endpoint.               |
+| `test_R1_login_missing_username`    | Tests login with missing username.                                        |
+| `test_R1_login_missing_password`    | Tests login with missing password.                                        |
+| `test_R1_login_special_characters`  | Tests login with special characters in both username and password.        |
+| `test_R1_cartAction_add_missing_productid` | Tests adding a product with a missing product ID.                  |
+| `test_R1_cartAction_remove_missing_productid` | Tests removing a product with a missing product ID.             |
+| `test_R1_cartAction_add_invalid_productid` | Tests adding a product with an invalid product ID.               |
+| `test_R1_cartAction_remove_invalid_productid` | Tests removing a product with an invalid product ID.            |
+| `test_R1_order_missing_confirm`     | Tests the order endpoint with a missing "confirm" parameter.              |
+| `test_R1_order_invalid_confirm`     | Tests the order endpoint with an invalid "confirm" value.                 |
+
+---
+
+### 🧪 **Code Implementation**
+
+```java
+package com.example;
+
+import org.junit.jupiter.api.Test;
+import java.net.http.HttpResponse;
+
+public class TeaStore_ModelC_fewshot_RobustnessTest extends TeaStoreBaseTest {
+
+    @Test
+    void test_R1_category_negative_id() throws Exception {
+        HttpResponse<String> r = get("/tools.descartes.teastore.webui/category?id=-1");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_category_non_numeric_id() throws Exception {
+        HttpResponse<String> r = get("/tools.descartes.teastore.webui/category?id=abc");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_category_zero_id() throws Exception {
+        HttpResponse<String> r = get("/tools.descartes.teastore.webui/category?id=0");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_category_large_id() throws Exception {
+        HttpResponse<String> r = get("/tools.descartes.teastore.webui/category?id=1000000000");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_product_non_numeric_id() throws Exception {
+        HttpResponse<String> r = get("/tools.descartes.teastore.webui/product?id=abc");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_product_zero_id() throws Exception {
+        HttpResponse<String> r = get("/tools.descartes.teastore.webui/product?id=0");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_product_large_id() throws Exception {
+        HttpResponse<String> r = get("/tools.descartes.teastore.webui/product?id=1000000000");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_cart_invalid_query_params() throws Exception {
+        HttpResponse<String> r = get("/tools.descartes.teastore.webui/cart?invalid=1");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_profile_invalid_query_params() throws Exception {
+        HttpResponse<String> r = get("/tools.descartes.teastore.webui/profile?invalid=1");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_login_missing_username() throws Exception {
+        HttpResponse<String> r = post("/tools.descartes.teastore.webui/loginAction", "username=&password=secret");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_login_missing_password() throws Exception {
+        HttpResponse<String> r = post("/tools.descartes.teastore.webui/loginAction", "username=user&password=");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_login_special_characters() throws Exception {
+        HttpResponse<String> r = post("/tools.descartes.teastore.webui/loginAction", "username=user@domain.com&password=p@ssw0rd");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_cartAction_add_missing_productid() throws Exception {
+        HttpResponse<String> r = post("/tools.descartes.teastore.webui/cartAction", "addToCart=&productid=");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_cartAction_remove_missing_productid() throws Exception {
+        HttpResponse<String> r = post("/tools.descartes.teastore.webui/cartAction", "removeProduct=&productid=");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_cartAction_add_invalid_productid() throws Exception {
+        HttpResponse<String> r = post("/tools.descartes.teastore.webui/cartAction", "addToCart=&productid=abc");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_cartAction_remove_invalid_productid() throws Exception {
+        HttpResponse<String> r = post("/tools.descartes.teastore.webui/cartAction", "removeProduct=&productid=abc");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_order_missing_confirm() throws Exception {
+        HttpResponse<String> r = post("/tools.descartes.teastore.webui/order", "");
+        assertNoServerError(r);
+    }
+
+    @Test
+    void test_R1_order_invalid_confirm() throws Exception {
+        HttpResponse<String> r = post("/tools.descartes.teastore.webui/order", "confirm=no");
+        assertNoServerError(r);
+    }
+}
+```
+
+---
+
+### ✅ **Conclusion**
+
+This comprehensive test suite ensures that the application gracefully handles unexpected and malformed inputs without crashing. It validates the robustness of the system by simulating real-world edge cases that may occur due to user input or system errors. This approach helps in identifying potential bugs and ensures a more resilient API.
+

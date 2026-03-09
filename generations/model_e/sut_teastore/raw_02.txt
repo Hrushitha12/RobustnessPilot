@@ -1,0 +1,104 @@
+```java
+package com.example;
+
+import java.net.http.HttpResponse;
+import org.junit.jupiter.api.Test;
+
+public class TeaStore_ModelE_Structured_RobustnessTest extends TeaStoreBaseTest {
+
+    @Test
+    public void test_R1_Category_NegativeId() {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category?id=-1");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R2_Category_ZeroId() {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category?id=0");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R3_Category_NonIntegerId() {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category?id=abc");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R4_Category_MissingId() {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category?");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R5_Category_ExtremelyLargeId() {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category?id=2147483647");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R6_Product_NegativeId() {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/product?id=-1");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R7_Product_NonIntegerId() {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/product?id=abc");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R8_LoginAction_EmptyUsername() {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "username=&password=password");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R9_LoginAction_SqlInjectionUsername() {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "username=' OR 1=1 -- &password=password");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R10_LoginAction_ExtremelyLongUsername() {
+        StringBuilder extremelyLongString = new StringBuilder();
+        for (int i = 0; i < 5000; i++) {
+            extremelyLongString.append("a");
+        }
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "username=" + extremelyLongString.toString() + "&password=password");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R11_LoginAction_NullLikePassword() {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "username=username&password=null");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R12_CartAction_AddToCart_NonExistentId() {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/cartAction", "addToCart=&productid=999999");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R13_CartAction_RemoveProduct_NonExistentId() {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/cartAction", "removeProduct=&productid=999999");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R14_Order_UnauthenticatedAccess() {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/order", "confirm=");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R15_UnknownEndpoint() {
+        HttpResponse<String> response = get("/unknown/endpoint");
+        assertNoServerError(response);
+    }
+}
+```
+

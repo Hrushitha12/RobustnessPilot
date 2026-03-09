@@ -1,0 +1,94 @@
+```java
+package com.example;
+
+import java.net.http.HttpResponse;
+import org.junit.jupiter.api.Test;
+
+public class TeaStore_ModelD_ZeroShot_RobustnessTest extends TeaStoreBaseTest {
+
+    @Test
+    public void test_R1_EmptyPath() {
+        HttpResponse<String> response = get("");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_InvalidCategoryID() {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category?id=invalid");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_NegativeCategoryID() {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category?id=-1");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_ZeroCategoryID() {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category?id=0");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_InvalidProductID() {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/product?id=invalid");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_NegativeProductID() {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/product?id=-1");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_ZeroProductID() {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/product?id=0");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_MissingUsernameInLogin() {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "password=password");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_MissingPasswordInLogin() {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "username=username");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_EmptyBodyInLogin() {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_MissingProductIDInAddToCart() {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/cartAction", "addToCart=");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_InvalidProductIDInRemoveFromCart() {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/cartAction", "removeProduct=invalid");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_NegativeProductIDInAddToCart() {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/cartAction", "addToCart=&productid=-1");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_EmptyBodyInOrderConfirmation() {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/order", "");
+        assertNoServerError(response);
+    }
+}
+```
+

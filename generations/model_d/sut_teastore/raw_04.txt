@@ -1,0 +1,94 @@
+```java
+package com.example;
+
+import java.net.http.HttpResponse;
+import org.junit.jupiter.api.Test;
+
+class TeaStore_ModelD_Self_RobustnessTest extends TeaStoreBaseTest {
+
+    @Test
+    void test_R1_GetRoot() throws Exception {
+        HttpResponse<String> response = get("/");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_GetCategoryValidId() throws Exception {
+        HttpResponse<String> response = get("/category?id=1");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_GetCategoryInvalidId() throws Exception {
+        HttpResponse<String> response = get("/category?id=-1");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_GetProductValidId() throws Exception {
+        HttpResponse<String> response = get("/product?id=1");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_GetProductInvalidId() throws Exception {
+        HttpResponse<String> response = get("/product?id=-1");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_GetCart() throws Exception {
+        HttpResponse<String> response = get("/cart");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_GetProfile() throws Exception {
+        HttpResponse<String> response = get("/profile");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostLoginActionValidCredentials() throws Exception {
+        HttpResponse<String> response = post("/loginAction", "username=admin&password=password");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostLoginActionInvalidCredentials() throws Exception {
+        HttpResponse<String> response = post("/loginAction", "username=invalid&password=invalid");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostCartActionAddToCartValidProductId() throws Exception {
+        HttpResponse<String> response = post("/cartAction", "addToCart=&productid=1");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostCartActionAddToCartInvalidProductId() throws Exception {
+        HttpResponse<String> response = post("/cartAction", "addToCart=&productid=-1");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostCartActionRemoveProductValidProductId() throws Exception {
+        HttpResponse<String> response = post("/cartAction", "removeProduct=&productid=1");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostCartActionRemoveProductInvalidProductId() throws Exception {
+        HttpResponse<String> response = post("/cartAction", "removeProduct=&productid=-1");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostOrderConfirm() throws Exception {
+        HttpResponse<String> response = post("/order", "confirm=");
+        assertNoServerError(response);
+    }
+}
+```
+
