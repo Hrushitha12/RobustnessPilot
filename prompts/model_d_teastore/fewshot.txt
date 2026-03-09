@@ -57,7 +57,7 @@ Following the same style as the examples above, write a JUnit 5 test class with 
 Cover as many different endpoints and input violation categories as possible.
 
 Package: com.example
-Class name: TeaStore_ModelC_fewshot_RobustnessTest
+Class name: TeaStore_ModelD_fewshot_RobustnessTest
 Each test method must have a unique name starting with test_R1_
 Each test must call get() or post() with a robustness input and then call assertNoServerError()
 Do not use assertThrows
