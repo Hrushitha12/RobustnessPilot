@@ -55,7 +55,7 @@ Translate your selected violations into JUnit 5 test methods.
 Output format:
 
 Package: com.example
-Class name: TeaStore_ModelC_cot_RobustnessTest
+Class name: TeaStore_ModelD_cot_RobustnessTest
 Each test method must have a unique name starting with test_R1_
 Each test must call get() or post() with a robustness input and then call assertNoServerError()
 Do not use assertThrows

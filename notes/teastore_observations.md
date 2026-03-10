@@ -286,3 +286,66 @@ ZeroShot, Structured, and CoT all failed to compile across all three models
 due to the same missing throws declaration. This is a direct prompt
 engineering finding: these prompt types need an explicit instruction
 stating that every test method must declare `throws Exception`.
+
+
+
+---
+
+## Round 2 (v2 Prompts) — throws Exception Fix Applied
+
+### Change from Round 1
+All ZeroShot, Structured, and CoT prompts were updated to include:
+"Each test method must declare throws Exception in its signature"
+FewShot and Self were not rerun as they already compiled in round 1.
+
+### Compile Results
+
+| Model  | Prompt     | Round 1  | Round 2  |
+|--------|------------|----------|----------|
+| C      | ZeroShot   | FAIL     | FAIL (MALFORMED_OUTPUT — Chinese text in generation) |
+| C      | Structured | FAIL     | PASS     |
+| C      | CoT        | FAIL     | PASS     |
+| D      | ZeroShot   | FAIL     | PASS     |
+| D      | Structured | FAIL     | PASS     |
+| D      | CoT        | FAIL     | PASS     |
+| E      | ZeroShot   | FAIL     | PASS     |
+| E      | Structured | FAIL     | PASS     |
+| E      | CoT        | FAIL     | PASS     |
+
+Round 2 compile rate: 8/9 (89%)
+Only failure: model_c ZeroShot v2 — qwen3:14b produced Chinese text
+mixed into the Java output when no few-shot examples were present.
+
+### Runtime Results v2
+
+| Model | Prompt     | Tests | PASS | FAIL |
+|-------|------------|-------|------|------|
+| C     | Structured | 16    | 14   | 2    |
+| C     | CoT        | 18    | 14   | 4    |
+| D     | ZeroShot   | 14    | 14   | 0    |
+| D     | Structured | 16    | 14   | 2    |
+| D     | CoT        | 14    | 9    | 5    |
+| E     | ZeroShot   | 18    | 16   | 2    |
+| E     | Structured | 16    | 14   | 2    |
+| E     | CoT        | 17    | 13   | 4    |
+
+### Key Finding from Round 2
+Adding a single explicit instruction ("each test method must declare
+throws Exception") raised compile rate from 40% to 89% across all
+three models. This confirms the round 1 failures were entirely
+prompt-driven, not model capability failures. The models knew how
+to write correct robustness tests — they just needed to be told
+about the Java checked exception requirement explicitly.
+
+### model_d Self — Crash Investigation Result
+
+The original run of model_d Self (round 1) showed canary=FAIL for the
+last 5 tests, suggesting TeaStore crashed mid-run.
+
+Crash investigation rerun (after fresh env_down + env_up): all 14 tests
+PASSED with canary=PASS across all. The crash was NOT reproducible.
+
+Conclusion: The original failure was a transient environment instability,
+not a deterministic robustness vulnerability triggered by a specific test
+input. Likely caused by accumulated system state from prior test runs
+during the same session without a full environment restart between runs.

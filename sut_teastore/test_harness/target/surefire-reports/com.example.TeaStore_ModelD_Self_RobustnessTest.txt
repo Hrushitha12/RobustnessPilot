@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.example.TeaStore_ModelD_Self_RobustnessTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.544 s -- in com.example.TeaStore_ModelD_Self_RobustnessTest

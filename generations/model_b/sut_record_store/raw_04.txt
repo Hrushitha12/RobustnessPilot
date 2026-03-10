@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import java.util.*;
 
-public class RecordStore_ModelA_Round4_RobustnessTest {
+public class RecordStore_ModelB_Round4_RobustnessTest {
 
     @Test
     public void testNullCapacity() {

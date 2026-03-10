@@ -1,0 +1,17 @@
+-------------------------------------------------------------------------------
+Test set: com.example.TeaStore_ModelD_CoT_v2_RobustnessTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.648 s <<< FAILURE! -- in com.example.TeaStore_ModelD_CoT_v2_RobustnessTest
+com.example.TeaStore_ModelD_CoT_v2_RobustnessTest.test_R1_EmptyProductId -- Time elapsed: 0.603 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Server returned 5xx for robustness input: 500 ==> expected: <true> but was: <false>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)
+	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)
+	at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:214)
+	at com.example.TeaStoreBaseTest.assertNoServerError(TeaStoreBaseTest.java:60)
+	at com.example.TeaStore_ModelD_CoT_v2_RobustnessTest.test_R1_EmptyProductId(TeaStore_ModelD_CoT_v2_RobustnessTest.java:23)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+

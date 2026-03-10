@@ -1,3 +1,17 @@
 com\example\CanaryTest.class
+com\example\TeaStore_ModelC_fewshot_RobustnessTest.class
+com\example\TeaStore_ModelE_fewshot_RobustnessTest.class
+com\example\TeaStore_ModelC_Self_RobustnessTest.class
+com\example\TeaStore_ModelE_ZeroShot_v2_RobustnessTest.class
+com\example\TeaStore_ModelD_ZeroShot_v2_RobustnessTest.class
+com\example\TeaStore_ModelD_CoT_v2_RobustnessTest.class
+com\example\TeaStore_ModelE_Self_RobustnessTest.class
 com\example\TeaStoreBaseTest.class
+com\example\TeaStore_ModelE_CoT_v2_RobustnessTest.class
+com\example\TeaStore_ModelC_CoT_v2_RobustnessTest.class
+com\example\TeaStore_ModelD_fewshot_RobustnessTest.class
 com\example\TeaStore_Manual_R1_RobustnessTest.class
+com\example\TeaStore_ModelC_Structured_v2_RobustnessTest.class
+com\example\TeaStore_ModelE_Structured_v2_RobustnessTest.class
+com\example\TeaStore_ModelD_Self_RobustnessTest.class
+com\example\TeaStore_ModelD_Structured_v2_RobustnessTest.class

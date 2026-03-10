@@ -1,0 +1,108 @@
+package com.example;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import java.net.http.HttpResponse;
+
+public class TeaStore_ModelE_Structured_v2_RobustnessTest extends TeaStoreBaseTest {
+
+    @Test
+    public void test_R1_category_negative_id() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category?id=-1");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R2_category_zero_id() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category?id=0");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R3_category_non_integer_string_id() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category?id=abc");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R4_category_missing_id() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category?");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R5_category_extremely_large_integer_id() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category?id=999999999");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R6_product_negative_id() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/product?id=-1");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R7_product_non_integer_string_id() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/product?id=abc");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R8_loginAction_empty_username() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "username=&password=pwd");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R9_loginAction_sql_injection_payload_username() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "username=' OR 1=1 --&password=pwd");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R10_loginAction_extremely_long_string_username() throws Exception {
+        StringBuilder longString = new StringBuilder();
+        for (int i = 0; i < 5000; i++) {
+            longString.append("a");
+        }
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "username=" + longString.toString() + "&password=pwd");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R11_loginAction_null_like_string_password() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "username=user&password=null");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R12_cartAction_addToCart_non_existent_id() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/cartAction", "addToCart=&productid=999999");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R13_cartAction_addToCart_negative_id() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/cartAction", "addToCart=&productid=-1");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R14_cartAction_removeProduct_non_existent_id() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/cartAction", "removeProduct=&productid=999999");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R15_order_unauthenticated_access() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/order?confirm=");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R16_unknown_endpoint() throws Exception {
+        HttpResponse<String> response = get("/unknown/endpoint");
+        assertNoServerError(response);
+    }
+}

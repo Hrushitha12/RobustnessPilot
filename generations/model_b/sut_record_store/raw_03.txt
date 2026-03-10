@@ -4,7 +4,7 @@ package pilot.records;
 import org.junit.jupiter.api.Test;
 import java.util.Map;
 
-public class RecordStore_ModelA_Round3_RobustnessTest {
+public class RecordStore_ModelB_Round3_RobustnessTest {
 
     @Test
     void test_null_type_on_constructor() {
