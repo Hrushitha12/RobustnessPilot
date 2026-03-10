@@ -1,0 +1,232 @@
+Thinking...
+Okay, I need to write a JUnit 5 test class for the TeaStore microservice's robustness. Let's see the requirements.
+
+First, the class must be in the package com.example and named TeaStore_ModelC_Structured_v2_RobustnessTest. Each test method should start with test_R1_ and throw Exception. They must use get or post with the specified inputs and then call assertNoServerError.
+
+Looking at the violation categories table, there are 15 entries. Let me go through each one and map them to test methods.
+
+For the category endpoint:
+- id as negative integer (-1)
+- id as zero (0)
+- id as non-integer string ("abc")
+- id missing
+- extremely large integer (maybe 1e18?)
+
+Product id similar to category, but for product endpoint.
+
+LoginAction has username empty, SQL injection, and long string. Password has "null" as value.
+
+CartAction addToCart with non-existent productid (999999) and negative. RemoveProduct with non-existent.
+
+Order endpoint without session (unauthenticated).
+
+Unknown endpoint.
+
+So, I need to create test methods for each of these. Let's count: category has 5, product 2, loginAction 3, password 1, cartAction addToCart 2, removeProduct 1, order 1, unknown endpoint 1. That's 5+2+3+1+2+1+1+1=16. Close to 15-18. Maybe some can be combined, but the table lists them as separate entries.
+
+Now, how to structure the test methods. Each test method should call get or post with the specific input and then assertNoServerError.
+
+For example, for category with id -1: get("/tools.descartes.teastore.webui/category?id=-1"), then assertNoServerError.
+
+Same for others. For the missing id in category, the path would be "/tools.descartes.teastore.webui/category" without the id parameter.
+
+For the unknown endpoint, maybe a get to "/unknown" or something similar.
+
+For the order endpoint, since it requires a session, but the test is unauthenticated. So, maybe send a GET to /order? Or POST? The order endpoint is POST /tools.descartes.teastore.webui/order with body confirm=, but without a session. So the test would be a POST to that path with the body, and check the response is <500.
+
+For SQL injection in username, maybe use something like "admin' OR '1'='1".
+
+For extremely long username, create a string of 5000 characters.
+
+For the cartAction, when adding, the body is addToCart=&productid=... So for non-existent productid 999999, the body is addToCart=&productid=999999.
+
+Same for removeProduct with productid=999999.
+
+For the extremely large integer, maybe use 1000000000000000000 (1e18) as the id.
+
+Now, let's map each entry to a test method.
+
+Test_R1_CategoryNegativeId: get category with id -1.
+
+Test_R1_CategoryZeroId: get category with id 0.
+
+Test_R1_CategoryNonInteger: get category with id "abc".
+
+Test_R1_CategoryMissingId: get category without id.
+
+Test_R1_CategoryLargeId: get category with id 1e18.
+
+Test_R1_ProductNegativeId: get product with id -1.
+
+Test_R1_ProductNonInteger: get product with id "abc".
+
+Test_R1_LoginEmptyUsername: post loginAction with empty username and some password.
+
+Test_R1_LoginSqlUsername: post loginAction with username as SQL injection string and password.
+
+Test_R1_LoginLongUsername: post loginAction with username of 5000 chars.
+
+Test_R1_PasswordNullLike: post loginAction with password "null".
+
+Test_R1_CartAddNonExistent: post cartAction addToCart with productid 999999.
+
+Test_R1_CartAddNegative: post cartAction addToCart with productid -1.
+
+Test_R1_CartRemoveNonExistent: post cartAction removeProduct with productid 999999.
+
+Test_R1_OrderNoSession: post order with confirm=.
+
+Test_R1_UnknownEndpoint: get to a non-existent path like /unknown.
+
+That's 16 tests. The user said 15-18, so that's acceptable.
+
+Now, implement each test method.
+
+Each method will call get or post with the appropriate parameters, then assertNoServerError.
+
+For the unknown endpoint, maybe use get("/tools.descartes.teastore.webui/unknown").
+
+For the order test, since it's a POST, the body is "confirm=".
+
+For the SQL injection, the username could be "admin'--", and password "anything".
+
+For the long username, create a string of 5000 'a's.
+
+Now, code each test method.
+
+Make sure each method has a unique name starting with test_R1_, and throws Exception.
+
+Also, import statements: java.net.http.HttpResponse, org.junit.jupiter.api.Test.
+
+So, the code would look like:
+
+package com.example;
+
+import org.junit.jupiter.api.Test;
+import java.net.http.HttpResponse;
+
+public class TeaStore_ModelC_Structured_v2_RobustnessTest extends TeaStoreBaseTest {
+
+    @Test
+    public void test_R1_CategoryNegativeId() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category?id=-1");
+        assertNoServerError(response);
+    }
+
+    // similar for others...
+
+}
+
+I need to write all 16 methods. Let me check each one again.
+
+Yes, that's all. Now, code them all.
+...done thinking.
+
+package com.example;
+
+import org.junit.jupiter.api.Test;
+import java.net.http.HttpResponse;
+
+public class TeaStore_ModelC_Structured_v2_RobustnessTest extends TeaStoreBaseTest {
+
+    @Test
+    public void test_R1_CategoryNegativeId() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category?id=-1");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CategoryZeroId() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category?id=0");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CategoryNonInteger() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category?id=abc");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CategoryMissingId() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CategoryLargeId() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category?id=1000000000000000000");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_ProductNegativeId() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/product?id=-1");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_ProductNonInteger() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/product?id=abc");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_LoginEmptyUsername() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "username=&password=pass");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_LoginSqlUsername() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "username=admin'--&password=pass");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_LoginLongUsername() throws Exception {
+        StringBuilder longUsername = new StringBuilder();
+        for (int i = 0; i < 5000; i++) {
+            longUsername.append('a');
+        }
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "username=" + longUsername + "&password=pass");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_PasswordNullLike() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "username=user&password=null");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CartAddNonExistent() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/cartAction", "addToCart=&productid=999999");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CartAddNegative() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/cartAction", "addToCart=&productid=-1");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CartRemoveNonExistent() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/cartAction", "removeProduct=&productid=999999");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_OrderNoSession() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/order", "confirm=");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_UnknownEndpoint() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/unknown");
+        assertNoServerError(response);
+    }
+}
+

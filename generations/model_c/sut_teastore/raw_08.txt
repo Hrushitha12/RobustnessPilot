@@ -1,0 +1,163 @@
+Thinking...
+Okay, I need to create a JUnit 5 test class for the TeaStore microservice. The goal is to test robustness, ensuring that the system handles invalid inputs gracefully without returning 5xx errors. Let me go through the steps outlined.
+
+First, Step 1: Identify input categories per endpoint. For each endpoint, I need to list parameters that can have invalid inputs. For example, the GET /category endpoint has an 'id' parameter which is an integer. Possible violations here could be negative numbers, zero, max integer, non-integer strings, etc. Similarly, the POST /loginAction requires username and password, so invalid inputs could be empty strings, whitespace, special characters, etc.
+
+Step 2: State-based scenarios. Endpoints like /cartAction (add or remove) require a session. If someone tries to add a product without being logged in, the system should handle that. Also, trying to remove a product that's not in the cart. The /profile endpoint probably needs authentication, so accessing it without a session might return a 401 or similar.
+
+Step 3: Boundary conditions. For integer parameters, check min and max values. For strings, check empty, whitespace, very long strings, special characters. For example, the product ID in /product?id= could be tested with negative numbers, zero, very large numbers, or non-integer strings.
+
+Step 4: System-level scenarios. Testing unknown endpoints, like /invalidpath. Also, POST requests with empty bodies or missing parameters. For example, the POST /cartAction might require the 'productid' parameter; missing that could be a problem.
+
+Step 5: Select 15-18 tests. Need to cover different endpoints and different types of violations. Avoid repeating the same type of test on the same endpoint. For example, test different invalid inputs for /loginAction, but also check other endpoints like /cart, /profile, etc.
+
+Now, considering all that, let's outline possible tests:
+
+1. Test GET /category with invalid ID (non-integer string).
+2. Test GET /category with negative ID.
+3. Test GET /category with ID larger than max integer.
+4. Test GET /product with invalid ID.
+5. Test GET /product with negative ID.
+6. Test GET /product with ID larger than max integer.
+7. Test GET /cart without being logged in (should return 401 or similar).
+8. Test POST /loginAction with empty username.
+9. Test POST /loginAction with empty password.
+10. Test POST /loginAction with whitespace-only username.
+11. Test POST /loginAction with whitespace-only password.
+12. Test POST /loginAction with very long username.
+13. Test POST /loginAction with very long password.
+14. Test POST /cartAction (add) without productid.
+15. Test POST /cartAction (remove) without productid.
+16. Test POST /cartAction (remove) with productid not in cart.
+17. Test GET /profile without authentication.
+18. Test POST /order with empty body.
+
+Each of these tests should call get or post with the specific input and then check that the response is not a 5xx error.
+
+Now, translating these into Java code. The test class must extend TeaStoreBaseTest, which provides the get and post methods. Each test method must be named test_R1_ followed by a number. They should throw Exception, and use assertNoServerError.
+
+For example, for test_R1_01, I would do a GET to /category with an invalid ID like "abc".
+
+Another example: test_R1_07 would be a GET to /cart without authentication, expecting a 401 or similar.
+
+I need to make sure that each test is unique and covers different endpoints and input types. Also, avoid testing the same violation on the same endpoint multiple times.
+
+Now, writing the code with these tests.
+...done thinking.
+
+package com.example;
+
+import org.junit.jupiter.api.Test;
+import java.net.http.HttpResponse;
+
+class TeaStore_ModelC_CoT_v2_RobustnessTest extends TeaStoreBaseTest {
+
+    @Test
+    void test_R1_01() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category?id=abc");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_02() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category?id=-1");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_03() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category?id=2147483648");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_04() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/product?id=abc");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_05() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/product?id=-1");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_06() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/product?id=2147483648");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_07() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/cart");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_08() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "username=&password=secret");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_09() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "username=alice&password=");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_10() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "username=   &password=secret");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_11() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "username=alice&password=   ");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_12() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "username=" + "a".repeat(1000) + "&password=secret");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_13() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "username=alice&password=" + "a".repeat(1000));
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_14() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/cartAction", "addToCart=&productid=");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_15() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/cartAction", "removeProduct=&productid=");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_16() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/cartAction", "removeProduct=&productid=123");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_17() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/profile");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_18() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/order", "");
+        assertNoServerError(response);
+    }
+}
+

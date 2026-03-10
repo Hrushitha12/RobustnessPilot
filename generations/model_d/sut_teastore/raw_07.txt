@@ -1,0 +1,107 @@
+```java
+package com.example;
+
+import java.net.http.HttpResponse;
+import org.junit.jupiter.api.Test;
+
+public class TeaStore_ModelD_Structured_v2_RobustnessTest extends TeaStoreBaseTest {
+
+    @Test
+    void test_R1_CategoryNegativeId() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category?id=-1");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_CategoryZeroId() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category?id=0");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_CategoryNonIntegerStringId() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category?id=abc");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_CategoryMissingId() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_CategoryLargeIntegerId() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category?id=999999999");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_ProductNegativeId() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/product?id=-1");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_ProductNonIntegerStringId() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/product?id=abc");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_LoginActionEmptyUsername() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "username=&password=test");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_LoginActionSQLInjectionPayload() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "username=' OR '1'='1&password=test");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_LoginActionLongUsername() throws Exception {
+        StringBuilder longString = new StringBuilder("a".repeat(5000));
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "username=" + longString.toString() + "&password=test");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_LoginActionNullPassword() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "username=admin&password=null");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_CartActionAddNonExistentProductId() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/cartAction", "addToCart=&productid=999999");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_CartActionAddNegativeProductId() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/cartAction", "addToCart=&productid=-1");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_CartActionRemoveNonExistentProductId() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/cartAction", "removeProduct=&productid=999999");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_OrderUnauthenticatedAccess() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/order", "confirm=");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_UnknownEndpoint() throws Exception {
+        HttpResponse<String> response = get("/unknown-endpoint");
+        assertNoServerError(response);
+    }
+}
+```
+

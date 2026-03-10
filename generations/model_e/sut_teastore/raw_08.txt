@@ -1,0 +1,116 @@
+```java
+package com.example;
+
+import java.net.http.HttpResponse;
+import org.junit.jupiter.api.Test;
+
+public class TeaStore_ModelE_CoT_v2_RobustnessTest extends TeaStoreBaseTest {
+
+    @Test
+    public void test_R1_EmptyUsername() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "username=&password=password");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R2_NullLikePassword() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "username=username&password=null");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R3_OutOfRangeCategoryId() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category?id=2147483648");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R4_NegativeProductId() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/cartAction", "addToCart=&productid=-1");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R5_WrongTypeProductId() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/product?id=abc");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R6_InjectionPayloadUsername() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "username=<script>alert('XSS')</script>&password=password");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R7_OversizedStringProductName() throws Exception {
+        StringBuilder oversizedString = new StringBuilder();
+        for (int i = 0; i < 10000; i++) {
+            oversizedString.append("a");
+        }
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/cartAction", "addToCart=&productid=" + oversizedString.toString());
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R8_UnauthenticatedProfileAccess() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/profile");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R9_EmptyCartActions() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/cartAction", "removeProduct=&productid=");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R10_UnknownEndpoint() throws Exception {
+        HttpResponse<String> response = get("/unknown/endpoint");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R11_EmptyPostBody() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R12_MissingRequiredParameters() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/cartAction", "addToCart=");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R13_ZeroCategoryId() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category?id=0");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R14_MaxIntegerProductId() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/cartAction", "addToCart=&productid=2147483647");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R15_SpecialCharactersUsername() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "username=!@#$%^&*()_+-={}:<>?/\\|~`&password=password");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R16_NonIntegerStringCategoryId() throws Exception {
+        HttpResponse<String> response = get("/tools.descartes.teastore.webui/category?id=abc123");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R17_WhitespaceOnlyUsername() throws Exception {
+        HttpResponse<String> response = post("/tools.descartes.teastore.webui/loginAction", "username=   &password=password");
+        assertNoServerError(response);
+    }
+}
+```
+
