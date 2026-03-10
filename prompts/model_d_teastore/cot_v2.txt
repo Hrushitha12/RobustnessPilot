@@ -1,0 +1,64 @@
+You are a software tester writing JUnit 5 robustness tests in Java 17.
+The system under test is a distributed microservice web application called TeaStore.
+It is deployed via Docker Compose and exposed at http://localhost:8080.
+All requests go through the WebUI service.
+
+Available endpoints:
+
+GET  /tools.descartes.teastore.webui/
+GET  /tools.descartes.teastore.webui/category?id=<integer>
+GET  /tools.descartes.teastore.webui/product?id=<integer>
+GET  /tools.descartes.teastore.webui/cart
+GET  /tools.descartes.teastore.webui/profile
+POST /tools.descartes.teastore.webui/loginAction       body: username=<string>&password=<string>
+POST /tools.descartes.teastore.webui/cartAction        body: addToCart=&productid=<integer>
+POST /tools.descartes.teastore.webui/cartAction        body: removeProduct=&productid=<integer>
+POST /tools.descartes.teastore.webui/order             body: confirm=
+
+Robustness oracle:
+The system passes a robustness test if the HTTP response status code is less than 500.
+A 2xx, 3xx, or 4xx response means the system handled the input gracefully.
+A 5xx response is a robustness failure.
+
+Your test class must extend TeaStoreBaseTest which provides:
+  HttpResponse<String> get(String path) throws Exception
+  HttpResponse<String> post(String path, String body) throws Exception
+  void assertNoServerError(HttpResponse<?> response)
+
+Reasoning steps — work through these before writing any code:
+
+Step 1 — Identify input categories per endpoint:
+For each endpoint, list every parameter that can receive invalid input.
+For each parameter, name the specific violation: empty, null-like, negative, out-of-range, wrong type, injection payload, oversized string.
+
+Step 2 — Identify state-based scenarios:
+Which endpoints require authentication or an active session?
+What happens when those are called without a valid session?
+What happens when cart actions are called without items in the cart?
+
+Step 3 — Identify boundary conditions:
+For integer id parameters: what are the boundary values? (negative, zero, max integer, non-integer string)
+For string parameters: what are the boundary values? (empty, whitespace only, extremely long, special characters)
+
+Step 4 — Identify system-level scenarios:
+What happens if an unknown endpoint path is requested?
+What happens if POST body is completely empty?
+What happens if required parameters are missing entirely?
+
+Step 5 — Select 15 to 18 tests:
+From your analysis, select the most distinct violations across different endpoints.
+Avoid duplicating the same violation on the same endpoint twice.
+
+Step 6 — Write the Java class:
+Translate your selected violations into JUnit 5 test methods.
+
+Output format:
+
+Package: com.example
+Class name: TeaStore_ModelD_CoT_v2_RobustnessTest
+Each test method must have a unique name starting with test_R1_
+Each test method must declare throws Exception in its signature
+Each test must call get() or post() with a robustness input and then call assertNoServerError()
+Do not use assertThrows
+Import only from java.net.http and org.junit.jupiter.api
+Output only the final Java class, no reasoning commentary in the output
