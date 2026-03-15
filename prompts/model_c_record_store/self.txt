@@ -1,0 +1,68 @@
+You are a software tester writing JUnit 5 robustness tests in Java 17.
+The system under test is RecordStore, a typed bounded in-memory key-value store.
+
+API summary:
+
+package pilot.records;
+
+public class RecordStore {
+    public static final int MAX_KEY_LENGTH = 32;
+    public static final int MIN_NUMERIC    = -100_000;
+    public static final int MAX_NUMERIC    =  100_000;
+
+    public RecordStore(int capacity, RecordType type)   // capacity 1..100
+    public void   close()
+    public boolean isOpen()
+    public void   put(String key, String value)
+    public void   putNumeric(String key, String numericValue)
+    public void   remove(String key)
+    public void   putAll(Map<String, String> entries)
+    public String get(String key)
+    public int    getNumeric(String key)
+    public int    size()
+    public List<String> keys()
+}
+public enum RecordType { STRING_ONLY, NUMERIC_ONLY, MIXED }
+
+Rules enforced by the SUT:
+  - capacity must be 1..100; type must not be null -> IllegalArgumentException
+  - keys must be non-null, non-blank, at most 32 chars -> IllegalArgumentException
+  - values must not be null -> IllegalArgumentException
+  - putNumeric only accepts plain integer strings (no floats, no hex, no scientific notation) -> NumberFormatException
+  - putNumeric range: MIN_NUMERIC..MAX_NUMERIC -> IllegalArgumentException
+  - put() not allowed on NUMERIC_ONLY store -> UnsupportedOperationException
+  - putNumeric() not allowed on STRING_ONLY store -> UnsupportedOperationException
+  - no write operations after close() -> IllegalStateException
+  - capacity must not be exceeded -> IndexOutOfBoundsException
+  - putAll() fails atomically: if any entry is invalid, nothing is written
+
+Robustness oracle:
+A test PASSES if the SUT throws any exception (the test runner catches it).
+Do NOT use assertThrows. Do NOT assert on exception type. Just call the method directly.
+
+Your task:
+
+Step 1 — Write a first draft of a JUnit 5 robustness test class with 12 to 15 tests.
+Cover: constructor violations, null/blank/long keys, null values, post-close writes,
+type contract violations (STRING_ONLY, NUMERIC_ONLY), numeric format errors,
+capacity overflow, and putAll atomicity.
+
+Step 2 — Review your draft. For each test ask yourself:
+  Does this test create a fresh RecordStore?
+  Does this test call exactly one method with one bad input?
+  Does the method signature declare throws Exception?
+  Does this test use assertThrows? (it must NOT)
+  Does this test use try-catch? (it must NOT)
+  Is this violation already covered by another test in my draft?
+
+Step 3 — Fix any issues found in Step 2, then output the final corrected Java class only.
+
+Package: pilot.records
+Class name: RecordStore_ModelC_Self_RobustnessTest
+Each test method must declare throws Exception in its signature.
+Each test method must have a unique descriptive name.
+Do not use assertThrows.
+Do not assert on specific exception types or return values.
+Do not use try-catch blocks.
+Import only: org.junit.jupiter.api.Test, java.util.Map, java.util.LinkedHashMap, pilot.records.RecordStore, pilot.records.RecordType
+Output only the final Java class, no explanation, no step commentary.
