@@ -1,0 +1,83 @@
+You are a software tester writing JUnit 5 robustness tests in Java 17.
+The system under test is the OpenTelemetry Astronomy Shop, a distributed
+microservice e-commerce web application deployed via Docker Compose and
+exposed at http://localhost:8080.
+
+All requests are sent to the frontend proxy. POST bodies are JSON.
+GET requests pass parameters as query strings or path segments.
+
+Available endpoints:
+
+GET  /api/products                                   — list all products
+GET  /api/products/{productId}                       — get product by ID (known valid ID: "OLJCESPC7Z")
+GET  /api/cart?sessionId=<string>                    — get cart for session
+POST /api/cart                                       — add item to cart
+     body: {"userId":"<string>","item":{"productId":"<string>","quantity":<integer>}}
+DELETE /api/cart?sessionId=<string>                  — empty cart for session
+POST /api/checkout                                   — place an order
+     body: {"userId":"<string>","userCurrency":"<string>",
+            "address":{"streetAddress":"<string>","state":"<string>",
+                        "country":"<string>","city":"<string>","zipCode":"<string>"},
+            "email":"<string>",
+            "creditCard":{"creditCardNumber":"<string>","creditCardCvv":<integer>,
+                           "creditCardExpirationYear":<integer>,"creditCardExpirationMonth":<integer>}}
+POST /api/currency                                   — convert currency
+     body: {"from":{"currencyCode":"<string>","units":<integer>,"nanos":<integer>},"toCode":"<string>"}
+POST /api/shipping                                   — calculate shipping cost
+     body: {"address":{"streetAddress":"<string>","state":"<string>",
+                        "country":"<string>","city":"<string>","zipCode":"<string>"},
+            "items":[{"productId":"<string>","quantity":<integer>}]}
+GET  /api/recommendations?productIds=<string>&sessionId=<string>&currencyCode=<string>
+GET  /api/ads?contextKeys=<string>
+
+Robustness oracle:
+The system passes a robustness test if the HTTP response status code is less than 500.
+A 2xx, 3xx, or 4xx response means the system handled the input gracefully.
+A 5xx response is a robustness failure.
+
+Your test class must extend OTelShopBaseTest which provides:
+  HttpResponse<String> get(String path) throws Exception
+  HttpResponse<String> postJson(String path, String jsonBody) throws Exception
+  HttpResponse<String> delete(String path) throws Exception
+  void assertNoServerError(HttpResponse<?> response)
+
+The postJson() method automatically sets Content-Type: application/json.
+
+Violation table — write one test per row:
+
+Endpoint               | Field / Scenario                                    | Input used
+-----------------------|-----------------------------------------------------|------------------------------------------
+GET /api/products/{id} | non-existent product ID                             | /api/products/DOESNOTEXIST999
+GET /api/products/{id} | empty string segment in path                        | /api/products/
+GET /api/products/{id} | numeric string as ID (wrong type)                   | /api/products/12345
+GET /api/products/{id} | extremely long ID string (1000 chars)               | /api/products/<1000-char string>
+GET /api/cart          | empty sessionId query param                         | /api/cart?sessionId=
+GET /api/cart          | sessionId missing entirely from query               | /api/cart
+DELETE /api/cart       | empty sessionId query param                         | /api/cart?sessionId=
+POST /api/cart         | userId field is empty string                        | {"userId":"","item":{"productId":"OLJCESPC7Z","quantity":1}}
+POST /api/cart         | productId field is empty string                     | {"userId":"test-user","item":{"productId":"","quantity":1}}
+POST /api/cart         | quantity is zero                                    | {"userId":"test-user","item":{"productId":"OLJCESPC7Z","quantity":0}}
+POST /api/cart         | quantity is negative integer                        | {"userId":"test-user","item":{"productId":"OLJCESPC7Z","quantity":-1}}
+POST /api/cart         | item field is null                                  | {"userId":"test-user","item":null}
+POST /api/checkout     | empty userId                                        | checkout body with userId: ""
+POST /api/checkout     | invalid/non-existent currency code                  | checkout body with userCurrency: "ZZZ"
+POST /api/checkout     | creditCardNumber is empty string                    | checkout body with creditCardNumber: ""
+POST /api/checkout     | creditCardExpirationYear is in the past             | checkout body with year: 2000, month: 1
+POST /api/currency     | unknown fromCode currency                           | {"from":{"currencyCode":"ZZZ","units":10,"nanos":0},"toCode":"USD"}
+POST /api/currency     | unknown toCode currency                             | {"from":{"currencyCode":"USD","units":10,"nanos":0},"toCode":"ZZZ"}
+POST /api/currency     | units field is negative                             | {"from":{"currencyCode":"USD","units":-1,"nanos":0},"toCode":"EUR"}
+POST /api/shipping     | all address fields empty strings                    | address with all fields ""
+GET  /api/recommendations | non-existent productIds value                    | /api/recommendations?productIds=FAKE999&sessionId=s1&currencyCode=USD
+
+Write a JUnit 5 test class covering all rows above (one test per row).
+
+Package: com.example
+Class name: OTelShop_ModelC_Structured_RobustnessTest
+Each test method must declare throws Exception in its signature.
+Each test method must have a unique descriptive name starting with test_R1_
+Each test must call get(), postJson(), or delete() with the specified input and then call assertNoServerError()
+Do not use assertThrows.
+Do not assert on specific exception types or return values.
+Do not use try-catch blocks.
+Import only from java.net.http and org.junit.jupiter.api
+Output only the Java class, no explanation.

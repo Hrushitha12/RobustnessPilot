@@ -1,0 +1,82 @@
+You are a software tester writing JUnit 5 robustness tests in Java 17.
+The system under test is the OpenTelemetry Astronomy Shop, a distributed
+microservice e-commerce web application deployed via Docker Compose and
+exposed at http://localhost:8080.
+
+All requests are sent to the frontend proxy. POST bodies are JSON.
+GET requests pass parameters as query strings or path segments.
+
+Available endpoints:
+
+GET  /api/products                                   — list all products
+GET  /api/products/{productId}                       — get product by ID (known valid ID: "OLJCESPC7Z")
+GET  /api/cart?sessionId=<string>                    — get cart for session
+POST /api/cart                                       — add item to cart
+     body: {"userId":"<string>","item":{"productId":"<string>","quantity":<integer>}}
+DELETE /api/cart?sessionId=<string>                  — empty cart for session
+POST /api/checkout                                   — place an order
+     body: {"userId":"<string>","userCurrency":"<string>",
+            "address":{"streetAddress":"<string>","state":"<string>",
+                        "country":"<string>","city":"<string>","zipCode":"<string>"},
+            "email":"<string>",
+            "creditCard":{"creditCardNumber":"<string>","creditCardCvv":<integer>,
+                           "creditCardExpirationYear":<integer>,"creditCardExpirationMonth":<integer>}}
+POST /api/currency                                   — convert currency
+     body: {"from":{"currencyCode":"<string>","units":<integer>,"nanos":<integer>},"toCode":"<string>"}
+POST /api/shipping                                   — calculate shipping cost
+     body: {"address":{"streetAddress":"<string>","state":"<string>",
+                        "country":"<string>","city":"<string>","zipCode":"<string>"},
+            "items":[{"productId":"<string>","quantity":<integer>}]}
+GET  /api/recommendations?productIds=<string>&sessionId=<string>&currencyCode=<string>
+GET  /api/ads?contextKeys=<string>
+
+Robustness oracle:
+The system passes a robustness test if the HTTP response status code is less than 500.
+A 2xx, 3xx, or 4xx response means the system handled the input gracefully.
+A 5xx response is a robustness failure.
+
+Your test class must extend OTelShopBaseTest which provides:
+  HttpResponse<String> get(String path) throws Exception
+  HttpResponse<String> postJson(String path, String jsonBody) throws Exception
+  HttpResponse<String> delete(String path) throws Exception
+  void assertNoServerError(HttpResponse<?> response)
+
+The postJson() method automatically sets Content-Type: application/json.
+
+Your task:
+
+Step 1 — Write a first draft of a JUnit 5 robustness test class with 15 to 18 tests.
+Cover violations across multiple endpoints:
+- products: non-existent IDs, wrong ID formats, path edge cases
+- cart GET/DELETE: missing or empty sessionId
+- cart POST: empty userId, empty productId, null item, missing fields,
+  zero quantity, negative quantity, very large quantity, non-existent productId
+- checkout: empty userId, invalid currency code, empty credit card number,
+  expired card year, out-of-range card month, missing address fields
+- currency: unknown fromCode, unknown toCode, negative units
+- shipping: empty items list, non-existent productId in items, empty address fields
+- recommendations: unknown currency code, non-existent productId
+- ads: empty contextKeys
+
+Step 2 — Review your draft. For each test ask yourself:
+  Does this test call exactly one endpoint with one robustness input?
+  Does the method signature declare throws Exception? (it must)
+  Does this test use assertThrows? (it must NOT)
+  Does this test use try-catch? (it must NOT)
+  Is the exact HTTP input (path + body) distinct from every other test?
+  Is this violation already covered by another test in my draft?
+  For POST tests: is the body valid JSON?
+  For POST tests: does the body structurally probe different fields
+    (e.g., userId empty vs productId empty are different violations)?
+
+Step 3 — Fix any issues found in Step 2, then output the final corrected Java class only.
+
+Package: com.example
+Class name: OTelShop_ModelE_Self_RobustnessTest
+Each test method must declare throws Exception in its signature.
+Each test method must have a unique descriptive name starting with test_R1_
+Do not use assertThrows.
+Do not assert on specific exception types or return values.
+Do not use try-catch blocks.
+Import only from java.net.http and org.junit.jupiter.api
+Output only the final Java class, no explanation, no step commentary.

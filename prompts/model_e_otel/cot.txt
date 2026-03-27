@@ -1,0 +1,132 @@
+You are a software tester writing JUnit 5 robustness tests in Java 17.
+The system under test is the OpenTelemetry Astronomy Shop, a distributed
+microservice e-commerce web application deployed via Docker Compose and
+exposed at http://localhost:8080.
+
+All requests are sent to the frontend proxy. POST bodies are JSON.
+GET requests pass parameters as query strings or path segments.
+
+Available endpoints:
+
+GET  /api/products                                   — list all products
+GET  /api/products/{productId}                       — get product by ID (known valid ID: "OLJCESPC7Z")
+GET  /api/cart?sessionId=<string>                    — get cart for session
+POST /api/cart                                       — add item to cart
+     body: {"userId":"<string>","item":{"productId":"<string>","quantity":<integer>}}
+DELETE /api/cart?sessionId=<string>                  — empty cart for session
+POST /api/checkout                                   — place an order
+     body: {"userId":"<string>","userCurrency":"<string>",
+            "address":{"streetAddress":"<string>","state":"<string>",
+                        "country":"<string>","city":"<string>","zipCode":"<string>"},
+            "email":"<string>",
+            "creditCard":{"creditCardNumber":"<string>","creditCardCvv":<integer>,
+                           "creditCardExpirationYear":<integer>,"creditCardExpirationMonth":<integer>}}
+POST /api/currency                                   — convert currency
+     body: {"from":{"currencyCode":"<string>","units":<integer>,"nanos":<integer>},"toCode":"<string>"}
+POST /api/shipping                                   — calculate shipping cost
+     body: {"address":{"streetAddress":"<string>","state":"<string>",
+                        "country":"<string>","city":"<string>","zipCode":"<string>"},
+            "items":[{"productId":"<string>","quantity":<integer>}]}
+GET  /api/recommendations?productIds=<string>&sessionId=<string>&currencyCode=<string>
+GET  /api/ads?contextKeys=<string>
+
+Robustness oracle:
+The system passes a robustness test if the HTTP response status code is less than 500.
+A 2xx, 3xx, or 4xx response means the system handled the input gracefully.
+A 5xx response is a robustness failure.
+
+Your test class must extend OTelShopBaseTest which provides:
+  HttpResponse<String> get(String path) throws Exception
+  HttpResponse<String> postJson(String path, String jsonBody) throws Exception
+  HttpResponse<String> delete(String path) throws Exception
+  void assertNoServerError(HttpResponse<?> response)
+
+The postJson() method automatically sets Content-Type: application/json.
+
+Reasoning steps — work through these before writing any code:
+
+Step 1 — Product catalog violations:
+The productId in the path is a string. What happens with:
+- A non-existent but correctly-formatted ID?
+- A numeric string where a product code is expected?
+- An empty path segment (/api/products/)?
+- A path segment that is only whitespace?
+- An extremely long string (e.g., 500 characters)?
+List the most distinct violations you would test.
+
+Step 2 — Cart GET and DELETE violations:
+sessionId is passed as a query parameter. What happens with:
+- sessionId present but empty string?
+- sessionId key missing from the query entirely?
+- sessionId that is a very long string?
+Test both GET and DELETE separately — they may behave differently.
+
+Step 3 — Cart POST body violations:
+The body has two top-level fields (userId, item) and item has two nested fields (productId, quantity).
+For each field, consider:
+- Field present but empty string (userId, productId)
+- Field present but null (item, productId)
+- Field missing entirely from the body
+- quantity is zero
+- quantity is a negative integer
+- quantity is an extremely large integer (e.g., Integer.MAX_VALUE)
+- productId is a string that contains only whitespace
+- productId refers to a non-existent product
+These are structurally distinct violations — key-missing vs key-present-null vs key-present-empty are all different JSON inputs.
+
+Step 4 — Checkout POST body violations:
+The body is deeply nested. Consider:
+- userId empty string
+- userCurrency is a made-up code ("ZZZ")
+- email is empty string
+- email is not a valid email format
+- creditCardNumber is empty string
+- creditCardNumber has wrong format (not 16-digit)
+- creditCardExpirationYear is in the past (e.g., 2000)
+- creditCardExpirationMonth is out of range (e.g., 0 or 13)
+- creditCardCvv is a negative number
+- address has all fields as empty strings
+- address object is missing entirely
+- items in cart are empty (no items selected before checkout)
+
+Step 5 — Currency POST violations:
+The from object has currencyCode, units, nanos. The toCode is a string.
+- Unknown fromCode (e.g., "ZZZ")
+- Unknown toCode (e.g., "ZZZ")
+- Same fromCode and toCode (e.g., USD to USD — may or may not 500)
+- units is negative
+- nanos is out of range (< 0 or >= 1_000_000_000)
+- currencyCode is empty string
+
+Step 6 — Shipping POST violations:
+The body has address and items array.
+- items array is empty
+- items array contains a non-existent productId
+- items array contains quantity of zero
+- address has all fields as empty strings
+- address object missing entirely
+- items field missing from body
+
+Step 7 — Recommendations and Ads GET violations:
+- productIds query param is an invalid/non-existent product ID
+- currencyCode is unknown ("ZZZ")
+- sessionId is empty string
+- contextKeys for ads is empty string
+- all query params missing entirely
+
+Step 8 — Select 15 to 18 tests:
+From your analysis, select the most distinct violations across all endpoints.
+Prioritise violations that are structurally different from each other.
+Do not select two tests that send the same HTTP input.
+
+Step 9 — Write the final Java class.
+
+Package: com.example
+Class name: OTelShop_ModelE_CoT_RobustnessTest
+Each test method must declare throws Exception in its signature.
+Each test method must have a unique descriptive name starting with test_R1_
+Do not use assertThrows.
+Do not assert on specific exception types or return values.
+Do not use try-catch blocks.
+Import only from java.net.http and org.junit.jupiter.api
+Output only the final Java class, no reasoning commentary in the output.

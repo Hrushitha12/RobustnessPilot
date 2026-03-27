@@ -1,0 +1,108 @@
+You are a software tester writing JUnit 5 robustness tests in Java 17.
+The system under test is the OpenTelemetry Astronomy Shop, a distributed
+microservice e-commerce web application deployed via Docker Compose and
+exposed at http://localhost:8080.
+
+All requests are sent to the frontend proxy. POST bodies are JSON.
+GET requests pass parameters as query strings or path segments.
+
+Available endpoints:
+
+GET  /api/products                                   — list all products
+GET  /api/products/{productId}                       — get product by ID (known valid ID: "OLJCESPC7Z")
+GET  /api/cart?sessionId=<string>                    — get cart for session
+POST /api/cart                                       — add item to cart
+     body: {"userId":"<string>","item":{"productId":"<string>","quantity":<integer>}}
+DELETE /api/cart?sessionId=<string>                  — empty cart for session
+POST /api/checkout                                   — place an order
+     body: {"userId":"<string>","userCurrency":"<string>",
+            "address":{"streetAddress":"<string>","state":"<string>",
+                        "country":"<string>","city":"<string>","zipCode":"<string>"},
+            "email":"<string>",
+            "creditCard":{"creditCardNumber":"<string>","creditCardCvv":<integer>,
+                           "creditCardExpirationYear":<integer>,"creditCardExpirationMonth":<integer>}}
+POST /api/currency                                   — convert currency
+     body: {"from":{"currencyCode":"<string>","units":<integer>,"nanos":<integer>},"toCode":"<string>"}
+POST /api/shipping                                   — calculate shipping cost
+     body: {"address":{"streetAddress":"<string>","state":"<string>",
+                        "country":"<string>","city":"<string>","zipCode":"<string>"},
+            "items":[{"productId":"<string>","quantity":<integer>}]}
+GET  /api/recommendations?productIds=<string>&sessionId=<string>&currencyCode=<string>
+GET  /api/ads?contextKeys=<string>
+
+Robustness oracle:
+The system passes a robustness test if the HTTP response status code is less than 500.
+A 2xx, 3xx, or 4xx response means the system handled the input gracefully.
+A 5xx response is a robustness failure.
+
+Your test class must extend OTelShopBaseTest which provides:
+  HttpResponse<String> get(String path) throws Exception
+  HttpResponse<String> postJson(String path, String jsonBody) throws Exception
+  HttpResponse<String> delete(String path) throws Exception
+  void assertNoServerError(HttpResponse<?> response)
+
+The postJson() method automatically sets Content-Type: application/json.
+
+Examples of correctly written robustness tests:
+
+@Test
+public void test_R1_ProductNonExistentId() throws Exception {
+    HttpResponse<String> response = get("/api/products/DOESNOTEXIST999");
+    assertNoServerError(response);
+}
+
+@Test
+public void test_R1_CartEmptySessionId() throws Exception {
+    HttpResponse<String> response = get("/api/cart?sessionId=");
+    assertNoServerError(response);
+}
+
+@Test
+public void test_R1_CartAddNegativeQuantity() throws Exception {
+    String body = "{\"userId\":\"user-1\",\"item\":{\"productId\":\"OLJCESPC7Z\",\"quantity\":-1}}";
+    HttpResponse<String> response = postJson("/api/cart", body);
+    assertNoServerError(response);
+}
+
+@Test
+public void test_R1_CheckoutEmptyUserId() throws Exception {
+    String body = "{\"userId\":\"\",\"userCurrency\":\"USD\","
+        + "\"address\":{\"streetAddress\":\"1 Main St\",\"state\":\"CA\","
+        + "\"country\":\"US\",\"city\":\"Springfield\",\"zipCode\":\"12345\"},"
+        + "\"email\":\"test@example.com\","
+        + "\"creditCard\":{\"creditCardNumber\":\"4111-1111-1111-1111\","
+        + "\"creditCardCvv\":123,\"creditCardExpirationYear\":2030,\"creditCardExpirationMonth\":1}}";
+    HttpResponse<String> response = postJson("/api/checkout", body);
+    assertNoServerError(response);
+}
+
+@Test
+public void test_R1_CurrencyUnknownFromCode() throws Exception {
+    String body = "{\"from\":{\"currencyCode\":\"ZZZ\",\"units\":10,\"nanos\":0},\"toCode\":\"USD\"}";
+    HttpResponse<String> response = postJson("/api/currency", body);
+    assertNoServerError(response);
+}
+
+@Test
+public void test_R1_ShippingEmptyItemsList() throws Exception {
+    String body = "{\"address\":{\"streetAddress\":\"1 Main St\",\"state\":\"CA\","
+        + "\"country\":\"US\",\"city\":\"Springfield\",\"zipCode\":\"12345\"},\"items\":[]}";
+    HttpResponse<String> response = postJson("/api/shipping", body);
+    assertNoServerError(response);
+}
+
+Notice: each test calls one method with one robustness input, then calls assertNoServerError(). No assertions on the response body. No try-catch. No assertThrows.
+
+Following the same style as the examples above, write a JUnit 5 test class with 15 to 18 robustness tests.
+Cover as many different endpoints and violation categories as possible — do not repeat the same violation twice.
+Include at least one test for each of: products, cart (GET), cart (POST), checkout, currency, shipping, and recommendations.
+
+Package: com.example
+Class name: OTelShop_ModelD_FewShot_RobustnessTest
+Each test method must declare throws Exception in its signature.
+Each test method must have a unique descriptive name starting with test_R1_
+Do not use assertThrows.
+Do not assert on specific exception types or return values.
+Do not use try-catch blocks.
+Import only from java.net.http and org.junit.jupiter.api
+Output only the Java class, no explanation.
