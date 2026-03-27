@@ -41,4 +41,4 @@ Diversity gain: Limited on micro_sut, moderate on commons_lang.
 
 Systematic exploration: Prompt strategy influences structure but has not yet produced dramatically different behavioral coverage.
 
-At this stage, the generated tests are syntactically viable and do explore malformed inputs, but the measurable increase in failure-mode diversity is not yet strong.
+At this stage, the generated tests are syntactically viable and do explore malformed inputs, but the measurable increase in failure-mode diversity is not strong.
