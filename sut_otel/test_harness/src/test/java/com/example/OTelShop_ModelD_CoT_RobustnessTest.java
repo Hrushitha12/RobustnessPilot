@@ -1,0 +1,108 @@
+package com.example;
+
+import java.net.http.HttpResponse;
+import org.junit.jupiter.api.Test;
+
+public class OTelShop_ModelD_CoT_RobustnessTest extends OTelShopBaseTest {
+
+    @Test
+    void test_R1_GetProductWithNonExistentId() throws Exception {
+        assertNoServerError(get("/api/products/INVALID_ID"));
+    }
+
+    @Test
+    void test_R1_GetProductWithNumericStringId() throws Exception {
+        assertNoServerError(get("/api/products/12345"));
+    }
+
+    @Test
+    void test_R1_GetProductWithEmptyPathSegment() throws Exception {
+        assertNoServerError(get("/api/products/"));
+    }
+
+    @Test
+    void test_R1_GetProductWithPathSegmentWhitespace() throws Exception {
+        assertNoServerError(get("/api/products/   "));
+    }
+
+    @Test
+    void test_R1_GetProductWithVeryLongId() throws Exception {
+        StringBuilder longId = new StringBuilder();
+        for (int i = 0; i < 500; i++) {
+            longId.append("A");
+        }
+        assertNoServerError(get("/api/products/" + longId.toString()));
+    }
+
+    @Test
+    void test_R1_GetCartWithEmptySessionId() throws Exception {
+        assertNoServerError(get("/api/cart?sessionId="));
+    }
+
+    @Test
+    void test_R1_GetCartWithoutSessionId() throws Exception {
+        assertNoServerError(get("/api/cart"));
+    }
+
+    @Test
+    void test_R1_DeleteCartWithVeryLongSessionId() throws Exception {
+        StringBuilder longId = new StringBuilder();
+        for (int i = 0; i < 500; i++) {
+            longId.append("A");
+        }
+        assertNoServerError(delete("/api/cart?sessionId=" + longId.toString()));
+    }
+
+    @Test
+    void test_R1_PostCartWithEmptyUserId() throws Exception {
+        String body = "{\"userId\":\"\",\"item\":{\"productId\":\"OLJCESPC7Z\",\"quantity\":1}}";
+        assertNoServerError(postJson("/api/cart", body));
+    }
+
+    @Test
+    void test_R1_PostCartWithNullItem() throws Exception {
+        String body = "{\"userId\":\"user123\",\"item\":null}";
+        assertNoServerError(postJson("/api/cart", body));
+    }
+
+    @Test
+    void test_R1_PostCartWithoutProductId() throws Exception {
+        String body = "{\"userId\":\"user123\",\"item\":{\"quantity\":1}}";
+        assertNoServerError(postJson("/api/cart", body));
+    }
+
+    @Test
+    void test_R1_PostCheckoutWithUnknownCurrencyCode() throws Exception {
+        String body = "{\"userId\":\"user123\",\"userCurrency\":\"ZZZ\",\"address\":{\"streetAddress\":\"123 Main St\",\"state\":\"CA\",\"country\":\"USA\",\"city\":\"Anytown\",\"zipCode\":\"90210\"},\"email\":\"test@example.com\",\"creditCard\":{\"creditCardNumber\":\"4111111111111111\",\"creditCardCvv\":123,\"creditCardExpirationYear\":2030,\"creditCardExpirationMonth\":12}}";
+        assertNoServerError(postJson("/api/checkout", body));
+    }
+
+    @Test
+    void test_R1_PostCheckoutWithEmptyEmail() throws Exception {
+        String body = "{\"userId\":\"user123\",\"userCurrency\":\"USD\",\"address\":{\"streetAddress\":\"123 Main St\",\"state\":\"CA\",\"country\":\"USA\",\"city\":\"Anytown\",\"zipCode\":\"90210\"},\"email\":\"\",\"creditCard\":{\"creditCardNumber\":\"4111111111111111\",\"creditCardCvv\":123,\"creditCardExpirationYear\":2030,\"creditCardExpirationMonth\":12}}";
+        assertNoServerError(postJson("/api/checkout", body));
+    }
+
+    @Test
+    void test_R1_PostCheckoutWithInvalidCreditCardNumber() throws Exception {
+        String body = "{\"userId\":\"user123\",\"userCurrency\":\"USD\",\"address\":{\"streetAddress\":\"123 Main St\",\"state\":\"CA\",\"country\":\"USA\",\"city\":\"Anytown\",\"zipCode\":\"90210\"},\"email\":\"test@example.com\",\"creditCard\":{\"creditCardNumber\":\"411111111111111\",\"creditCardCvv\":123,\"creditCardExpirationYear\":2030,\"creditCardExpirationMonth\":12}}";
+        assertNoServerError(postJson("/api/checkout", body));
+    }
+
+    @Test
+    void test_R1_PostCurrencyWithUnknownFromCode() throws Exception {
+        String body = "{\"from\":{\"currencyCode\":\"ZZZ\",\"units\":100,\"nanos\":0},\"toCode\":\"USD\"}";
+        assertNoServerError(postJson("/api/currency", body));
+    }
+
+    @Test
+    void test_R1_PostShippingWithEmptyAddressFields() throws Exception {
+        String body = "{\"address\":{\"streetAddress\":\"\",\"state\":\"\",\"country\":\"\",\"city\":\"\",\"zipCode\":\"\"},\"items\":[{\"productId\":\"OLJCESPC7Z\",\"quantity\":1}]}";
+        assertNoServerError(postJson("/api/shipping", body));
+    }
+
+    @Test
+    void test_R1_GetRecommendationsWithNonExistentProductId() throws Exception {
+        assertNoServerError(get("/api/recommendations?productIds=INVALID_ID&sessionId=user123&currencyCode=USD"));
+    }
+}

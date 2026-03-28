@@ -1,0 +1,17 @@
+-------------------------------------------------------------------------------
+Test set: com.example.OTelShop_ModelD_CoT_RobustnessTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 16.16 s <<< FAILURE! -- in com.example.OTelShop_ModelD_CoT_RobustnessTest
+com.example.OTelShop_ModelD_CoT_RobustnessTest.test_R1_PostCurrencyWithUnknownFromCode -- Time elapsed: 15.34 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Robustness failure: expected HTTP status < 500 but got 504. Response body: upstream request timeout ==> expected: <true> but was: <false>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)
+	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)
+	at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:214)
+	at com.example.OTelShopBaseTest.assertNoServerError(OTelShopBaseTest.java:84)
+	at com.example.OTelShop_ModelD_CoT_RobustnessTest.test_R1_PostCurrencyWithUnknownFromCode(OTelShop_ModelD_CoT_RobustnessTest.java:95)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+

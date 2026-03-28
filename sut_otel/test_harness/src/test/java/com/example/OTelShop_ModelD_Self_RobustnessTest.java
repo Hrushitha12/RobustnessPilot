@@ -155,5 +155,3 @@ public class OTelShop_ModelD_Self_RobustnessTest extends OTelShopBaseTest {
         get("/api/ads?contextKeys=");
     }
 }
-
-

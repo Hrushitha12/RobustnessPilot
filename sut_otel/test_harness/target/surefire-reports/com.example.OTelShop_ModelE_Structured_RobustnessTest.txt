@@ -1,0 +1,160 @@
+-------------------------------------------------------------------------------
+Test set: com.example.OTelShop_ModelE_Structured_RobustnessTest
+-------------------------------------------------------------------------------
+Tests run: 21, Failures: 12, Errors: 0, Skipped: 0, Time elapsed: 61.55 s <<< FAILURE! -- in com.example.OTelShop_ModelE_Structured_RobustnessTest
+com.example.OTelShop_ModelE_Structured_RobustnessTest.test_R3_GetProduct_NumericStringAsIdWrongType -- Time elapsed: 0.358 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Robustness failure: expected HTTP status < 500 but got 500. Response body: Internal Server Error ==> expected: <true> but was: <false>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)
+	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)
+	at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:214)
+	at com.example.OTelShopBaseTest.assertNoServerError(OTelShopBaseTest.java:84)
+	at com.example.OTelShop_ModelE_Structured_RobustnessTest.test_R3_GetProduct_NumericStringAsIdWrongType(OTelShop_ModelE_Structured_RobustnessTest.java:23)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+com.example.OTelShop_ModelE_Structured_RobustnessTest.test_R16_PostCheckout_CreditCardExpirationYearIsInThePast -- Time elapsed: 0.049 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Robustness failure: expected HTTP status < 500 but got 500. Response body: Internal Server Error ==> expected: <true> but was: <false>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)
+	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)
+	at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:214)
+	at com.example.OTelShopBaseTest.assertNoServerError(OTelShopBaseTest.java:84)
+	at com.example.OTelShop_ModelE_Structured_RobustnessTest.test_R16_PostCheckout_CreditCardExpirationYearIsInThePast(OTelShop_ModelE_Structured_RobustnessTest.java:114)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+com.example.OTelShop_ModelE_Structured_RobustnessTest.test_R20_PostShipping_AllAddressFieldsEmptyStrings -- Time elapsed: 15.01 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Robustness failure: expected HTTP status < 500 but got 504. Response body: upstream request timeout ==> expected: <true> but was: <false>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)
+	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)
+	at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:214)
+	at com.example.OTelShopBaseTest.assertNoServerError(OTelShopBaseTest.java:84)
+	at com.example.OTelShop_ModelE_Structured_RobustnessTest.test_R20_PostShipping_AllAddressFieldsEmptyStrings(OTelShop_ModelE_Structured_RobustnessTest.java:142)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+com.example.OTelShop_ModelE_Structured_RobustnessTest.test_R19_PostCurrency_UnitsFieldIsNegative -- Time elapsed: 15.01 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Robustness failure: expected HTTP status < 500 but got 504. Response body: upstream request timeout ==> expected: <true> but was: <false>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)
+	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)
+	at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:214)
+	at com.example.OTelShopBaseTest.assertNoServerError(OTelShopBaseTest.java:84)
+	at com.example.OTelShop_ModelE_Structured_RobustnessTest.test_R19_PostCurrency_UnitsFieldIsNegative(OTelShop_ModelE_Structured_RobustnessTest.java:135)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+com.example.OTelShop_ModelE_Structured_RobustnessTest.test_R17_PostCurrency_UnknownFromCodeCurrency -- Time elapsed: 15.03 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Robustness failure: expected HTTP status < 500 but got 504. Response body: upstream request timeout ==> expected: <true> but was: <false>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)
+	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)
+	at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:214)
+	at com.example.OTelShopBaseTest.assertNoServerError(OTelShopBaseTest.java:84)
+	at com.example.OTelShop_ModelE_Structured_RobustnessTest.test_R17_PostCurrency_UnknownFromCodeCurrency(OTelShop_ModelE_Structured_RobustnessTest.java:121)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+com.example.OTelShop_ModelE_Structured_RobustnessTest.test_R14_PostCheckout_InvalidNonExistentCurrencyCode -- Time elapsed: 0.059 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Robustness failure: expected HTTP status < 500 but got 500. Response body: Internal Server Error ==> expected: <true> but was: <false>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)
+	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)
+	at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:214)
+	at com.example.OTelShopBaseTest.assertNoServerError(OTelShopBaseTest.java:84)
+	at com.example.OTelShop_ModelE_Structured_RobustnessTest.test_R14_PostCheckout_InvalidNonExistentCurrencyCode(OTelShop_ModelE_Structured_RobustnessTest.java:100)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+com.example.OTelShop_ModelE_Structured_RobustnessTest.test_R15_PostCheckout_CreditCardNumberIsEmptyString -- Time elapsed: 0.089 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Robustness failure: expected HTTP status < 500 but got 500. Response body: Internal Server Error ==> expected: <true> but was: <false>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)
+	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)
+	at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:214)
+	at com.example.OTelShopBaseTest.assertNoServerError(OTelShopBaseTest.java:84)
+	at com.example.OTelShop_ModelE_Structured_RobustnessTest.test_R15_PostCheckout_CreditCardNumberIsEmptyString(OTelShop_ModelE_Structured_RobustnessTest.java:107)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+com.example.OTelShop_ModelE_Structured_RobustnessTest.test_R4_GetProduct_ExtremelyLongIdString1000Chars -- Time elapsed: 0.049 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Robustness failure: expected HTTP status < 500 but got 500. Response body: Internal Server Error ==> expected: <true> but was: <false>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)
+	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)
+	at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:214)
+	at com.example.OTelShopBaseTest.assertNoServerError(OTelShopBaseTest.java:84)
+	at com.example.OTelShop_ModelE_Structured_RobustnessTest.test_R4_GetProduct_ExtremelyLongIdString1000Chars(OTelShop_ModelE_Structured_RobustnessTest.java:33)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+com.example.OTelShop_ModelE_Structured_RobustnessTest.test_R13_PostCheckout_EmptyUserId -- Time elapsed: 0.038 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Robustness failure: expected HTTP status < 500 but got 500. Response body: Internal Server Error ==> expected: <true> but was: <false>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)
+	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)
+	at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:214)
+	at com.example.OTelShopBaseTest.assertNoServerError(OTelShopBaseTest.java:84)
+	at com.example.OTelShop_ModelE_Structured_RobustnessTest.test_R13_PostCheckout_EmptyUserId(OTelShop_ModelE_Structured_RobustnessTest.java:93)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+com.example.OTelShop_ModelE_Structured_RobustnessTest.test_R1_GetProduct_NonExistentId -- Time elapsed: 0.030 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Robustness failure: expected HTTP status < 500 but got 500. Response body: Internal Server Error ==> expected: <true> but was: <false>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)
+	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)
+	at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:214)
+	at com.example.OTelShopBaseTest.assertNoServerError(OTelShopBaseTest.java:84)
+	at com.example.OTelShop_ModelE_Structured_RobustnessTest.test_R1_GetProduct_NonExistentId(OTelShop_ModelE_Structured_RobustnessTest.java:11)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+com.example.OTelShop_ModelE_Structured_RobustnessTest.test_R18_PostCurrency_UnknownToCodeCurrency -- Time elapsed: 15.02 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Robustness failure: expected HTTP status < 500 but got 504. Response body: upstream request timeout ==> expected: <true> but was: <false>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)
+	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)
+	at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:214)
+	at com.example.OTelShopBaseTest.assertNoServerError(OTelShopBaseTest.java:84)
+	at com.example.OTelShop_ModelE_Structured_RobustnessTest.test_R18_PostCurrency_UnknownToCodeCurrency(OTelShop_ModelE_Structured_RobustnessTest.java:128)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+com.example.OTelShop_ModelE_Structured_RobustnessTest.test_R12_PostCart_ItemFieldIsNull -- Time elapsed: 0.021 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Robustness failure: expected HTTP status < 500 but got 500. Response body: Internal Server Error ==> expected: <true> but was: <false>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)
+	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)
+	at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:214)
+	at com.example.OTelShopBaseTest.assertNoServerError(OTelShopBaseTest.java:84)
+	at com.example.OTelShop_ModelE_Structured_RobustnessTest.test_R12_PostCart_ItemFieldIsNull(OTelShop_ModelE_Structured_RobustnessTest.java:86)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+

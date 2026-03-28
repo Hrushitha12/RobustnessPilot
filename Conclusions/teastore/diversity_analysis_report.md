@@ -87,9 +87,9 @@ This is the master reference table. All Venn diagrams are derived from it.
 | FM9 | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | **3/14** |
 | **Total FMs** | **5** | **4** | **2** | **4** | **3** | **2** | **3** | **0** | **0** | **3** | **3** | **2** | **1** | **4** | — |
 
-> **Note on D-CoT:** D-CoT's verified FM set is {FM1, FM2, FM3}. However, D-CoT also generated two additional tests — an XSS payload and a whitespace-only string on the product endpoint — that could not be executed due to Java HTTP client URI validation. These are classified as **Excluded** and do not appear in the FM matrix. See **Section 7: Emergent Behavior Observation** for full details. This is the most notable secondary finding in the study.
-
 ---
+
+## 2. Jaccard Similarity Overview
 
 Jaccard similarity measures how much two runs **overlap** in the failure modes they found.
 
@@ -507,75 +507,7 @@ E-ZeroShot = {FM9} shares zero FMs with all other E prompts. FM9 (valid producti
 
 ---
 
-## 7. Emergent Behavior Observation — Model D CoT v2
-
-> **This section is separate from the diversity analysis.** The two inputs described here are classified as **Excluded** in the CRASH taxonomy and do not appear in the binary matrix or Jaccard calculations. They are documented here as a secondary finding about model generative capability.
-
----
-
-### What Happened
-
-During the D-CoT v2 run, two tests failed with `java.lang.IllegalArgumentException` — thrown by the **Java HTTP client itself**, before any request reached TeaStore:
-
-| Test Method | Input Sent | Exception | Crash Class |
-|---|---|---|---|
-| `test_R1_XssAttackInProductId` | `GET /product?id=<script>alert('xss')</script>` | `IllegalArgumentException` | **Excluded** |
-| `test_R1_WhitespaceOnlyProductId` | `GET /product?id=   ` | `IllegalArgumentException` | **Excluded** |
-
-**Why Excluded:** The characters `<`, `>`, `'` in the XSS payload are **illegal in a URI** by RFC 3986. Java's `HttpClient` rejects the URI at construction time and throws before sending anything. Whitespace-only query values trigger the same validation. TeaStore's response to these inputs is **unknown** — it was never asked.
-
-Because the SUT was never reached, these cannot be classified as Abort (HTTP 500) and cannot contribute to FM discovery. The oracle requires a confirmed HTTP round-trip.
-
----
-
-### Why It Matters
-
-Despite being unexecutable by the harness, the fact that D-CoT *generated* these inputs is significant:
-
-**Model D (qwen2.5-coder:32b) using CoT v2 was the only model and prompt combination in the entire study that autonomously produced security-oriented attack payloads** — XSS injection and whitespace attacks targeting the product endpoint — **without any security-specific instruction in the prompt.**
-
-Compare this to every other run:
-- No other model generated XSS payloads in any form
-- No other prompt strategy on Model D produced security-oriented inputs
-- The CoT prompt asked for step-by-step reasoning through *robustness violation categories* — security injection is not explicitly named as a category
-
-This is **emergent security-aware test generation**: the CoT reasoning chain led Model D to independently reason that untrusted user-controlled input flowing into a URL parameter is a candidate for injection attacks. The 32B code-tuned model, when given explicit reasoning scaffolding, applied security intuition that the 70B general model never did.
-
----
-
-### Why It Cannot Be Retrospectively Fixed
-
-One might ask: *"Can we URL-encode the XSS payload (`%3Cscript%3E...`) and re-run the test to get a proper HTTP result?"*
-
-Technically yes — but it would not be a fair comparison to the other 13 runs. The other FM sets were all produced from a single consistent test execution cycle. Re-running only D-CoT with a modified harness would create an asymmetry in the data. The FM set {FM1, FM2, FM3} for D-CoT is the correct, verified, comparable result.
-
-The XSS and whitespace results belong in a capability observation, not the FM matrix.
-
----
-
-### What This Tells Us About CoT on Code-Tuned Models
-
-| Prompt | Model D FM Set | Notable Behaviour |
-|---|---|---|
-| ZeroShot | ∅ | Safe inputs only — no adversarial intent |
-| Self | ∅ | Self-critique reinforced conservative generation |
-| Structured | {FM1, FM8} | Followed the violation table exactly |
-| FewShot | {FM1, FM3, FM6} | Examples guided structural violations |
-| **CoT** | **{FM1, FM2, FM3}** | **+ generated XSS and whitespace (unexecutable)** |
-
-CoT is the only prompt that caused Model D to reason beyond the literal input space of the SUT and into security threat modelling. The chain-of-thought scaffolding activated a different mode of test generation — one that a code-tuned model reaches when asked to *reason through violation categories* rather than imitate examples or follow a table.
-
----
-
-### Recommendation for Future Work
-
-To properly evaluate whether TeaStore is vulnerable to XSS payloads via the product endpoint, the test harness would need to URL-encode special characters before constructing the HTTP request, or use a harness that handles raw byte injection. This is out of scope for the current study but is a direct research lead produced by D-CoT's generation behaviour.
-
-> **Summary:** D-CoT's XSS and whitespace generation is excluded from diversity analysis (Excluded crash class, SUT unreachable) but stands as the strongest evidence in this study that chain-of-thought prompting on a code-specialised model can produce security-aware test generation without explicit security prompting.
-
----
-
-## 8. Coverage Gap Analysis
+## 7. Coverage Gap Analysis
 
 FMs ranked by how hard they were to find:
 
@@ -595,7 +527,7 @@ FM6 is the most critical coverage gap. It requires a code-tuned model (D) respon
 
 ---
 
-## 9. Limitations
+## 8. Limitations
 
 1. **C-ZeroShot not run** — qwen3:14b's language instability without grounding examples means the ZeroShot cross-model comparison is incomplete. This is documented as a finding rather than a gap to be filled.
 

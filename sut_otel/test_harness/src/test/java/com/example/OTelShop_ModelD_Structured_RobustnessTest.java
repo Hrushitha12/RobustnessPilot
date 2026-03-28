@@ -1,4 +1,3 @@
-
 package com.example;
 
 import java.net.http.HttpResponse;
@@ -146,5 +145,3 @@ public class OTelShop_ModelD_Structured_RobustnessTest extends OTelShopBaseTest 
         assertNoServerError(response);
     }
 }
-
-
