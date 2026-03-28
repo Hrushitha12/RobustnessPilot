@@ -1,0 +1,156 @@
+Thinking...
+Okay, I need to write JUnit 5 robustness tests for the RecordStore class. Let me go through each step carefully.
+
+First, the constructor violations. The capacity must be between 1 and 100. So invalid capacities are 0, negative numbers, 101, etc. Also, if the type is null, that's an IllegalArgumentException. So I should test those boundary values.
+
+Next, key violations. The methods that take a key are put, putNumeric, remove, get, getNumeric. For each of these, I need to check null keys, blank keys, keys longer than 32 characters. For example, a key with 33 characters should throw an exception.
+
+Value violations: put and putNumeric take values. For put, null value is invalid. For putNumeric, the value must be a valid integer string. So things like "3.14" (float), "abc" (alpha), "1e5" (scientific notation) should throw NumberFormatException. Also, values outside the MIN and MAX numeric ranges should throw IllegalArgumentException.
+
+Type contract violations: On a NUMERIC_ONLY store, using put() should throw UnsupportedOperationException. Similarly, on a STRING_ONLY store, putNumeric() should throw the same. Also, putAll on a NUMERIC_ONLY store should not allow string values.
+
+Lifecycle violations: After calling close(), any write operations (put, putNumeric, putAll, remove) should throw IllegalStateException. Need to test each of these methods after closing.
+
+Capacity violations: If the store is at capacity, adding more entries should throw IndexOutOfBoundsException. For example, a capacity 1 store with one entry, adding another should fail. Also, putAll with more entries than capacity should fail.
+
+PutAll atomicity: If any entry in the map is invalid (like null key or value), the entire putAll should fail, and no entries should be added. Need to test that scenario.
+
+Now, selecting 12-15 distinct tests. Let's pick the most critical ones without duplication.
+
+For the constructor, test capacity 0, 101, negative, 1, 100, and null type.
+
+For key violations, test null key in put, blank key in put, 33 char key in put, etc. But maybe pick one method for each type of violation.
+
+Value violations: test null in putNumeric, invalid numeric string, out of range numeric.
+
+Type contract: put on numeric only, putNumeric on string only.
+
+Lifecycle: put after close.
+
+Capacity: inserting beyond capacity.
+
+PutAll atomicity: with invalid entries.
+
+Now, writing the test methods. Each method must throw Exception, have a unique name, and not use assertThrows. Just call the method and let the exception be thrown.
+
+Need to make sure that each test is distinct and covers different violation points.
+
+Let me structure the test class with these methods. Each test will create a RecordStore instance as needed, perform the operation, and let the exception be thrown. The test passes if the exception is thrown as expected.
+
+I need to import the necessary classes and use LinkedHashMap for putAll tests. Also, handle the different RecordType enums.
+
+Okay, putting it all together now.
+...done thinking.
+
+package pilot.records;
+
+import org.junit.jupiter.api.Test;
+import java.util.Map;
+import java.util.LinkedHashMap;
+
+public class RecordStore_ModelC_CoT_RobustnessTest {
+
+    @Test
+    public void constructorInvalidCapacityZero() throws Exception {
+        new RecordStore(0, RecordType.STRING_ONLY);
+    }
+
+    @Test
+    public void constructorInvalidCapacityNegative() throws Exception {
+        new RecordStore(-5, RecordType.STRING_ONLY);
+    }
+
+    @Test
+    public void constructorInvalidCapacityExceedsMax() throws Exception {
+        new RecordStore(101, RecordType.STRING_ONLY);
+    }
+
+    @Test
+    public void constructorValidCapacityMin() throws Exception {
+        new RecordStore(1, RecordType.STRING_ONLY);
+    }
+
+    @Test
+    public void constructorValidCapacityMax() throws Exception {
+        new RecordStore(100, RecordType.STRING_ONLY);
+    }
+
+    @Test
+    public void constructorNullType() throws Exception {
+        new RecordStore(50, null);
+    }
+
+    @Test
+    public void putNullKey() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.STRING_ONLY);
+        store.put(null, "value");
+    }
+
+    @Test
+    public void putBlankKey() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.STRING_ONLY);
+        store.put("  ", "value");
+    }
+
+    @Test
+    public void putKeyExceedsMaxLength() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.STRING_ONLY);
+        store.put("a".repeat(33), "value");
+    }
+
+    @Test
+    public void putNumericInvalidValue() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.NUMERIC_ONLY);
+        store.putNumeric("key", null);
+    }
+
+    @Test
+    public void putNumericInvalidFormat() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.NUMERIC_ONLY);
+        store.putNumeric("key", "3.14");
+    }
+
+    @Test
+    public void putNumericOutOfRange() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.NUMERIC_ONLY);
+        store.putNumeric("key", String.valueOf(MAX_NUMERIC + 1));
+    }
+
+    @Test
+    public void putOnNumericOnlyStore() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.NUMERIC_ONLY);
+        store.put("key", "value");
+    }
+
+    @Test
+    public void putNumericOnStringOnlyStore() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.STRING_ONLY);
+        store.putNumeric("key", "123");
+    }
+
+    @Test
+    public void putAfterClose() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.STRING_ONLY);
+        store.close();
+        store.put("key", "value");
+    }
+
+    @Test
+    public void putAllWithInvalidEntry() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.STRING_ONLY);
+        Map<String, String> entries = new LinkedHashMap<>();
+        entries.put(null, "value");
+        store.putAll(entries);
+    }
+
+    @Test
+    public void putAllExceedsCapacity() throws Exception {
+        RecordStore store = new RecordStore(2, RecordType.STRING_ONLY);
+        Map<String, String> entries = new LinkedHashMap<>();
+        entries.put("a", "1");
+        entries.put("b", "2");
+        entries.put("c", "3");
+        store.putAll(entries);
+    }
+}
+

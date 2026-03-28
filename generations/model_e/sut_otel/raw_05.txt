@@ -1,0 +1,110 @@
+```java
+package com.example;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
+public class OTelShop_ModelE_CoT_RobustnessTest extends OTelShopBaseTest {
+
+    @Test
+    public void test_R1_productIdNonExistent() throws Exception {
+        HttpResponse<String> response = get("/api/products/ NONEXISTENT");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R2_productIdNumericString() throws Exception {
+        HttpResponse<String> response = get("/api/products/1234567890");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R3_emptyPathSegment() throws Exception {
+        HttpResponse<String> response = get("/api/products/");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R4_pathSegmentWhitespaceOnly() throws Exception {
+        HttpResponse<String> response = get("/api/products/   ");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R5_extremelyLongProductId() throws Exception {
+        StringBuilder longId = new StringBuilder();
+        for (int i = 0; i < 500; i++) {
+            longId.append("a");
+        }
+        HttpResponse<String> response = get("/api/products/" + longId.toString());
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R6_cartGetEmptySessionId() throws Exception {
+        HttpResponse<String> response = get("/api/cart?sessionId=");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R7_cartDeleteMissingSessionIdKey() throws Exception {
+        HttpResponse<String> response = delete("/api/cart");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R8_cartPostEmptyUserId() throws Exception {
+        String jsonBody = "{\"userId\":\"\",\"item\":{\"productId\":\"OLJCESPC7Z\",\"quantity\":1}}";
+        HttpResponse<String> response = postJson("/api/cart", jsonBody);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R9_cartPostNullItem() throws Exception {
+        String jsonBody = "{\"userId\":\"user\",\"item\":null}";
+        HttpResponse<String> response = postJson("/api/cart", jsonBody);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R10_cartPostMissingQuantity() throws Exception {
+        String jsonBody = "{\"userId\":\"user\",\"item\":{\"productId\":\"OLJCESPC7Z\"}}";
+        HttpResponse<String> response = postJson("/api/cart", jsonBody);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R11_checkoutPostInvalidEmail() throws Exception {
+        String jsonBody = "{\"userId\":\"user\",\"userCurrency\":\"USD\",\"address\":{\"streetAddress\":\"addr\",\"state\":\"ST\",\"country\":\"US\",\"city\":\"City\",\"zipCode\":\"12345\"},\"email\":\" invalid \",\"creditCard\":{\"creditCardNumber\":\"1234567890123456\",\"creditCardCvv\":123,\"creditCardExpirationYear\":2025,\"creditCardExpirationMonth\":12}}";
+        HttpResponse<String> response = postJson("/api/checkout", jsonBody);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R12_currencyPostUnknownFromCode() throws Exception {
+        String jsonBody = "{\"from\":{\"currencyCode\":\"ZZZ\",\"units\":10,\"nanos\":0},\"toCode\":\"USD\"}";
+        HttpResponse<String> response = postJson("/api/currency", jsonBody);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R13_shippingPostEmptyAddress() throws Exception {
+        String jsonBody = "{\"address\":{\"streetAddress\":\"\",\"state\":\"\",\"country\":\"\",\"city\":\"\",\"zipCode\":\"\"},\"items\":[{\"productId\":\"OLJCESPC7Z\",\"quantity\":1}]}";
+        HttpResponse<String> response = postJson("/api/shipping", jsonBody);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R14_recommendationsGetInvalidProductId() throws Exception {
+        HttpResponse<String> response = get("/api/recommendations?productIds=NONEXISTENT&sessionId=session&currencyCode=USD");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R15_adsGetEmptyContextKeys() throws Exception {
+        HttpResponse<String> response = get("/api/ads?contextKeys=");
+        assertNoServerError(response);
+    }
+}
+```
+

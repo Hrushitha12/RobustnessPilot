@@ -1,0 +1,345 @@
+Thinking...
+Okay, I need to create a JUnit 5 test class for the OpenTelemetry Astronomy Shop's robustness tests. The user provided examples and specific requirements. Let me start by understanding the task.
+
+First, the test class must extend OTelShopBaseTest, which provides methods like get, postJson, delete, and assertNoServerError. Each test method should call one of these methods with a specific input that tests robustness, then use assertNoServerError. The tests should cover different endpoints and violation categories without repeating the same violation.
+
+The endpoints to cover are products, cart (GET), cart (POST), checkout, currency, shipping, and recommendations. Each of these needs at least one test. Let's think of possible robustness cases for each.
+
+For products:
+- GET /api/products/{productId} with an invalid ID (already covered in the example). Maybe another case like a very long ID or special characters.
+
+For cart GET:
+- sessionId with invalid characters, like empty, null, or special characters.
+
+For cart POST:
+- Missing userId, invalid quantity (like zero), invalid product ID, etc.
+
+Checkout:
+- Missing email, invalid credit card details (like wrong format), missing address fields.
+
+Currency:
+- Invalid from currency code, negative units, etc.
+
+Shipping:
+- Missing address fields, invalid zip code, items with negative quantity.
+
+Recommendations:
+- Invalid productIds (like non-existent), empty sessionId, invalid currency code.
+
+Now, I need to make sure each test has a unique name starting with test_R1_, and each test covers a different violation. Let me list out possible tests.
+
+1. test_R1_ProductInvalidId: Use an ID with special characters.
+2. test_R1_CartGetInvalidSessionId: sessionId with special characters.
+3. test_R1_CartPostZeroQuantity: quantity is zero.
+4. test_R1_CheckoutMissingEmail: email field is missing.
+5. test_R1_CurrencyNegativeUnits: units is negative.
+6. test_R1_ShippingInvalidZipCode: zip code with letters.
+7. test_R1_RecommendationsInvalidProductIds: productIds with non-existent IDs.
+8. test_R1_RecommendationsEmptySessionId: sessionId is empty.
+9. test_R1_RecommendationsInvalidCurrencyCode: currencyCode is invalid.
+10. test_R1_CheckoutInvalidCreditCardNumber: credit card number with letters.
+11. test_R1_CartPostMissingProductId: item's productId is missing.
+12. test_R1_CurrencyMissingFromCode: from's currencyCode is missing.
+13. test_R1_ShippingEmptyAddressFields: address fields are empty.
+14. test_R1_CheckoutEmptyUserId: userId is empty (already in example, but need to avoid repetition).
+Wait, the example had test_R1_CheckoutEmptyUserId. So maybe I need to pick different ones.
+
+Wait, the user's examples include test_R1_CheckoutEmptyUserId. So I need to avoid repeating that. Let me check again.
+
+The user's examples have tests for:
+- ProductNonExistentId
+- CartEmptySessionId
+- CartAddNegativeQuantity
+- CheckoutEmptyUserId
+- CurrencyUnknownFromCode
+- ShippingEmptyItemsList
+
+So I need to cover other endpoints and other violations. Let me think again.
+
+For products, maybe test_R1_ProductInvalidId (like "OLJCESPC7Z123" which is longer than the known valid ID). Or maybe an ID with numbers and letters mixed.
+
+For cart GET, maybe test_R1_CartGetInvalidSessionId with sessionId containing special characters.
+
+For cart POST, maybe test_R1_CartPostZeroQuantity (quantity 0), or test_R1_CartPostMissingProductId (productId missing in the item).
+
+For checkout, test_R1_CheckoutInvalidCreditCardNumber (like "1234-5678-9012-3456A"), or test_R1_CheckoutMissingAddressField (missing streetAddress).
+
+For currency, test_R1_CurrencyNegativeUnits (units -5), or test_R1_CurrencyMissingFromCode (from.currencyCode missing).
+
+For shipping, test_R1_ShippingInvalidZipCode (zipCode with letters), or test_R1_ShippingEmptyItemsList (already in example, so need another one like empty address).
+
+For recommendations, test_R1_RecommendationsInvalidProductIds (productIds with invalid IDs), test_R1_RecommendationsEmptySessionId (sessionId empty), test_R1_RecommendationsInvalidCurrencyCode (currencyCode like "XYZ").
+
+Also, for ads endpoint, maybe test_R1_AdsInvalidContextKeys (contextKeys with invalid format).
+
+Wait, the user's examples didn't cover the ads endpoint. So maybe include one test for ads with invalid contextKeys.
+
+So let me structure the tests:
+
+1. test_R1_ProductInvalidId: productId with special characters.
+2. test_R1_CartGetInvalidSessionId: sessionId with special characters.
+3. test_R1_CartPostZeroQuantity: quantity 0.
+4. test_R1_CartPostMissingProductId: item's productId missing.
+5. test_R1_CheckoutInvalidCreditCardNumber: credit card number with letters.
+6. test_R1_CheckoutMissingAddressField: address missing streetAddress.
+7. test_R1_CurrencyNegativeUnits: units -5.
+8. test_R1_CurrencyMissingFromCode: from.currencyCode missing.
+9. test_R1_ShippingInvalidZipCode: zipCode with letters.
+10. test_R1_ShippingEmptyAddressFields: address fields empty.
+11. test_R1_RecommendationsInvalidProductIds: productIds with invalid IDs.
+12. test_R1_RecommendationsEmptySessionId: sessionId empty.
+13. test_R1_RecommendationsInvalidCurrencyCode: currencyCode invalid.
+14. test_R1_AdsInvalidContextKeys: contextKeys with invalid format.
+15. test_R1_CheckoutEmptyUserCurrency: userCurrency empty.
+
+That's 15 tests. Each covers different endpoints and violations. Now, I need to write the code for each test.
+
+For example, test_R1_ProductInvalidId would be:
+
+@Test
+public void test_R1_ProductInvalidId() throws Exception {
+    HttpResponse<String> response = get("/api/products/INVALID-ID-123!");
+    assertNoServerError(response);
+}
+
+Similarly, for test_R1_CartGetInvalidSessionId:
+
+@Test
+public void test_R1_CartGetInvalidSessionId() throws Exception {
+    HttpResponse<String> response = get("/api/cart?sessionId=sessionId!@#");
+    assertNoServerError(response);
+}
+
+For cart POST with zero quantity:
+
+String body = "{\"userId\":\"user-1\",\"item\":{\"productId\":\"OLJCESPC7Z\",\"quantity\":0}}";
+HttpResponse<String> response = postJson("/api/cart", body);
+assertNoServerError(response);
+
+For missing productId in item:
+
+String body = "{\"userId\":\"user-1\",\"item\":{\"productId\":\"\",\"quantity\":1}}";
+HttpResponse<String> response = postJson("/api/cart", body);
+assertNoServerError(response);
+
+Checkout with invalid credit card number:
+
+String body = "{\"userId\":\"user-1\",\"userCurrency\":\"USD\","
+    + "\"address\":{\"streetAddress\":\"1 Main St\",\"state\":\"CA\","
+    + "\"country\":\"US\",\"city\":\"Springfield\",\"zipCode\":\"12345\"},"
+    + "\"email\":\"test@example.com\","
+    + "\"creditCard\":{\"creditCardNumber\":\"4111-1111-1111-1111A\","
+    + "\"creditCardCvv\":123,\"creditCardExpirationYear\":2030,\"creditCardExpirationMonth\":1}}";
+HttpResponse<String> response = postJson("/api/checkout", body);
+assertNoServerError(response);
+
+Checkout missing streetAddress:
+
+String body = "{\"userId\":\"user-1\",\"userCurrency\":\"USD\","
+    + "\"address\":{\"streetAddress\":\"\",\"state\":\"CA\","
+    + "\"country\":\"US\",\"city\":\"Springfield\",\"zipCode\":\"12345\"},"
+    + "\"email\":\"test@example.com\","
+    + "\"creditCard\":{\"creditCardNumber\":\"4111-1111-1111-1111\","
+    + "\"creditCardCvv\":123,\"creditCardExpirationYear\":2030,\"creditCardExpirationMonth\":1}}";
+HttpResponse<String> response = postJson("/api/checkout", body);
+assertNoServerError(response);
+
+Currency negative units:
+
+String body = "{\"from\":{\"currencyCode\":\"USD\",\"units\":-5,\"nanos\":0},\"toCode\":\"EUR\"}";
+HttpResponse<String> response = postJson("/api/currency", body);
+assertNoServerError(response);
+
+Currency missing from.currencyCode:
+
+String body = "{\"from\":{\"currencyCode\":\"\",\"units\":10,\"nanos\":0},\"toCode\":\"USD\"}";
+HttpResponse<String> response = postJson("/api/currency", body);
+assertNoServerError(response);
+
+Shipping invalid zip code:
+
+String body = "{\"address\":{\"streetAddress\":\"1 Main St\",\"state\":\"CA\","
+    + "\"country\":\"US\",\"city\":\"Springfield\",\"zipCode\":\"ABCD\"},"
+    + "\"items\":[{\"productId\":\"OLJCESPC7Z\",\"quantity\":1}]}";
+HttpResponse<String> response = postJson("/api/shipping", body);
+assertNoServerError(response);
+
+Shipping empty address fields:
+
+String body = "{\"address\":{\"streetAddress\":\"\",\"state\":\"\",\""
+    + "country\":\"\",\"city\":\"\",\"zipCode\":\"\"},"
+    + "\"items\":[{\"productId\":\"OLJCESPC7Z\",\"quantity\":1}]}";
+HttpResponse<String> response = postJson("/api/shipping", body);
+assertNoServerError(response);
+
+Recommendations invalid productIds (like "INVALID-123"):
+
+HttpResponse<String> response = get("/api/recommendations?productIds=INVALID-123&sessionId=test&currencyCode=USD");
+assertNoServerError(response);
+
+Recommendations empty sessionId:
+
+HttpResponse<String> response = get("/api/recommendations?productIds=OLJCESPC7Z&sessionId=&currencyCode=USD");
+assertNoServerError(response);
+
+Recommendations invalid currencyCode:
+
+HttpResponse<String> response = get("/api/recommendations?productIds=OLJCESPC7Z&sessionId=test&currencyCode=XYZ");
+assertNoServerError(response);
+
+Ads invalid contextKeys (like "invalid,key"):
+
+HttpResponse<String> response = get("/api/ads?contextKeys=invalid,key");
+assertNoServerError(response);
+
+Checkout empty userCurrency:
+
+String body = "{\"userId\":\"user-1\",\"userCurrency\":\"\","
+    + "\"address\":{\"streetAddress\":\"1 Main St\",\"state\":\"CA\","
+    + "\"country\":\"US\",\"city\":\"Springfield\",\"zipCode\":\"12345\"},"
+    + "\"email\":\"test@example.com\","
+    + "\"creditCard\":{\"creditCardNumber\":\"4111-1111-1111-1111\","
+    + "\"creditCardCvv\":123,\"creditCardExpirationYear\":2030,\"creditCardExpirationMonth\":1}}";
+HttpResponse<String> response = postJson("/api/checkout", body);
+assertNoServerError(response);
+
+Now, check if all endpoints are covered:
+
+- Products: yes
+- Cart GET: yes
+- Cart POST: yes
+- Checkout: yes
+- Currency: yes
+- Shipping: yes
+- Recommendations: yes
+- Ads: yes
+
+That's 15 tests. Each test has a unique name and covers different violations. Now, I need to write the Java class with these tests, ensuring correct syntax and imports.
+...done thinking.
+
+package com.example;
+
+import org.junit.jupiter.api.Test;
+import java.net.http.HttpResponse;
+
+public class OTelShop_ModelC_FewShot_RobustnessTest extends OTelShopBaseTest {
+
+    @Test
+    public void test_R1_ProductInvalidId() throws Exception {
+        HttpResponse<String> response = get("/api/products/INVALID-ID-123!");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CartGetInvalidSessionId() throws Exception {
+        HttpResponse<String> response = get("/api/cart?sessionId=sessionId!@#");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CartPostZeroQuantity() throws Exception {
+        String body = "{\"userId\":\"user-1\",\"item\":{\"productId\":\"OLJCESPC7Z\",\"quantity\":0}}";
+        HttpResponse<String> response = postJson("/api/cart", body);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CartPostMissingProductId() throws Exception {
+        String body = "{\"userId\":\"user-1\",\"item\":{\"productId\":\"\",\"quantity\":1}}";
+        HttpResponse<String> response = postJson("/api/cart", body);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CheckoutInvalidCreditCardNumber() throws Exception {
+        String body = "{\"userId\":\"user-1\",\"userCurrency\":\"USD\","
+            + "\"address\":{\"streetAddress\":\"1 Main St\",\"state\":\"CA\","
+            + "\"country\":\"US\",\"city\":\"Springfield\",\"zipCode\":\"12345\"},"
+            + "\"email\":\"test@example.com\","
+            + "\"creditCard\":{\"creditCardNumber\":\"4111-1111-1111-1111A\","
+            + "\"creditCardCvv\":123,\"creditCardExpirationYear\":2030,\"creditCardExpirationMonth\":1}}";
+        HttpResponse<String> response = postJson("/api/checkout", body);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CheckoutMissingAddressField() throws Exception {
+        String body = "{\"userId\":\"user-1\",\"userCurrency\":\"USD\","
+            + "\"address\":{\"streetAddress\":\"\",\"state\":\"CA\","
+            + "\"country\":\"US\",\"city\":\"Springfield\",\"zipCode\":\"12345\"},"
+            + "\"email\":\"test@example.com\","
+            + "\"creditCard\":{\"creditCardNumber\":\"4111-1111-1111-1111\","
+            + "\"creditCardCvv\":123,\"creditCardExpirationYear\":2030,\"creditCardExpirationMonth\":1}}";
+        HttpResponse<String> response = postJson("/api/checkout", body);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CurrencyNegativeUnits() throws Exception {
+        String body = "{\"from\":{\"currencyCode\":\"USD\",\"units\":-5,\"nanos\":0},\"toCode\":\"EUR\"}";
+        HttpResponse<String> response = postJson("/api/currency", body);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CurrencyMissingFromCode() throws Exception {
+        String body = "{\"from\":{\"currencyCode\":\"\",\"units\":10,\"nanos\":0},\"toCode\":\"USD\"}";
+        HttpResponse<String> response = postJson("/api/currency", body);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_ShippingInvalidZipCode() throws Exception {
+        String body = "{\"address\":{\"streetAddress\":\"1 Main St\",\"state\":\"CA\","
+            + "\"country\":\"US\",\"city\":\"Springfield\",\"zipCode\":\"ABCD\"},"
+            + "\"items\":[{\"productId\":\"OLJCESPC7Z\",\"quantity\":1}]}";
+        HttpResponse<String> response = postJson("/api/shipping", body);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_ShippingEmptyAddressFields() throws Exception {
+        String body = "{\"address\":{\"streetAddress\":\"\",\"state\":\"\",\""
+            + "country\":\"\",\"city\":\"\",\"zipCode\":\"\"},"
+            + "\"items\":[{\"productId\":\"OLJCESPC7Z\",\"quantity\":1}]}";
+        HttpResponse<String> response = postJson("/api/shipping", body);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_RecommendationsInvalidProductIds() throws Exception {
+        HttpResponse<String> response = get("/api/recommendations?productIds=INVALID-123&sessionId=test&currencyCode=USD");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_RecommendationsEmptySessionId() throws Exception {
+        HttpResponse<String> response = get("/api/recommendations?productIds=OLJCESPC7Z&sessionId=&currencyCode=USD");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_RecommendationsInvalidCurrencyCode() throws Exception {
+        HttpResponse<String> response = get("/api/recommendations?productIds=OLJCESPC7Z&sessionId=test&currencyCode=XYZ");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_AdsInvalidContextKeys() throws Exception {
+        HttpResponse<String> response = get("/api/ads?contextKeys=invalid,key");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CheckoutEmptyUserCurrency() throws Exception {
+        String body = "{\"userId\":\"user-1\",\"userCurrency\":\"\","
+            + "\"address\":{\"streetAddress\":\"1 Main St\",\"state\":\"CA\","
+            + "\"country\":\"US\",\"city\":\"Springfield\",\"zipCode\":\"12345\"},"
+            + "\"email\":\"test@example.com\","
+            + "\"creditCard\":{\"creditCardNumber\":\"4111-1111-1111-1111\","
+            + "\"creditCardCvv\":123,\"creditCardExpirationYear\":2030,\"creditCardExpirationMonth\":1}}";
+        HttpResponse<String> response = postJson("/api/checkout", body);
+        assertNoServerError(response);
+    }
+}
+

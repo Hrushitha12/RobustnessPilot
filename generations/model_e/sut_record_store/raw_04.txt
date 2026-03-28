@@ -1,0 +1,107 @@
+```java
+package pilot.records;
+
+import org.junit.jupiter.api.Test;
+import java.util.Map;
+import java.util.LinkedHashMap;
+
+public class RecordStore_ModelE_Self_RobustnessTest {
+
+    @Test 
+    public void testConstructorNullType() throws Exception {
+        new RecordStore(1, null);
+    }
+
+    @Test 
+    public void testConstructorInvalidCapacityLow() throws Exception {
+        new RecordStore(-1, RecordType.MIXED);
+    }
+
+    @Test 
+    public void testConstructorInvalidCapacityHigh() throws Exception {
+        new RecordStore(101, RecordType.MIXED);
+    }
+
+    @Test 
+    public void testPutNullKey() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.STRING_ONLY);
+        store.put(null, "value");
+    }
+
+    @Test 
+    public void testPutBlankKey() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.STRING_ONLY);
+        store.put(" ", "value");
+    }
+
+    @Test 
+    public void testPutLongKey() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.STRING_ONLY);
+        StringBuilder key = new StringBuilder();
+        for (int i = 0; i < 33; i++) {
+            key.append('a');
+        }
+        store.put(key.toString(), "value");
+    }
+
+    @Test 
+    public void testPutNullValue() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.STRING_ONLY);
+        store.put("key", null);
+    }
+
+    @Test 
+    public void testPostCloseWrite() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.STRING_ONLY);
+        store.close();
+        store.put("key", "value");
+    }
+
+    @Test 
+    public void testStringOnlyPutNumeric() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.STRING_ONLY);
+        store.putNumeric("key", "123");
+    }
+
+    @Test 
+    public void testNumericOnlyPut() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.NUMERIC_ONLY);
+        store.put("key", "value");
+    }
+
+    @Test 
+    public void testInvalidNumericFormat() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.MIXED);
+        store.putNumeric("key", "123.45");
+    }
+
+    @Test 
+    public void testNumericOutOfRangeLow() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.MIXED);
+        store.putNumeric("key", Integer.toString(MIN_NUMERIC - 1));
+    }
+
+    @Test 
+    public void testNumericOutOfRangeHigh() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.MIXED);
+        store.putNumeric("key", Integer.toString(MAX_NUMERIC + 1));
+    }
+
+    @Test 
+    public void testCapacityOverflow() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.STRING_ONLY);
+        store.put("key1", "value");
+        store.put("key2", "value");
+    }
+
+    @Test 
+    public void testPutAllAtomicity() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.MIXED);
+        Map<String, String> entries = new LinkedHashMap<>();
+        entries.put("key1", "value");
+        entries.put(null, "value"); // invalid key
+        store.putAll(entries);
+    }
+}
+```
+

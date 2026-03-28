@@ -1,0 +1,141 @@
+```java
+package pilot.records;
+
+import org.junit.jupiter.api.Test;
+import java.util.Map;
+import java.util.LinkedHashMap;
+
+class RecordStore_ModelD_Structured_RobustnessTest {
+
+    @Test
+    void testConstructorWithZeroCapacity() throws Exception {
+        new RecordStore(0, RecordType.STRING_ONLY);
+    }
+
+    @Test
+    void testConstructorWithCapacityExceedingLimit() throws Exception {
+        new RecordStore(101, RecordType.STRING_ONLY);
+    }
+
+    @Test
+    void testConstructorWithNullType() throws Exception {
+        new RecordStore(50, null);
+    }
+
+    @Test
+    void testPutWithNullKey() throws Exception {
+        RecordStore recordStore = new RecordStore(50, RecordType.STRING_ONLY);
+        recordStore.put(null, "value");
+    }
+
+    @Test
+    void testPutWithBlankKey() throws Exception {
+        RecordStore recordStore = new RecordStore(50, RecordType.STRING_ONLY);
+        recordStore.put("   ", "value");
+    }
+
+    @Test
+    void testPutWithLongKey() throws Exception {
+        RecordStore recordStore = new RecordStore(50, RecordType.STRING_ONLY);
+        String longKey = "a".repeat(33);
+        recordStore.put(longKey, "value");
+    }
+
+    @Test
+    void testPutWithNullValue() throws Exception {
+        RecordStore recordStore = new RecordStore(50, RecordType.STRING_ONLY);
+        recordStore.put("key", null);
+    }
+
+    @Test
+    void testPutOnNumericOnlyStore() throws Exception {
+        RecordStore recordStore = new RecordStore(50, RecordType.NUMERIC_ONLY);
+        recordStore.put("key", "value");
+    }
+
+    @Test
+    void testPutNumericWithNullValue() throws Exception {
+        RecordStore recordStore = new RecordStore(50, RecordType.NUMERIC_ONLY);
+        recordStore.putNumeric("key", null);
+    }
+
+    @Test
+    void testPutNumericWithFloatString() throws Exception {
+        RecordStore recordStore = new RecordStore(50, RecordType.NUMERIC_ONLY);
+        recordStore.putNumeric("key", "3.14");
+    }
+
+    @Test
+    void testPutNumericWithAlphaString() throws Exception {
+        RecordStore recordStore = new RecordStore(50, RecordType.NUMERIC_ONLY);
+        recordStore.putNumeric("key", "abc");
+    }
+
+    @Test
+    void testPutNumericWithIntegerOverflow() throws Exception {
+        RecordStore recordStore = new RecordStore(50, RecordType.NUMERIC_ONLY);
+        String overflowValue = Integer.toString(Integer.MAX_VALUE + 1L);
+        recordStore.putNumeric("key", overflowValue);
+    }
+
+    @Test
+    void testPutNumericOnStringOnlyStore() throws Exception {
+        RecordStore recordStore = new RecordStore(50, RecordType.STRING_ONLY);
+        recordStore.putNumeric("key", "42");
+    }
+
+    @Test
+    void testPutAfterClose() throws Exception {
+        RecordStore recordStore = new RecordStore(50, RecordType.STRING_ONLY);
+        recordStore.close();
+        recordStore.put("key", "value");
+    }
+
+    @Test
+    void testPutNumericAfterClose() throws Exception {
+        RecordStore recordStore = new RecordStore(50, RecordType.NUMERIC_ONLY);
+        recordStore.close();
+        recordStore.putNumeric("key", "42");
+    }
+
+    @Test
+    void testRemoveAfterClose() throws Exception {
+        RecordStore recordStore = new RecordStore(50, RecordType.STRING_ONLY);
+        recordStore.close();
+        recordStore.remove("key");
+    }
+
+    @Test
+    void testPutAllAfterClose() throws Exception {
+        RecordStore recordStore = new RecordStore(50, RecordType.STRING_ONLY);
+        Map<String, String> entries = new LinkedHashMap<>();
+        entries.put("key", "value");
+        recordStore.close();
+        recordStore.putAll(entries);
+    }
+
+    @Test
+    void testPutExceedsCapacity() throws Exception {
+        RecordStore recordStore = new RecordStore(1, RecordType.STRING_ONLY);
+        recordStore.put("key1", "value1");
+        recordStore.put("key2", "value2");
+    }
+
+    @Test
+    void testPutAllWithNullKey() throws Exception {
+        RecordStore recordStore = new RecordStore(50, RecordType.STRING_ONLY);
+        Map<String, String> entries = new LinkedHashMap<>();
+        entries.put(null, "value");
+        recordStore.putAll(entries);
+    }
+
+    @Test
+    void testPutAllWithNullValue() throws Exception {
+        RecordStore recordStore = new RecordStore(50, RecordType.STRING_ONLY);
+        Map<String, String> entries = new LinkedHashMap<>();
+        entries.put("key", null);
+        recordStore.putAll(entries);
+    }
+}
+```
+

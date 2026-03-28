@@ -1,0 +1,230 @@
+Thinking...
+Okay, I need to create a JUnit 5 test class for the OpenTelemetry Astronomy Shop. The user wants 15 to 18 robustness tests covering different endpoints and violation categories. Let me start by recalling the available endpoints and the robustness oracle. The system passes if the HTTP status is less than 500, so any 2xx, 3xx, or 4xx is acceptable, but 5xx is a failure.
+
+First, I need to make sure each test method starts with test_R1_ and has a unique name. Each test must call get(), postJson(), or delete() with a robustness input and then assertNoServerError(). Also, no try-catch blocks, no asserting specific exceptions or return values, and only using the provided methods from OTelShopBaseTest.
+
+Let me list out the endpoints again:
+
+GET /api/products
+GET /api/products/{productId}
+GET /api/cart?sessionId=<string>
+POST /api/cart
+DELETE /api/cart?sessionId=<string>
+POST /api/checkout
+POST /api/currency
+POST /api/shipping
+GET /api/recommendations?productIds=<string>&sessionId=<string>&currencyCode=<string>
+GET /api/ads?contextKeys=<string>
+
+Now, I need to think about different violation categories. For example, invalid parameters, missing parameters, invalid JSON, invalid IDs, etc.
+
+For each endpoint, I can create a few tests. Let's start with GET /api/products. A test for a valid request, but maybe also invalid query parameters? Wait, the GET /api/products doesn't have query parameters. So maybe just a valid request.
+
+For GET /api/products/{productId}, using a valid ID (OLJCESPC7Z) and an invalid one. The invalid ID might be a string that's not a valid product ID. But how to generate that? Maybe a random string, but the test should pass regardless of the ID, as the system should handle it gracefully.
+
+For GET /api/cart, the session ID is required. What if the session ID is missing? But the endpoint requires it as a query parameter, so the test could omit it. But the system might return a 400. However, the robustness oracle says 4xx is acceptable. So a test where the session ID is missing would be a valid test.
+
+For POST /api/cart, the body requires userId and item with productId and quantity. What if the JSON is invalid? Like missing userId or item. Or the quantity is negative. The system should handle that with 4xx, which is acceptable.
+
+For DELETE /api/cart, the session ID is required. If it's missing, the system might return 400.
+
+For POST /api/checkout, the body has several required fields. What if the userId is missing, or the address is incomplete? The system should handle that with 4xx.
+
+For POST /api/currency, the body requires from and toCode. If from is missing or toCode is invalid, the system should return 4xx.
+
+For POST /api/shipping, the address and items are required. If items are missing or have invalid product IDs, the system should handle that.
+
+For GET /api/recommendations, the parameters are productIds, sessionId, and currencyCode. If any of these are missing or invalid, the system should handle it with 4xx.
+
+For GET /api/ads, the contextKeys parameter is required. If missing, the system might return 400.
+
+Now, I need to create 15-18 tests. Let's think of each endpoint and possible violations.
+
+1. GET /api/products – valid request.
+2. GET /api/products/{invalidId} – invalid product ID.
+3. GET /api/cart with missing sessionId.
+4. POST /api/cart with invalid JSON (missing userId).
+5. POST /api/cart with invalid quantity (negative).
+6. DELETE /api/cart with missing sessionId.
+7. POST /api/checkout with missing userId.
+8. POST /api/checkout with invalid credit card number.
+9. POST /api/currency with missing from.
+10. POST /api/currency with invalid toCode.
+11. POST /api/shipping with missing items.
+12. GET /api/recommendations with missing productIds.
+13. GET /api/recommendations with invalid currencyCode.
+14. GET /api/ads with missing contextKeys.
+15. POST /api/checkout with invalid address country.
+16. POST /api/cart with invalid productId in item.
+17. GET /api/products/{productId} with valid ID.
+18. POST /api/shipping with invalid item quantity (negative).
+
+Wait, that's 18 tests. Let me check each one:
+
+1. GET /api/products – valid.
+2. GET /api/products with invalid ID.
+3. GET /api/cart missing sessionId.
+4. POST /api/cart missing userId.
+5. POST /api/cart with quantity -1.
+6. DELETE /api/cart missing sessionId.
+7. POST /api/checkout missing userId.
+8. POST /api/checkout with credit card number that's not numeric.
+9. POST /api/currency missing from.
+10. POST /api/currency with toCode that's not a valid currency code.
+11. POST /api/shipping missing items.
+12. GET /api/recommendations missing productIds.
+13. GET /api/recommendations with invalid currencyCode.
+14. GET /api/ads missing contextKeys.
+15. POST /api/checkout with invalid country in address.
+16. POST /api/cart with productId that's not a valid one (but the system may not validate that, so maybe just a random string).
+17. GET /api/products/{validId} – OLJCESPC7Z.
+18. POST /api/shipping with item quantity -1.
+
+That covers all endpoints and various violation types. Now, I need to write each test method with the correct method calls and assertNoServerError.
+
+Each test method must be in the OTelShop_ModelC_ZeroShot_RobustnessTest class, extend OTelShopBaseTest, and have the correct package and imports.
+
+Now, writing the Java code with these tests. Each method starts with test_R1_, has throws Exception, calls the appropriate method, and then assertNoServerError.
+
+For example:
+
+test_R1_GetProducts_ValidRequest() {
+    get("/api/products");
+    assertNoServerError(...);
+}
+
+But need to make sure that the parameters are correctly set. For example, for the invalid product ID, the path would be "/api/products/invalidId".
+
+For the POST /api/cart with missing userId, the JSON body would be incomplete.
+
+Each test method must be unique and cover different scenarios.
+
+Now, translating all these into code.
+...done thinking.
+
+package com.example;
+
+import org.junit.jupiter.api.Test;
+import java.net.http.HttpResponse;
+
+public class OTelShop_ModelC_ZeroShot_RobustnessTest extends OTelShopBaseTest {
+
+    @Test
+    public void test_R1_GetProducts_ValidRequest() throws Exception {
+        get("/api/products");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_GetProductById_InvalidId() throws Exception {
+        get("/api/products/invalidId");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_GetCart_MissingSessionId() throws Exception {
+        get("/api/cart");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_PostCart_MissingUserId() throws Exception {
+        String json = "{\"item\":{\"productId\":\"OLJCESPC7Z\",\"quantity\":2}}";
+        postJson("/api/cart", json);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_PostCart_NegativeQuantity() throws Exception {
+        String json = "{\"userId\":\"user123\",\"item\":{\"productId\":\"OLJCESPC7Z\",\"quantity\":-1}}";
+        postJson("/api/cart", json);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_DeleteCart_MissingSessionId() throws Exception {
+        delete("/api/cart");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_PostCheckout_MissingUserId() throws Exception {
+        String json = "{\"userCurrency\":\"USD\",\"address\":{\"streetAddress\":\"123 Main\",\"state\":\"CA\",\"country\":\"US\",\"city\":\"San Francisco\",\"zipCode\":\"94101\"},\"email\":\"test@example.com\",\"creditCard\":{\"creditCardNumber\":\"4111111111111111\",\"creditCardCvv\":123,\"creditCardExpirationYear\":2025,\"creditCardExpirationMonth\":12}}";
+        postJson("/api/checkout", json);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_PostCheckout_InvalidCreditCardNumber() throws Exception {
+        String json = "{\"userId\":\"user123\",\"userCurrency\":\"USD\",\"address\":{\"streetAddress\":\"123 Main\",\"state\":\"CA\",\"country\":\"US\",\"city\":\"San Francisco\",\"zipCode\":\"94101\"},\"email\":\"test@example.com\",\"creditCard\":{\"creditCardNumber\":\"invalid\",\"creditCardCvv\":123,\"creditCardExpirationYear\":2025,\"creditCardExpirationMonth\":12}}";
+        postJson("/api/checkout", json);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_PostCurrency_MissingFrom() throws Exception {
+        String json = "{\"toCode\":\"EUR\"}";
+        postJson("/api/currency", json);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_PostCurrency_InvalidToCode() throws Exception {
+        String json = "{\"from\":{\"currencyCode\":\"USD\",\"units\":100,\"nanos\":0},\"toCode\":\"XYZ\"}";
+        postJson("/api/currency", json);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_PostShipping_MissingItems() throws Exception {
+        String json = "{\"address\":{\"streetAddress\":\"123 Main\",\"state\":\"CA\",\"country\":\"US\",\"city\":\"San Francisco\",\"zipCode\":\"94101\"}}";
+        postJson("/api/shipping", json);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_GetRecommendations_MissingProductIds() throws Exception {
+        get("/api/recommendations?sessionId=test123&currencyCode=USD");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_GetRecommendations_InvalidCurrencyCode() throws Exception {
+        get("/api/recommendations?productIds=OLJCESPC7Z&sessionId=test123&currencyCode=XYZ");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_GetAds_MissingContextKeys() throws Exception {
+        get("/api/ads");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_PostCheckout_InvalidAddressCountry() throws Exception {
+        String json = "{\"userId\":\"user123\",\"userCurrency\":\"USD\",\"address\":{\"streetAddress\":\"123 Main\",\"state\":\"CA\",\"country\":\"XYZ\",\"city\":\"San Francisco\",\"zipCode\":\"94101\"},\"email\":\"test@example.com\",\"creditCard\":{\"creditCardNumber\":\"4111111111111111\",\"creditCardCvv\":123,\"creditCardExpirationYear\":2025,\"creditCardExpirationMonth\":12}}";
+        postJson("/api/checkout", json);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_PostCart_InvalidProductId() throws Exception {
+        String json = "{\"userId\":\"user123\",\"item\":{\"productId\":\"invalid\",\"quantity\":2}}";
+        postJson("/api/cart", json);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_GetProductById_ValidId() throws Exception {
+        get("/api/products/OLJCESPC7Z");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_PostShipping_NegativeItemQuantity() throws Exception {
+        String json = "{\"address\":{\"streetAddress\":\"123 Main\",\"state\":\"CA\",\"country\":\"US\",\"city\":\"San Francisco\",\"zipCode\":\"94101\"},\"items\":[{\"productId\":\"OLJCESPC7Z\",\"quantity\":-1}]}";
+        postJson("/api/shipping", json);
+        assertNoServerError(response);
+    }
+}
+

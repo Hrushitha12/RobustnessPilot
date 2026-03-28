@@ -1,0 +1,98 @@
+```java
+package pilot.records;
+
+import org.junit.jupiter.api.Test;
+import java.util.Map;
+import java.util.LinkedHashMap;
+import pilot.records.RecordStore;
+import pilot.records.RecordType;
+
+public class RecordStore_ModelE_FewShot_RobustnessTest {
+
+    @Test
+    void test_null_capacity() throws Exception {
+        new RecordStore(null, RecordType.MIXED);
+    }
+
+    @Test
+    void test_zero_capacity() throws Exception {
+        new RecordStore(0, RecordType.MIXED);
+    }
+
+    @Test
+    void test_negative_capacity() throws Exception {
+        new RecordStore(-1, RecordType.MIXED);
+    }
+
+    @Test
+    void test_excessive_capacity() throws Exception {
+        new RecordStore(101, RecordType.MIXED);
+    }
+
+    @Test
+    void test_null_record_type() throws Exception {
+        new RecordStore(10, null);
+    }
+
+    @Test
+    void test_empty_key_on_put() throws Exception {
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        store.put("", "value");
+    }
+
+    @Test
+    void test_long_key_on_put() throws Exception {
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        StringBuilder key = new StringBuilder();
+        for (int i = 0; i < 33; i++) {
+            key.append('a');
+        }
+        store.put(key.toString(), "value");
+    }
+
+    @Test
+    void test_null_value_on_put() throws Exception {
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        store.put("key", null);
+    }
+
+    @Test
+    void test_hex_value_on_putNumeric() throws Exception {
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        store.putNumeric("key", "0x7f");
+    }
+
+    @Test
+    void test_min_minus_one_numeric_value_on_putNumeric() throws Exception {
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        store.putNumeric("key", String.valueOf(RecordStore.MIN_NUMERIC - 1));
+    }
+
+    @Test
+    void test_max_plus_one_numeric_value_on_putNumeric() throws Exception {
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        store.putNumeric("key", String.valueOf(RecordStore.MAX_NUMERIC + 1));
+    }
+
+    @Test
+    void test_putAll_with_long_key() throws Exception {
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        Map<String, String> entries = new LinkedHashMap<>();
+        StringBuilder key = new StringBuilder();
+        for (int i = 0; i < 33; i++) {
+            key.append('a');
+        }
+        entries.put(key.toString(), "value");
+        store.putAll(entries);
+    }
+
+    @Test
+    void test_put_after_close() throws Exception {
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        store.close();
+        store.put("key", "value");
+    }
+
+}
+```
+

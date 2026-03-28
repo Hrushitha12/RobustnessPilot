@@ -1,0 +1,94 @@
+```java
+package com.example;
+
+import static org.junit.jupiter.api.Assertions.assertNoServerError;
+import java.net.http.HttpResponse;
+import org.junit.jupiter.api.Test;
+
+public class OTelShop_ModelE_FewShot_RobustnessTest extends OTelShopBaseTest {
+
+    @Test
+    public void test_R1_ProductsTrailingSlash() throws Exception {
+        HttpResponse<String> response = get("/api/products/");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CartSessionIdWithSpecialChars() throws Exception {
+        HttpResponse<String> response = get("/api/cart?sessionId=abc!@#$%^&*()");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CartAddZeroQuantity() throws Exception {
+        String body = "{\"userId\":\"user-1\",\"item\":{\"productId\":\"OLJCESPC7Z\",\"quantity\":0}}";
+        HttpResponse<String> response = postJson("/api/cart", body);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CheckoutEmptyAddress() throws Exception {
+        String body = "{\"userId\":\"user-1\",\"userCurrency\":\"USD\","
+            + "\"address\":{\"streetAddress\":\"\",\"state\":\"CA\","
+            + "\"country\":\"US\",\"city\":\"Springfield\",\"zipCode\":\"12345\"},"
+            + "\"email\":\"test@example.com\","
+            + "\"creditCard\":{\"creditCardNumber\":\"4111-1111-1111-1111\","
+            + "\"creditCardCvv\":123,\"creditCardExpirationYear\":2030,\"creditCardExpirationMonth\":1}}";
+        HttpResponse<String> response = postJson("/api/checkout", body);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CurrencyNegativeUnits() throws Exception {
+        String body = "{\"from\":{\"currencyCode\":\"USD\",\"units\":-10,\"nanos\":0},\"toCode\":\"EUR\"}";
+        HttpResponse<String> response = postJson("/api/currency", body);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_ShippingNonExistentProductId() throws Exception {
+        String body = "{\"address\":{\"streetAddress\":\"1 Main St\",\"state\":\"CA\","
+            + "\"country\":\"US\",\"city\":\"Springfield\",\"zipCode\":\"12345\"},"
+            + "\"items\":[{\"productId\":\"NON_EXISTENT\",\"quantity\":2}]}";
+        HttpResponse<String> response = postJson("/api/shipping", body);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_RecommendationsEmptyProductIds() throws Exception {
+        HttpResponse<String> response = get("/api/recommendations?productIds=&sessionId=abc&currencyCode=USD");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_RecommendationsInvalidSessionId() throws Exception {
+        HttpResponse<String> response = get("/api/recommendations?productIds=OLJCESPC7Z&sessionId=<script>alert('XSS')</script>&currencyCode=USD");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_RecommendationsUnknownCurrency() throws Exception {
+        HttpResponse<String> response = get("/api/recommendations?productIds=OLJCESPC7Z&sessionId=abc&currencyCode=ZZZ");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_AdsEmptyContextKeys() throws Exception {
+        HttpResponse<String> response = get("/api/ads?contextKeys=");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_ProductsUrlEncodedId() throws Exception {
+        HttpResponse<String> response = get("/api/products/OLJCESPC7Z%20test");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CartDeleteNonExistentSessionId() throws Exception {
+        HttpResponse<String> response = delete("/api/cart?sessionId=NON_EXISTENT_SESSION_ID");
+        assertNoServerError(response);
+    }
+}
+```
+

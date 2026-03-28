@@ -1,0 +1,511 @@
+Thinking...
+Okay, let's tackle this problem. The user wants me to write a JUnit 5 test class for the OpenTelemetry Astronomy Shop, covering all the robustness test cases provided in the violation table. Each test must correspond to a row in the table, and each test method should have a unique name starting with test_R1_. 
+
+First, I need to make sure I understand the structure of the test class. The class must extend OTelShopBaseTest, which provides methods like get, postJson, delete, and assertNoServerError. The package is com.example, and the class name is OTelShop_ModelC_Structured_RobustnessTest. Each test method must throw Exception, and they should use the provided methods without using try-catch or asserting on specific exceptions.
+
+Looking at the violation table, there are 15 rows. Each row corresponds to a specific endpoint, field, scenario, and input. For each of these, I need to create a test method.
+
+Let's go through each row one by one.
+
+1. GET /api/products/{id} with non-existent product ID: The path is /api/products/DOESNOTEXIST999. So, the test method will call get on that path and assert no server error.
+
+2. GET /api/products/{id} with empty string in path: The path is /api/products/. So, another get call with that path.
+
+3. GET /api/products/{id} with numeric ID: Path is /api/products/12345. Another get.
+
+4. GET /api/products/{id} with extremely long ID: Need to generate a 1000-character string. Maybe using a loop or a string repetition. But for the test, just pass the path with a long string.
+
+5. GET /api/cart with empty sessionId: The path is /api/cart?sessionId=, so call get on that.
+
+6. GET /api/cart with missing sessionId: Path is /api/cart, call get.
+
+7. DELETE /api/cart with empty sessionId: Path is /api/cart?sessionId=, call delete.
+
+8. POST /api/cart with empty userId: The JSON body has "userId": "", so create that JSON and post.
+
+9. POST /api/cart with empty productId: JSON body has "productId": "", post that.
+
+10. POST /api/cart with quantity zero: JSON with quantity 0.
+
+11. POST /api/cart with quantity negative: JSON with quantity -1.
+
+12. POST /api/cart with item null: JSON has "item": null.
+
+13. POST /api/checkout with empty userId: JSON body has "userId": "".
+
+14. POST /api/checkout with invalid currency code: userCurrency is "ZZZ".
+
+15. POST /api/checkout with empty credit card number.
+
+16. POST /api/checkout with credit card expiration in past: year 2000, month 1.
+
+17. POST /api/currency with unknown fromCode: from.currencyCode "ZZZ".
+
+18. POST /api/currency with unknown toCode: toCode "ZZZ".
+
+19. POST /api/currency with units negative: units -1.
+
+20. POST /api/shipping with all address fields empty: address fields are all empty strings.
+
+21. GET /api/recommendations with non-existent productIds: productIds=FAKE999.
+
+Wait, the violation table has 15 rows. Let me recount. The user's table lists 15 rows. Let me check again:
+
+The table has 15 rows:
+
+1. GET /api/products/{id} | non-existent product ID
+2. GET /api/products/{id} | empty string segment in path
+3. GET /api/products/{id} | numeric string as ID
+4. GET /api/products/{id} | extremely long ID
+5. GET /api/cart | empty sessionId
+6. GET /api/cart | sessionId missing
+7. DELETE /api/cart | empty sessionId
+8. POST /api/cart | userId empty
+9. POST /api/cart | productId empty
+10. POST /api/cart | quantity zero
+11. POST /api/cart | quantity negative
+12. POST /api/cart | item null
+13. POST /api/checkout | empty userId
+14. POST /api/checkout | invalid currency code
+15. POST /api/checkout | creditCardNumber empty
+16. POST /api/checkout | credit card expiration in past
+17. POST /api/currency | unknown fromCode
+18. POST /api/currency | unknown toCode
+19. POST /api/currency | units negative
+20. POST /api/shipping | all address fields empty
+21. GET /api/recommendations | non-existent productIds
+
+Wait, the user's table lists 21 entries? Let me check again. The original message says:
+
+Violation table — write one test per row:
+
+Then there are 21 rows. Let me recount:
+
+Looking at the table:
+
+- GET /api/products/{id} has 4 rows (non-existent, empty, numeric, long)
+- GET /api/cart has 2 rows (empty sessionId, missing)
+- DELETE /api/cart has 1 (empty sessionId)
+- POST /api/cart has 6 (userId empty, productId empty, quantity 0, quantity -1, item null)
+- POST /api/checkout has 4 (empty userId, invalid currency, credit card empty, expiration past)
+- POST /api/currency has 3 (fromCode unknown, toCode unknown, units negative)
+- POST /api/shipping has 1 (all address empty)
+- GET /api/recommendations has 1 (non-existent productIds)
+
+Total rows: 4 + 2 + 1 + 6 + 4 + 3 + 1 + 1 = 22? Wait, maybe I miscounted. Let me check again:
+
+Original table:
+
+Endpoint | Field / Scenario | Input used
+--- | --- | ---
+GET /api/products/{id} | non-existent product ID | /api/products/DOESNOTEXIST999
+GET /api/products/{id} | empty string segment in path | /api/products/
+GET /api/products/{id} | numeric string as ID (wrong type) | /api/products/12345
+GET /api/products/{id} | extremely long ID string (1000 chars) | /api/products/<1000-char string>
+GET /api/cart | empty sessionId query param | /api/cart?sessionId=
+GET /api/cart | sessionId missing entirely from query | /api/cart
+DELETE /api/cart | empty sessionId query param | /api/cart?sessionId=
+POST /api/cart | userId field is empty string | {"userId":"","item":{"productId":"OLJCESPC7Z","quantity":1}}
+POST /api/cart | productId field is empty string | {"userId":"test-user","item":{"productId":"","quantity":1}}
+POST /api/cart | quantity is zero | {"userId":"test-user","item":{"productId":"OLJCESPC7Z","quantity":0}}
+POST /api/cart | quantity is negative integer | {"userId":"test-user","item":{"productId":"OLJCESPC7Z","quantity":-1}}
+POST /api/cart | item field is null | {"userId":"test-user","item":null}
+POST /api/checkout | empty userId | checkout body with userId: ""
+POST /api/checkout | invalid/non-existent currency code | checkout body with userCurrency: "ZZZ"
+POST /api/checkout | creditCardNumber is empty string | checkout body with creditCardNumber: ""
+POST /api/checkout | creditCardExpirationYear is in the past | checkout body with year: 2000, month: 1
+POST /api/currency | unknown fromCode currency | {"from":{"currencyCode":"ZZZ","units":10,"nanos":0},"toCode":"USD"}
+POST /api/currency | unknown toCode currency | {"from":{"currencyCode":"USD","units":10,"nanos":0},"toCode":"ZZZ"}
+POST /api/currency | units field is negative | {"from":{"currencyCode":"USD","units":-1,"nanos":0},"toCode":"EUR"}
+POST /api/shipping | all address fields empty strings | address with all fields ""
+GET /api/recommendations | non-existent productIds value | /api/recommendations?productIds=FAKE999&sessionId=s1&currencyCode=USD
+
+So that's 21 rows. So the test class needs 21 test methods.
+
+Now, for each of these, create a test method.
+
+Each test method must have a unique name starting with test_R1_. For example, test_R1_GetProductsNonExistentId, test_R1_GetProductsEmptyPath, etc.
+
+Now, for the GET /api/products/{id} with extremely long ID, I need to generate a 1000-character string. How to do that? Maybe using a loop or a string that repeats a certain pattern. For example, a string of 1000 'a's.
+
+But in Java, I can create a string with a loop. However, in the test method, I can construct it as a string with 1000 characters. For example, new String(new char[1000]).replace('\0', 'a').
+
+But for the test, the exact content isn't important as long as it's 1000 characters. So the path would be "/api/products/" + longString.
+
+For the POST /api/cart with item null, the JSON body is {"userId":"test-user","item":null}.
+
+For the POST /api/checkout with empty userId, the JSON body has "userId": "".
+
+For the POST /api/checkout with invalid currency code, userCurrency is "ZZZ".
+
+For the POST /api/checkout with credit card number empty, "creditCardNumber": "".
+
+For the POST /api/checkout with expiration in past, the creditCardExpirationYear is 2000 and month is 1.
+
+For the POST /api/currency with unknown fromCode, the JSON is {"from":{"currencyCode":"ZZZ","units":10,"nanos":0},"toCode":"USD"}.
+
+For the POST /api/currency with unknown toCode, the JSON is {"from":{"currencyCode":"USD","units":10,"nanos":0},"toCode":"ZZZ"}.
+
+For the POST /api/currency with units negative, the JSON is {"from":{"currencyCode":"USD","units":-1,"nanos":0},"toCode":"EUR"}.
+
+For the POST /api/shipping with all address fields empty, the body would be:
+
+{
+  "address": {
+    "streetAddress": "",
+    "state": "",
+    "country": "",
+    "city": "",
+    "zipCode": ""
+  },
+  "items": [
+    {"productId": "OLJCESPC7Z", "quantity": 1}
+  ]
+}
+
+Wait, the scenario says "all address fields empty strings". The items are part of the body. The scenario might require that the items are present, but the address fields are empty. The original input used for that row is "address with all fields """, but the actual JSON body needs to be constructed accordingly.
+
+So, the body for POST /api/shipping would have the address fields all empty, and items with some product and quantity. The example in the violation table uses "items":[{"productId":"OLJCESPC7Z","quantity":1}]. So that's the structure.
+
+For the GET /api/recommendations with non-existent productIds, the path is /api/recommendations?productIds=FAKE999&sessionId=s1&currencyCode=USD. So the test method would call get on that path.
+
+Now, each test method must call get(), postJson(), or delete() with the specified input and then call assertNoServerError().
+
+Now, the code structure:
+
+The class will be in package com.example.
+
+It extends OTelShopBaseTest.
+
+Each test method is annotated with @Test, has a name starting with test_R1_, throws Exception, and calls the appropriate method.
+
+Now, writing the code:
+
+For example, the first test method:
+
+@Test
+void test_R1_GetProductsNonExistentId() throws Exception {
+    get("/api/products/DOESNOTEXIST999");
+    assertNoServerError(response);
+}
+
+But the method is in the base class, so the response is captured by the get method. Wait, the base class's get method returns HttpResponse<String>, and the assertNoServerError is a method in the base class that takes HttpResponse<?>.
+
+So each test method would call get, postJson, or delete, and then call assertNoServerError on the response.
+
+So for each test, the code would be:
+
+For the first test:
+
+get("/api/products/DOESNOTEXIST999");
+assertNoServerError(response);
+
+But in Java, the method would need to capture the response. However, the base class's methods (get, postJson, delete) probably return the HttpResponse, which is then passed to assertNoServerError.
+
+Wait, the base class's get method returns HttpResponse<String>, so the test method would have to capture that response. However, the assertNoServerError method is part of the base class and takes the response as an argument. So in the code, the test methods would be:
+
+For example:
+
+@Test
+void test_R1_GetProductsNonExistentId() throws Exception {
+    HttpResponse<String> response = get("/api/products/DOESNOTEXIST999");
+    assertNoServerError(response);
+}
+
+But the base class's get method might already be returning the response, and the assertNoServerError is a method that takes the response. However, the user's code may have the assertNoServerError as a method that is called on the response, but the base class's code may have it as a separate method. However, the user's code may have the base class with methods that return the response, and the assertNoServerError is a method that takes the response as an argument.
+
+Assuming that the base class has the get, postJson, delete methods that return the HttpResponse, and the assertNoServerError is a method that takes the response as an argument.
+
+Therefore, in each test method, after calling get, postJson, or delete, we need to pass the response to assertNoServerError.
+
+Now, writing all the test methods.
+
+Now, the code:
+
+package com.example;
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class MyTests extends OTelShopBaseTest {
+
+    @Test
+    void test_R1_GetProductsNonExistentId() throws Exception {
+        HttpResponse<String> response = get("/api/products/DOESNOTEXIST999");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_GetProductsEmptyPath() throws Exception {
+        HttpResponse<String> response = get("/api/products/");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_GetProductsNumericId() throws Exception {
+        HttpResponse<String> response = get("/api/products/12345");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_GetProductsLongId() throws Exception {
+        String longId = new String(new char[1000]).replace('\0', 'a');
+        HttpResponse<String> response = get("/api/products/" + longId);
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_GetCartEmptySessionId() throws Exception {
+        HttpResponse<String> response = get("/api/cart?sessionId=");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_GetCartMissingSessionId() throws Exception {
+        HttpResponse<String> response = get("/api/cart");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_DeleteCartEmptySessionId() throws Exception {
+        HttpResponse<String> response = delete("/api/cart?sessionId=");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostCartUserIdEmpty() throws Exception {
+        HttpResponse<String> response = postJson("/api/cart", "{\"userId\":\"\",\"item\":{\"productId\":\"OLJCESPC7Z\",\"quantity\":1}}");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostCartProductIdEmpty() throws Exception {
+        HttpResponse<String> response = postJson("/api/cart", "{\"userId\":\"test-user\",\"item\":{\"productId\":\"\",\"quantity\":1}}");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostCartQuantityZero() throws Exception {
+        HttpResponse<String> response = postJson("/api/cart", "{\"userId\":\"test-user\",\"item\":{\"productId\":\"OLJCESPC7Z\",\"quantity\":0}}");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostCartQuantityNegative() throws Exception {
+        HttpResponse<String> response = postJson("/api/cart", "{\"userId\":\"test-user\",\"item\":{\"productId\":\"OLJCESPC7Z\",\"quantity\":-1}}");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostCartItemNull() throws Exception {
+        HttpResponse<String> response = postJson("/api/cart", "{\"userId\":\"test-user\",\"item\":null}");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostCheckoutUserIdEmpty() throws Exception {
+        HttpResponse<String> response = postJson("/api/checkout", "{\"userId\":\"\",\"creditCardNumber\":\"1234567890123456\",\"creditCardExpirationYear\":2025,\"creditCardExpirationMonth\":12,\"shippingAddress\":{\"streetAddress\":\"123 Main St\",\"state\":\"CA\",\"country\":\"US\",\"city\":\"San Francisco\",\"zipCode\":\"94101\"},\"billingAddress\":{\"streetAddress\":\"456 Oak St\",\"state\":\"CA\",\"country\":\"US\",\"city\":\"San Francisco\",\"zipCode\":\"94101\"},\"items\":[{\"productId\":\"OLJCESPC7Z\",\"quantity\":1}]}");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostCheckoutInvalidCurrency() throws Exception {
+        HttpResponse<String> response = postJson("/api/checkout", "{\"userId\":\"test-user\",\"creditCardNumber\":\"1234567890123456\",\"creditCardExpirationYear\":2025,\"creditCardExpirationMonth\":12,\"shippingAddress\":{\"streetAddress\":\"123 Main St\",\"state\":\"CA\",\"country\":\"US\",\"city\":\"San Francisco\",\"zipCode\":\"94101\"},\"billingAddress\":{\"streetAddress\":\"456 Oak St\",\"state\":\"CA\",\"country\":\"US\",\"city\":\"San Francisco\",\"zipCode\":\"94101\"},\"items\":[{\"productId\":\"OLJCESPC7Z\",\"quantity\":1}],\"currencyCode\":\"ZZZ\"}");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostCheckoutCreditCardEmpty() throws Exception {
+        HttpResponse<String> response = postJson("/api/checkout", "{\"userId\":\"test-user\",\"creditCardNumber\":\"\",\"creditCardExpirationYear\":2025,\"creditCardExpirationMonth\":12,\"shippingAddress\":{\"streetAddress\":\"123 Main St\",\"state\":\"CA\",\"country\":\"US\",\"city\":\"San Francisco\",\"zipCode\":\"94101\"},\"billingAddress\":{\"streetAddress\":\"456 Oak St\",\"state\":\"CA\",\"country\":\"US\",\"city\":\"San Francisco\",\"zipCode\":\"94101\"},\"items\":[{\"productId\":\"OLJCESPC7Z\",\"quantity\":1}]}");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostCheckoutCreditCardExpirationPast() throws Exception {
+        HttpResponse<String> response = postJson("/api/checkout", "{\"userId\":\"test-user\",\"creditCardNumber\":\"1234567890123456\",\"creditCardExpirationYear\":2000,\"creditCardExpirationMonth\":1,\"shippingAddress\":{\"streetAddress\":\"123 Main St\",\"state\":\"CA\",\"country\":\"US\",\"city\":\"San Francisco\",\"zipCode\":\"94101\"},\"billingAddress\":{\"streetAddress\":\"456 Oak St\",\"state\":\"CA\",\"country\":\"US\",\"city\":\"San Francisco\",\"zipCode\":\"94101\"},\"items\":[{\"productId\":\"OLJCESPC7Z\",\"quantity\":1}]}");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostCurrencyUnknownFromCode() throws Exception {
+        HttpResponse<String> response = postJson("/api/currency", "{\"from\":{\"currencyCode\":\"ZZZ\",\"units\":10,\"nanos\":0},\"toCode\":\"USD\"}");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostCurrencyUnknownToCode() throws Exception {
+        HttpResponse<String> response = postJson("/api/currency", "{\"from\":{\"currencyCode\":\"USD\",\"units\":10,\"nanos\":0},\"toCode\":\"ZZZ\"}");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostCurrencyUnitsNegative() throws Exception {
+        HttpResponse<String> response = postJson("/api/currency", "{\"from\":{\"currencyCode\":\"USD\",\"units\":-1,\"nanos\":0},\"toCode\":\"EUR\"}");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostShippingEmptyAddress() throws Exception {
+        HttpResponse<String> response = postJson("/api/shipping", "{\"address\":{\"streetAddress\":\"\",\"state\":\"\",\"country\":\"\",\"city\":\"\",\"zipCode\":\"\"},\"items\":[{\"productId\":\"OLJCESPC7Z\",\"quantity\":1}]}");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_GetRecommendationsNonExistentProductIds() throws Exception {
+        HttpResponse<String> response = get("/api/recommendations?productIds=FAKE999&sessionId=s1&currencyCode=USD");
+        assertNoServerError(response);
+    }
+}
+
+But wait, the POST /api/checkout examples may need to have the correct JSON structure. For example, the test_R1_PostCheckoutUserIdEmpty may have a JSON body that includes all necessary fields, but with the userId empty. Similarly for other tests.
+
+But in the original violation table, the input used for POST /api/checkout with empty userId is "checkout body with userId: """, which implies that the rest of the fields are filled in with some default values. However, in the code above, the JSON body is constructed with all the necessary fields filled in, but with userId empty. Similarly for other tests.
+
+But for the test_R1_PostCheckoutInvalidCurrency, the JSON includes the currencyCode field with "ZZZ".
+
+But for the other tests, like test_R1_PostCartUserIdEmpty, the JSON is constructed with the item and other fields. However, the user may need to ensure that the JSON is valid and that all required fields are present. However, the exact JSON structure may depend on the actual API being tested.
+
+In any case, the code above is an example of how the test methods would be structured, assuming that the base class has the get, postJson, delete methods that return HttpResponse<String>, and that the assertNoServerError method is a method that takes the response as an argument.
+
+Therefore, the final answer is the Java code with the test methods as shown.
+...done thinking.
+
+```java
+package com.example;
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class MyTests extends OTelShopBaseTest {
+
+    @Test
+    void test_R1_GetProductsNonExistentId() throws Exception {
+        HttpResponse<String> response = get("/api/products/DOESNOTEXIST");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_GetProductsEmptyPath() throws Exception {
+        HttpResponse<String> response = get("/api/products/");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_GetProductsNumericId() throws Exception {
+        HttpResponse<String> response = get("/api/products/12345");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_GetProductsLongId() throws Exception {
+        String longId = new String(new char[1000]).replace('\0', 'a');
+        HttpResponse<String> response = get("/api/products/" + longId);
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_GetCartEmptySessionId() throws Exception {
+        HttpResponse<String> response = get("/api/cart?sessionId=");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_GetCartMissingSessionId() throws Exception {
+        HttpResponse<String> response = get("/api/cart");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_DeleteCartEmptySessionId() throws Exception {
+        HttpResponse<String> response = delete("/api/cart?sessionId=");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostCartUserIdEmpty() throws Exception {
+        HttpResponse<String> response = postJson("/api/cart", "{\"userId\":\"\",\"item\":{\"productId\":\"OLJCESPC7Z\",\"quantity\":1}}");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostCartProductIdEmpty() throws Exception {
+        HttpResponse<String> response = postJson("/api/cart", "{\"userId\":\"test-user\",\"item\":{\"productId\":\"\",\"quantity\":1}}");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostCartQuantityZero() throws Exception {
+        HttpResponse<String> response = postJson("/api/cart", "{\"userId\":\"test-user\",\"item\":{\"productId\":\"OLJCESPC7Z\",\"quantity\":0}}");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostCartQuantityNegative() throws Exception {
+        HttpResponse<String> response = postJson("/api/cart", "{\"userId\":\"test-user\",\"item\":{\"productId\":\"OLJCESPC7Z\",\"quantity\":-1}}");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostCartItemNull() throws Exception {
+        HttpResponse<String> response = postJson("/api/cart", "{\"userId\":\"test-user\",\"item\":null}");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostCheckoutUserIdEmpty() throws Exception {
+        HttpResponse<String> response = postJson("/api/checkout", "{\"userId\":\"\",\"creditCardNumber\":\"1234567890123456\",\"creditCardExpirationYear\":2025,\"creditCardExpirationMonth\":12,\"shippingAddress\":{\"streetAddress\":\"123 Main St\",\"state\":\"CA\",\"country\":\"US\",\"city\":\"San Francisco\",\"zipCode\":\"94101\"},\"billingAddress\":{\"streetAddress\":\"456 Oak St\",\"state\":\"CA\",\"country\":\"US\",\"city\":\"San Francisco\",\"zipCode\":\"94101\"},\"items\":[{\"productId\":\"OLJCESPC7Z\",\"quantity\":1}]}");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostCheckoutInvalidCurrency() throws Exception {
+        HttpResponse<String> response = postJson("/api/checkout", "{\"userId\":\"test-user\",\"creditCardNumber\":\"1234567890123456\",\"creditCardExpirationYear\":2025,\"creditCardExpirationMonth\":12,\"shippingAddress\":{\"streetAddress\":\"123 Main St\",\"state\":\"CA\",\"country\":\"US\",\"city\":\"San Francisco\",\"zipCode\":\"94101\"},\"billingAddress\":{\"streetAddress\":\"456 Oak St\",\"state\":\"CA\",\"country\":\"US\",\"city\":\"San Francisco\",\"zipCode\":\"94101\"},\"items\":[{\"productId\":\"OLJCESPC7Z\",\"quantity\":1}],\"currencyCode\":\"ZZZ\"}");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostCheckoutCreditCardEmpty() throws Exception {
+        HttpResponse<String> response = postJson("/api/checkout", "{\"userId\":\"test-user\",\"creditCardNumber\":\"\",\"creditCardExpirationYear\":2025,\"creditCardExpirationMonth\":12,\"shippingAddress\":{\"streetAddress\":\"123 Main St\",\"state\":\"CA\",\"country\":\"US\",\"city\":\"San Francisco\",\"zipCode\":\"94101\"},\"billingAddress\":{\"streetAddress\":\"456 Oak St\",\"state\":\"CA\",\"country\":\"US\",\"city\":\"San Francisco\",\"zipCode\":\"94101\"},\"items\":[{\"productId\":\"OLJCESPC7Z\",\"quantity\":1}]}");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostCheckoutCreditCardExpirationPast() throws Exception {
+        HttpResponse<String> response = postJson("/api/checkout", "{\"userId\":\"test-user\",\"creditCardNumber\":\"1234567890123456\",\"creditCardExpirationYear\":2000,\"creditCardExpirationMonth\":1,\"shippingAddress\":{\"streetAddress\":\"123 Main St\",\"state\":\"CA\",\"country\":\"US\",\"city\":\"San Francisco\",\"zipCode\":\"94101\"},\"billingAddress\":{\"streetAddress\":\"456 Oak St\",\"state\":\"CA\",\"country\":\"US\",\"city\":\"San Francisco\",\"zipCode\":\"94101\"},\"items\":[{\"productId\":\"OLJCESPC7Z\",\"quantity\":1}]}");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostCurrencyUnknownFromCode() throws Exception {
+        HttpResponse<String> response = postJson("/api/currency", "{\"from\":{\"currencyCode\":\"ZZZ\",\"units\":10,\"nanos\":0},\"toCode\":\"USD\"}");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostCurrencyUnknownToCode() throws Exception {
+        HttpResponse<String> response = postJson("/api/currency", "{\"from\":{\"currencyCode\":\"USD\",\"units\":10,\"nanos\":0},\"toCode\":\"ZZZ\"}");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostCurrencyUnitsNegative() throws Exception {
+        HttpResponse<String> response = postJson("/api/currency", "{\"from\":{\"currencyCode\":\"USD\",\"units\":-1,\"nanos\":0},\"toCode\":\"EUR\"}");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_PostShippingEmptyAddress() throws Exception {
+        HttpResponse<String> response = postJson("/api/shipping", "{\"address\":{\"streetAddress\":\"\",\"state\":\"\",\"country\":\"\",\"city\":\"\",\"zipCode\":\"\"},\"items\":[{\"productId\":\"OLJCESPC7Z\",\"quantity\":1}]}");
+        assertNoServerError(response);
+    }
+
+    @Test
+    void test_R1_GetRecommendationsNonExistentProductIds() throws Exception {
+        HttpResponse<String> response = get("/api/recommendations?productIds=FAKE999&sessionId=s1&currencyCode=USD");
+        assertNoServerError(response);
+    }
+}
+```
+

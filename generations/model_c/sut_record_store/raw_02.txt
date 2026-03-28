@@ -1,0 +1,382 @@
+Thinking...
+Okay, I need to create a JUnit 5 test class for the RecordStore class based on the given requirements. Let's go through each row in the violation table and make sure each is covered by a test method.
+
+First, the constructor tests. The first three rows are about the constructor. The capacity must be between 1 and 100, and type can't be null. So I'll need three test methods: one for capacity 0, one for 101, and one for type null. Each should throw IllegalArgumentException.
+
+Next, the put method. The test cases here are for null key, blank string key, key longer than 32 chars, null value, and trying to put on a NUMERIC_ONLY store. Each of these should throw the appropriate exceptions. For the key length, I can create a string of 33 'a's. For the NUMERIC_ONLY case, I'll create a RecordStore with that type and call put.
+
+Then putNumeric has several cases: null value, float string, alpha string, value out of range, and on a STRING_ONLY store. The float and alpha cases should throw NumberFormatException, the out of range throws IllegalArgumentException, and the type check throws UnsupportedOperationException.
+
+Then, the tests for operations after close. All write operations (put, putNumeric, putAll) and remove should throw IllegalStateException if called after close. So I need tests for each of these methods after closing the store.
+
+The capacity exceeded test: when putting an entry that would make the store exceed its capacity, it should throw IndexOutOfBoundsException. I'll need to create a store with a certain capacity, add entries until it's full, then add one more.
+
+For putAll, the cases are map with null key or null value. Each should throw IllegalArgumentException. Also, if any entry is invalid, the entire putAll fails. But the test here is about the individual entries, not the overall failure. So creating a map with a null key or value and calling putAll should trigger the exception.
+
+Each test method must have a unique name, and all must throw Exception. Also, no assertThrows, no try-catch, just call the method directly. So each test method will create the necessary setup and call the method that should throw an exception.
+
+Now, I need to structure each test method. For example, the constructor with capacity 0: create a new RecordStore with capacity 0 and type MIXED. That should throw IllegalArgumentException. Similarly for the others.
+
+For the put method on a NUMERIC_ONLY store, create a RecordStore with type NUMERIC_ONLY, then call put with some key and value. That should throw UnsupportedOperationException.
+
+For the putAll tests, create a map with a null key or value and pass it to putAll. The test will fail with IllegalArgumentException.
+
+Also, for the capacity exceeded case, create a store with capacity 1, add one entry, then try to add another. That should throw IndexOutOfBoundsException.
+
+Each test method must be annotated with @Test, and the class must be in the pilot.records package. The class name is RecordStore_ModelC_Structured_RobustnessTest.
+
+Now, I need to make sure all the test methods are covered. Let me count: constructor tests (3), put (5), putNumeric (5), after close (4), capacity (1), putAll (2). That totals 3+5+5+4+1+2=20? Wait, the violation table has 15 rows. Let me check again.
+
+Looking back, the violation table has 15 rows. Let me list them again:
+
+1. constructor | capacity 0 | IllegalArgumentException
+2. constructor | capacity 101 | IllegalArgumentException
+3. constructor | type null | IllegalArgumentException
+4. put | key null | IllegalArgumentException
+5. put | key blank | IllegalArgumentException
+6. put | key longer than 32 | IllegalArgumentException
+7. put | value null | IllegalArgumentException
+8. put | on numeric only | UnsupportedOperationException
+9. putNumeric | value null | IllegalArgumentException
+10. putNumeric | value float | NumberFormatException
+11. putNumeric | value alpha | NumberFormatException
+12. putNumeric | value overflow | IllegalArgumentException
+13. putNumeric | on string only | UnsupportedOperationException
+14. put after close | IllegalStateException
+15. putNumeric after close | IllegalStateException
+16. remove after close | IllegalStateException
+17. putAll after close | IllegalStateException
+18. put exceeds capacity | IndexOutOfBoundsException
+19. putAll map null key | IllegalArgumentException
+20. putAll map null value | IllegalArgumentException
+
+Wait, the original table says 12 to 15 tests minimum. But the user's violation table has more than 15 rows. Let me check again.
+
+Original user message:
+
+Violation table — write one test per row:
+
+Method | Input / Scenario | Expected exception
+
+Then the rows are:
+
+constructor | capacity = 0 | IllegalArgumentException
+
+constructor | capacity = 101 | IllegalArgumentException
+
+constructor | type = null | IllegalArgumentException
+
+put | key = null | IllegalArgumentException
+
+put | key = blank string | IllegalArgumentException
+
+put | key longer than 32 | IllegalArgumentException
+
+put | value = null | IllegalArgumentException
+
+put | on numeric only | UnsupportedOperationException
+
+putNumeric | value = null | IllegalArgumentException
+
+putNumeric | value = float string | NumberFormatException
+
+putNumeric | value = alpha string | NumberFormatException
+
+putNumeric | value = integer overflow | IllegalArgumentException
+
+putNumeric | on string only | UnsupportedOperationException
+
+put | after close | IllegalStateException
+
+putNumeric | after close | IllegalStateException
+
+remove | after close | IllegalStateException
+
+putAll | after close | IllegalStateException
+
+put | exceeds capacity | IndexOutOfBoundsException
+
+putAll | map contains null key | IllegalArgumentException
+
+putAll | map contains null value | IllegalArgumentException
+
+So that's 21 rows. But the user says "12 to 15 tests minimum". Maybe some of these are covered by the same test? No, each row is a separate test. So need to create 21 test methods. But the user's instruction says "12 to 15 tests minimum". Maybe the user made a mistake, but the original violation table has 21 rows. However, looking back, maybe I miscounted.
+
+Wait, the user's message lists the violation table with 21 rows? Let me recount:
+
+Looking at the user's message:
+
+The violation table has the following rows (each line is a row):
+
+1. constructor | capacity = 0 | IllegalArgumentException
+2. constructor | capacity = 101 | IllegalArgumentException
+3. constructor | type = null | IllegalArgumentException
+4. put | key = null | IllegalArgumentException
+5. put | key = blank string ("   ") | IllegalArgumentException
+6. put | key longer than 32 chars | IllegalArgumentException
+7. put | value = null | IllegalArgumentException
+8. put | on a NUMERIC_ONLY store | UnsupportedOperationException
+9. putNumeric | value = null | IllegalArgumentException
+10. putNumeric | value = float string ("3.14") | NumberFormatException
+11. putNumeric | value = alpha string ("abc") | NumberFormatException
+12. putNumeric | value = integer overflow (MAX_NUMERIC + 1) | IllegalArgumentException
+13. putNumeric | on a STRING_ONLY store | UnsupportedOperationException
+14. put | after close() | IllegalStateException
+15. putNumeric | after close() | IllegalStateException
+16. remove | after close() | IllegalStateException
+17. putAll | after close() | IllegalStateException
+18. put | exceeds capacity | IndexOutOfBoundsException
+19. putAll | map contains null key | IllegalArgumentException
+20. putAll | map contains null value | IllegalArgumentException
+
+That's 20 rows. So the user's instruction says "12 to 15 tests minimum", but the table has 20 rows. So the test class must have at least 20 test methods. But the user's instruction says "12 to 15 tests minimum" — maybe that's a typo, but the actual table has 20 rows. So I need to create 20 test methods.
+
+Each test method must be unique and cover one row. Now, I need to write each test method accordingly.
+
+Now, considering the code structure. The test class will have methods like testConstructorCapacityZero(), testConstructorCapacityHundredOne(), etc. Each method will create the necessary setup and call the method that should throw an exception.
+
+For example, testConstructorCapacityZero() would do:
+
+new RecordStore(0, RecordType.MIXED);
+
+Which should throw IllegalArgumentException.
+
+Similarly, for the put method with key null:
+
+RecordStore store = new RecordStore(1, RecordType.MIXED);
+store.put(null, "value");
+
+Which should throw IllegalArgumentException.
+
+For the put on a numeric only store:
+
+RecordStore store = new RecordStore(1, RecordType.NUMERIC_ONLY);
+store.put("key", "value");
+
+Which should throw UnsupportedOperationException.
+
+For the putNumeric with float string:
+
+RecordStore store = new RecordStore(1, RecordType.MIXED);
+store.putNumeric("key", "3.14");
+
+Which should throw NumberFormatException.
+
+For the put after close:
+
+RecordStore store = new RecordStore(1, RecordType.MIXED);
+store.close();
+store.put("key", "value");
+
+Which should throw IllegalStateException.
+
+For the capacity exceeded test:
+
+RecordStore store = new RecordStore(1, RecordType.MIXED);
+store.put("key1", "value1");
+store.put("key2", "value2");
+
+Which should throw IndexOutOfBoundsException.
+
+For the putAll with null key:
+
+Map<String, String> map = new LinkedHashMap<>();
+map.put(null, "value");
+RecordStore store = new RecordStore(1, RecordType.MIXED);
+store.putAll(map);
+
+Which should throw IllegalArgumentException.
+
+Each test method must be annotated with @Test, and the class must import the necessary classes.
+
+Now, writing all these methods in the test class. Also, note that the test methods must not use assertThrows, and must not use try-catch blocks. So the test methods will directly call the method that is expected to throw an exception, and the test runner will catch it and consider the test as passed if any exception is thrown.
+
+So each test method will look like:
+
+@Test
+void testConstructorCapacityZero() throws Exception {
+    new RecordStore(0, RecordType.MIXED);
+}
+
+But wait, the constructor is supposed to throw an exception. So the test method will call the constructor, and if it throws an exception, the test passes. But in JUnit 5, if a test method throws an exception, it's considered a failure unless it's expected. But the user says that the test passes if the SUT throws any exception. However, the user also says not to use assertThrows, and not to assert on exception types. So the test methods are written to call the method that should throw an exception, and the test runner will catch it and mark the test as passed.
+
+Wait, but in JUnit 5, if a test method throws an exception, it's considered a failure. However, the user's instruction says that the test passes if the SUT throws any exception. So how to handle this? The user says: "A test PASSES if the SUT throws any exception (the test runner catches it). Do NOT use assertThrows. Do NOT assert on exception type. Just call the method directly."
+
+But in JUnit 5, if the test method throws an exception, the test fails. So this seems contradictory. However, the user says not to use assertThrows and not to assert on exception types. So perhaps the user is mistaken, but the instruction is to write the test methods as if the exception is expected, but without using assertThrows.
+
+But this is not possible in JUnit 5. Because if the method under test throws an exception, the test will fail unless you use assertThrows. However, the user says not to use assertThrows. So perhaps the user is using a different approach, but the actual way to do this is to use assertThrows. However, the user explicitly says not to use assertThrows. This is confusing.
+
+But the user says: "Do NOT use assertThrows. Do NOT assert on exception type. Just call the method directly."
+
+But in that case, the test method would have to call the method and let the exception propagate, which would cause the test to fail. But according to the user's robustness oracle, the test passes if the SUT throws any exception. So there's a contradiction here. But perhaps the user is using a different test framework, or there's a misunderstanding.
+
+But given the user's instruction, I have to proceed as per their instructions, even if it's not standard JUnit 5. So the test methods will call the method that is expected to throw an exception, and the test runner will catch it and mark the test as passed. However, in reality, in JUnit 5, this would not work. But perhaps the user is using a different approach, such as using a custom test runner or something else.
+
+But given the user's instruction, I have to proceed as per their directions. So each test method will call the method that should throw an exception, and the test will pass if that exception is thrown. Therefore, the code will be written as such, even though in reality, JUnit 5 would mark it as a failure unless handled with assertThrows.
+
+But the user says not to use assertThrows. So perhaps the user is using a different approach, but I have to follow their instructions.
+
+So, proceeding with writing the test methods as per the user's instruction, even though in reality, they would fail unless using assertThrows. But the user says not to use assertThrows, so I'll proceed.
+
+Now, writing the test class with all the test methods. Each test method will have a unique name, and the code will be structured accordingly.
+
+Now, considering that the test methods must not use any try-catch blocks, and must have throws Exception in their signature. So each method will have:
+
+@Test
+void testMethodName() throws Exception {
+    // code that calls the method expected to throw an exception
+}
+
+For example, for the constructor with capacity 0:
+
+@Test
+void testConstructorCapacityZero() throws Exception {
+    new RecordStore(0, RecordType.MIXED);
+}
+
+This will throw an IllegalArgumentException, which the test runner will catch, and the test will pass if that's the case.
+
+But in JUnit 5, this would cause the test to fail unless it's expected. However, the user's instruction says to proceed this way. So I'll proceed.
+
+Now, writing all the test methods accordingly.
+...done thinking.
+
+```java
+package pilot.records;
+
+import org.junit.jupiter.api.Test;
+import java.util.Map;
+import java.util.LinkedHashMap;
+
+public class RecordStore_ModelC_Structured_RobustnessTest {
+
+    @Test
+    void testConstructorCapacityZero() throws Exception {
+        new RecordStore(0, RecordType.MIXED);
+    }
+
+    @Test
+    void testConstructorCapacityHundredOne() throws Exception {
+        new RecordStore(101, RecordType.MIXED);
+    }
+
+    @Test
+    void testConstructorTypeNull() throws Exception {
+        new RecordStore(1, null);
+    }
+
+    @Test
+    void testPutKeyNull() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.MIXED);
+        store.put(null, "value");
+    }
+
+    @Test
+    void testPutKeyBlank() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.MIXED);
+        store.put("   ", "value");
+    }
+
+    @Test
+    void testPutKeyTooLong() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.MIXED);
+        store.put("a".repeat(1000), "value");
+    }
+
+    @Test
+    void testPutValueNull() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.MIXED);
+        store.put("key", null);
+    }
+
+    @Test
+    void testPutOnNumericOnlyStore() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.NUMERIC_ONLY);
+        store.put("key", "value");
+    }
+
+    @Test
+    void testPutNumericValueNull() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.MIXED);
+        store.putNumeric("key", null);
+    }
+
+    @Test
+    void testPutNumericFloatString() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.MIXED);
+        store.putNumeric("key", "3.14");
+    }
+
+    @Test
+    void testPutNumericAlphaString() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.MIXED);
+        store.putNumeric("key", "abc");
+    }
+
+    @Test
+    void testPutNumericOverflow() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.MIXED);
+        store.putNumeric("key", String.valueOf(RecordStore.MAX_NUMERIC + 1));
+    }
+
+    @Test
+    void testPutNumericOnStringOnlyStore() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.STRING_ONLY);
+        store.putNumeric("key", "123");
+    }
+
+    @Test
+    void testPutAfterClose() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.MIXED);
+        store.close();
+        store.put("key", "value");
+    }
+
+    @Test
+    void testPutNumericAfterClose() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.MIXED);
+        store.close();
+        store.putNumeric("key", "123");
+    }
+
+    @Test
+    void testRemoveAfterClose() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.MIXED);
+        store.close();
+        store.remove("key");
+    }
+
+    @Test
+    void testPutAllAfterClose() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.MIXED);
+        store.close();
+        Map<String, String> map = new LinkedHashMap<>();
+        map.put("key", "value");
+        store.putAll(map);
+    }
+
+    @Test
+    void testPutExceedsCapacity() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.MIXED);
+        store.put("key1", "value1");
+        store.put("key2", "value2");
+    }
+
+    @Test
+    void testPutAllWithNullKey() throws Exception {
+        Map<String, String> map = new LinkedHashMap<>();
+        map.put(null, "value");
+        RecordStore store = new RecordStore(1, RecordType.MIXED);
+        store.putAll(map);
+    }
+
+    @Test
+    void testPutAllWithNullValue() throws Exception {
+        Map<String, String> map = new LinkedHashMap<>();
+        map.put("key", null);
+        RecordStore store = new RecordStore(1, RecordType.MIXED);
+        store.putAll(map);
+    }
+}
+```
+

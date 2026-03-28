@@ -1,0 +1,87 @@
+```java
+package pilot.records;
+
+import org.junit.jupiter.api.Test;
+import java.util.Map;
+import java.util.LinkedHashMap;
+import pilot.records.RecordStore;
+import pilot.records.RecordType;
+
+public class RecordStore_ModelD_FewShot_RobustnessTest {
+
+    @Test
+    void test_invalid_capacity_on_constructor() throws Exception {
+        new RecordStore(0, RecordType.MIXED);
+    }
+
+    @Test
+    void test_null_type_on_constructor() throws Exception {
+        new RecordStore(10, null);
+    }
+
+    @Test
+    void test_blank_key_on_put() throws Exception {
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        store.put("   ", "value");
+    }
+
+    @Test
+    void test_long_key_on_put() throws Exception {
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        String longKey = "a".repeat(33);
+        store.put(longKey, "value");
+    }
+
+    @Test
+    void test_null_value_on_put() throws Exception {
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        store.put("key", null);
+    }
+
+    @Test
+    void test_non_integer_string_on_putNumeric() throws Exception {
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        store.putNumeric("key", "abc");
+    }
+
+    @Test
+    void test_out_of_range_numeric_on_putNumeric() throws Exception {
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        store.putNumeric("key", String.valueOf(MAX_NUMERIC + 1));
+    }
+
+    @Test
+    void test_putNumeric_on_string_only_store() throws Exception {
+        RecordStore store = new RecordStore(10, RecordType.STRING_ONLY);
+        store.putNumeric("key", "123");
+    }
+
+    @Test
+    void test_put_on_numeric_only_store() throws Exception {
+        RecordStore store = new RecordStore(10, RecordType.NUMERIC_ONLY);
+        store.put("key", "value");
+    }
+
+    @Test
+    void test_remove_after_close() throws Exception {
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        store.close();
+        store.remove("key");
+    }
+
+    @Test
+    void test_get_numeric_on_empty_store() throws Exception {
+        RecordStore store = new RecordStore(10, RecordType.NUMERIC_ONLY);
+        store.getNumeric("nonexistent");
+    }
+
+    @Test
+    void test_putAll_with_invalid_key() throws Exception {
+        RecordStore store = new RecordStore(10, RecordType.MIXED);
+        Map<String, String> entries = new LinkedHashMap<>();
+        entries.put(null, "value");
+        store.putAll(entries);
+    }
+}
+```
+

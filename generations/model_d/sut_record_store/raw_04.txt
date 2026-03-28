@@ -1,0 +1,124 @@
+```java
+package pilot.records;
+
+import org.junit.jupiter.api.Test;
+import java.util.Map;
+import java.util.LinkedHashMap;
+import pilot.records.RecordStore;
+import pilot.records.RecordType;
+
+class RecordStore_ModelD_Self_RobustnessTest {
+
+    @Test
+    void testConstructorWithInvalidCapacityTooLow() throws Exception {
+        new RecordStore(0, RecordType.STRING_ONLY);
+    }
+
+    @Test
+    void testConstructorWithInvalidCapacityTooHigh() throws Exception {
+        new RecordStore(101, RecordType.STRING_ONLY);
+    }
+
+    @Test
+    void testConstructorWithNullRecordType() throws Exception {
+        new RecordStore(1, null);
+    }
+
+    @Test
+    void testPutStringOnlyWithNumericKeyViolation() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.STRING_ONLY);
+        store.put("key", "value");
+        store.putNumeric("numericKey", "42");
+    }
+
+    @Test
+    void testPutNumericOnlyWithStringKeyViolation() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.NUMERIC_ONLY);
+        store.putNumeric("key", "42");
+        store.put("stringKey", "value");
+    }
+
+    @Test
+    void testPutWithNullKey() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.STRING_ONLY);
+        store.put(null, "value");
+    }
+
+    @Test
+    void testPutWithBlankKey() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.STRING_ONLY);
+        store.put("   ", "value");
+    }
+
+    @Test
+    void testPutWithLongKey() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.STRING_ONLY);
+        store.put("a".repeat(33), "value");
+    }
+
+    @Test
+    void testPutWithNullValue() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.STRING_ONLY);
+        store.put("key", null);
+    }
+
+    @Test
+    void testPutNumericWithInvalidIntegerString() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.NUMERIC_ONLY);
+        store.putNumeric("key", "42.5");
+    }
+
+    @Test
+    void testPutNumericWithValueTooLow() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.NUMERIC_ONLY);
+        store.putNumeric("key", String.valueOf(RecordStore.MIN_NUMERIC - 1));
+    }
+
+    @Test
+    void testPutNumericWithValueTooHigh() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.NUMERIC_ONLY);
+        store.putNumeric("key", String.valueOf(RecordStore.MAX_NUMERIC + 1));
+    }
+
+    @Test
+    void testWriteAfterClose() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.STRING_ONLY);
+        store.close();
+        store.put("key", "value");
+    }
+
+    @Test
+    void testCapacityOverflowWithSinglePut() throws Exception {
+        RecordStore store = new RecordStore(0, RecordType.STRING_ONLY);
+        store.put("key", "value");
+    }
+
+    @Test
+    void testCapacityOverflowWithMultiplePuts() throws Exception {
+        RecordStore store = new RecordStore(1, RecordType.STRING_ONLY);
+        store.put("key1", "value1");
+        store.put("key2", "value2");
+    }
+
+    @Test
+    void testPutAllAtomicityFailureDueToInvalidKey() throws Exception {
+        RecordStore store = new RecordStore(2, RecordType.STRING_ONLY);
+        Map<String, String> entries = new LinkedHashMap<>();
+        entries.put("validKey1", "value1");
+        entries.put(null, "value2"); // Invalid entry
+        entries.put("validKey2", "value3");
+        store.putAll(entries);
+    }
+
+    @Test
+    void testPutAllAtomicityFailureDueToInvalidValue() throws Exception {
+        RecordStore store = new RecordStore(2, RecordType.STRING_ONLY);
+        Map<String, String> entries = new LinkedHashMap<>();
+        entries.put("validKey1", "value1");
+        entries.put("validKey2", null); // Invalid entry
+        entries.put("validKey3", "value3");
+        store.putAll(entries);
+    }
+}
+```
+

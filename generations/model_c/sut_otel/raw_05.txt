@@ -1,0 +1,305 @@
+Thinking...
+Okay, I need to write JUnit 5 robustness tests for the OpenTelemetry Astronomy Shop. Let's start by understanding the requirements.
+
+The system under test has various endpoints, and I need to test for robustness by ensuring that all responses are not 5xx. The test class must extend OTelShopBaseTest, which provides methods like get, postJson, delete, and assertNoServerError.
+
+First, I'll go through each step of the reasoning process.
+
+Step 1: Product catalog violations. The productId is a string. Possible violations include non-existent ID, numeric string, empty path, whitespace, and very long string. So, I should test these scenarios.
+
+Step 2: Cart GET and DELETE with sessionId. Check empty sessionId, missing key, and very long string. Both GET and DELETE might handle these differently.
+
+Step 3: Cart POST body violations. Each field's presence, emptiness, null, missing, quantity issues, etc. Need to test different JSON structures.
+
+Step 4: Checkout POST body. Check various fields like userId, userCurrency, email format, credit card details, address, and items.
+
+Step 5: Currency POST. Test unknown fromCode, toCode, same code, negative units, invalid nanos, empty currencyCode.
+
+Step 6: Shipping POST. Check empty items, non-existent product ID, zero quantity, empty address, missing address or items.
+
+Step 7: Recommendations and Ads GET. Invalid productIds, unknown currencyCode, empty sessionId, empty contextKeys, missing all params.
+
+Step 8: Select 15-18 distinct tests. Need to pick the most unique violations across endpoints.
+
+Now, I need to map these into test methods. Let's think about each endpoint and possible test cases.
+
+For Product catalog:
+- Test with non-existent but valid ID (e.g., "12345").
+- Test numeric ID (e.g., "12345").
+- Test empty path segment.
+- Test whitespace path.
+- Test very long ID (500 characters).
+
+But maybe some of these are similar. Let's pick the most distinct ones.
+
+For Cart GET:
+- Empty sessionId.
+- Missing sessionId parameter.
+- Very long sessionId.
+
+Cart DELETE: same as GET, but maybe different handling.
+
+Cart POST: various JSON issues like missing userId, empty userId, missing item, etc.
+
+Checkout POST: various fields like invalid currency, invalid email, etc.
+
+Currency POST: invalid fromCode, toCode, same code, negative units, etc.
+
+Shipping POST: empty items, invalid product ID, etc.
+
+Recommendations: invalid productIds, missing params.
+
+Ads: empty contextKeys.
+
+Now, I need to select 15-18 tests. Let's pick the most distinct ones.
+
+Let's outline each test:
+
+1. Product non-existent ID.
+2. Product numeric ID.
+3. Product empty path.
+4. Product whitespace path.
+5. Product very long ID.
+6. Cart GET empty sessionId.
+7. Cart GET missing sessionId.
+8. Cart GET very long sessionId.
+9. Cart DELETE empty sessionId.
+10. Cart DELETE missing sessionId.
+11. Cart DELETE very long sessionId.
+12. Cart POST missing userId.
+13. Cart POST empty userId.
+14. Cart POST missing item.
+15. Cart POST item with empty productId.
+16. Cart POST quantity zero.
+17. Cart POST quantity negative.
+18. Cart POST quantity max integer.
+
+Wait, but some of these might be similar. Let me check the steps again.
+
+In Step 3, for Cart POST body, the violations include:
+
+- Field present but empty string (userId, productId)
+- Field present but null (item, productId)
+- Field missing entirely from the body
+- quantity is zero
+- quantity is a negative integer
+- quantity is an extremely large integer (e.g., Integer.MAX_VALUE)
+- productId is a string that contains only whitespace
+- productId refers to a non-existent product
+
+So for Cart POST, the test cases could be:
+
+- Missing userId
+- Empty userId
+- Missing item
+- Item with empty productId
+- Quantity zero
+- Quantity negative
+- Quantity max integer
+- ProductId with whitespace
+- ProductId non-existent
+
+That's 9 tests for Cart POST.
+
+But the user said to select 15-18 tests across all endpoints.
+
+So perhaps pick one from each step.
+
+Let me proceed to list the tests:
+
+Test 1: Product non-existent ID (GET /api/products/{productId} with "12345").
+Test 2: Product numeric ID (GET /api/products/12345).
+Test 3: Product empty path (GET /api/products/).
+Test 4: Product whitespace path (GET /api/products/   ).
+Test 5: Product very long ID (500 chars).
+Test 6: Cart GET empty sessionId (GET /api/cart?sessionId=).
+Test 7: Cart GET missing sessionId (GET /api/cart).
+Test 8: Cart GET very long sessionId (GET /api/cart?sessionId=verylongstring...).
+Test 9: Cart DELETE empty sessionId (DELETE /api/cart?sessionId=).
+Test 10: Cart DELETE missing sessionId (DELETE /api/cart).
+Test 11: Cart DELETE very long sessionId (DELETE /api/cart?sessionId=verylongstring...).
+Test 12: Cart POST missing userId (userId not present).
+Test 13: Cart POST empty userId (userId is "").
+Test 14: Cart POST missing item (item not present).
+Test 15: Cart POST item with empty productId (productId is "").
+Test 16: Cart POST quantity zero.
+Test 17: Cart POST quantity negative.
+Test 18: Cart POST quantity max integer.
+
+That's 18 tests. Now, I need to map these into the Java code.
+
+Each test method must start with test_R1_ and have a unique name.
+
+For each test, I'll use the appropriate method (get, postJson, delete) and then call assertNoServerError.
+
+Now, for each test:
+
+For Test 1: GET /api/products/12345 (non-existent ID)
+For Test 2: GET /api/products/12345 (numeric ID)
+Test 3: GET /api/products/ (empty path)
+Test 4: GET /api/products/   (whitespace)
+Test 5: GET /api/products/{veryLongId} (500 chars)
+Test 6: GET /api/cart?sessionId= (empty)
+Test 7: GET /api/cart (missing sessionId)
+Test 8: GET /api/cart?sessionId=verylongstring (long)
+Test 9: DELETE /api/cart?sessionId= (empty)
+Test 10: DELETE /api/cart (missing)
+Test 11: DELETE /api/cart?sessionId=verylongstring (long)
+Test 12: POST /api/cart with missing userId
+Test 13: POST /api/cart with empty userId
+Test 14: POST /api/cart with missing item
+Test 15: POST /api/cart with item.productId empty
+Test 16: POST /api/cart with quantity 0
+Test 17: POST /api/cart with quantity -1
+Test 18: POST /api/cart with quantity Integer.MAX_VALUE
+
+Now, constructing the JSON bodies for the POST tests.
+
+For Test 12: missing userId: {"item": {"productId": "OLJCESPC7Z", "quantity": 1}}
+Test 13: empty userId: {"userId": "", "item": {"productId": "OLJCESPC7Z", "quantity": 1}}
+Test 14: missing item: {"userId": "user123"}
+Test 15: item.productId empty: {"userId": "user123", "item": {"productId": "", "quantity": 1}}
+Test 16: quantity 0: {"userId": "user123", "item": {"productId": "OLJCESPC7Z", "quantity": 0}}
+Test 17: quantity -1: {"userId": "user123", "item": {"productId": "OLJCESPC7Z", "quantity": -1}}
+Test 18: quantity Integer.MAX_VALUE: {"userId": "user123", "item": {"productId": "OLJCESPC7Z", "quantity": 2147483647}}
+
+Now, I need to code these tests in Java, using the OTelShopBaseTest methods.
+
+Each test method will call the appropriate method and then assertNoServerError.
+
+Now, considering the code structure:
+
+The class will be in package com.example, named OTelShop_ModelC_CoT_RobustnessTest.
+
+Each test method is a @Test method with throws Exception, and uses the provided methods.
+
+Let me write the code accordingly.
+...done thinking.
+
+package com.example;
+
+import org.junit.jupiter.api.Test;
+
+import java.net.http.HttpResponse;
+
+public class OTelShop_ModelC_CoT_RobustnessTest extends OTelShopBaseTest {
+
+    @Test
+    public void test_R1_ProductNonExistentId() throws Exception {
+        HttpResponse<String> response = get("/api/products/12345");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_ProductNumericId() throws Exception {
+        HttpResponse<String> response = get("/api/products/12345");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_ProductEmptyPath() throws Exception {
+        HttpResponse<String> response = get("/api/products/");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_ProductWhitespacePath() throws Exception {
+        HttpResponse<String> response = get("/api/products/   ");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_ProductVeryLongId() throws Exception {
+        String longId = "A".repeat(500);
+        HttpResponse<String> response = get("/api/products/" + longId);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CartGetEmptySessionId() throws Exception {
+        HttpResponse<String> response = get("/api/cart?sessionId=");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CartGetMissingSessionId() throws Exception {
+        HttpResponse<String> response = get("/api/cart");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CartGetVeryLongSessionId() throws Exception {
+        String longId = "A".repeat(500);
+        HttpResponse<String> response = get("/api/cart?sessionId=" + longId);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CartDeleteEmptySessionId() throws Exception {
+        HttpResponse<String> response = delete("/api/cart?sessionId=");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CartDeleteMissingSessionId() throws Exception {
+        HttpResponse<String> response = delete("/api/cart");
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CartDeleteVeryLongSessionId() throws Exception {
+        String longId = "A".repeat(500);
+        HttpResponse<String> response = delete("/api/cart?sessionId=" + longId);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CartPostMissingUserId() throws Exception {
+        String body = "{\"item\":{\"productId\":\"OLJCESPC7Z\",\"quantity\":1}}";
+        HttpResponse<String> response = postJson("/api/cart", body);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CartPostEmptyUserId() throws Exception {
+        String body = "{\"userId\":\"\",\"item\":{\"productId\":\"OLJCESPC7Z\",\"quantity\":1}}";
+        HttpResponse<String> response = postJson("/api/cart", body);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CartPostMissingItem() throws Exception {
+        String body = "{\"userId\":\"user123\"}";
+        HttpResponse<String> response = postJson("/api/cart", body);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CartPostEmptyProductId() throws Exception {
+        String body = "{\"userId\":\"user123\",\"item\":{\"productId\":\"\",\"quantity\":1}}";
+        HttpResponse<String> response = postJson("/api/cart", body);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CartPostQuantityZero() throws Exception {
+        String body = "{\"userId\":\"user123\",\"item\":{\"productId\":\"OLJCESPC7Z\",\"quantity\":0}}";
+        HttpResponse<String> response = postJson("/api/cart", body);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CartPostQuantityNegative() throws Exception {
+        String body = "{\"userId\":\"user123\",\"item\":{\"productId\":\"OLJCESPC7Z\",\"quantity\":-1}}";
+        HttpResponse<String> response = postJson("/api/cart", body);
+        assertNoServerError(response);
+    }
+
+    @Test
+    public void test_R1_CartPostQuantityMaxInt() throws Exception {
+        String body = "{\"userId\":\"user123\",\"item\":{\"productId\":\"OLJCESPC7Z\",\"quantity\":2147483647}}";
+        HttpResponse<String> response = postJson("/api/cart", body);
+        assertNoServerError(response);
+    }
+}
+
